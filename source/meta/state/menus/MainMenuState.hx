@@ -61,7 +61,6 @@ class MainMenuState extends MusicBeatState
 		'freeplay',
 		'credits',
 		'pokedex',
-		'gallery',
 		'options'
 	];
 
@@ -212,8 +211,6 @@ class MainMenuState extends MusicBeatState
 									// Main.switchState(this, new OptionsMenuState());
 								case 'credits':
 									Main.switchState(this, new CreditsMenuState());
-								case 'gallery':
-									Main.switchState(this, new GalleryState());
 								default:
 									canSelect = true;
 							}
@@ -230,10 +227,28 @@ class MainMenuState extends MusicBeatState
 
 		if (Main.hypnoDebug && FlxG.keys.justPressed.SEVEN) //DEBUG UNLOCKS ALL PROGRESSION
 			{
-				FlxG.save.data.mainMenuOptionsUnlocked = ['story', 'freeplay', 'credits', 'pokedex', 'gallery', 'options'];
-				FlxG.save.data.cartridgesOwned = ['HypnoWeek', 'LostSilverWeek', 'GlitchWeek'];
-				FlxG.save.data.unlockedSongs = ['safety-lullaby', 'left-unchecked', 'lost-cause', 'frostbite', 'insomnia', 'monochrome', 'missingno', 'brimstone', 'amusia', 'dissension', 'purin', 'death-toll', 'isotope', 'bygone-purpose', 'pasta-night', 'shinto', 'shitno'];
+				FlxG.save.data.mainMenuOptionsUnlocked = ['story', 'freeplay', 'credits', 'pokedex', 'options'];
+			FlxG.save.data.cartridgesOwned = ['HypnoWeek', 'LostSilverWeek', 'GlitchWeek'];
+				FlxG.save.data.unlockedSongs = ['safety-lullaby', 'left-unchecked', 'lost-cause', 'frostbite', 'insomnia', 'monochrome', 'missingno', 'brimstone', 'amusia', 'dissension', 'purin', 'death-toll', 'isotope', 'bygone-purpose', 'pasta-night', 'shinto', 'shitno', 'missingcraft','through-the-fire-and-flames', 'sansno', 'rednecks'];
 			}
+
+		if (Main.hypnoDebug && FlxG.keys.justPressed.EIGHT) // DEBUG CART GUY
+		{
+			Main.switchState(this, new CartridgeGuyState());
+		}
+
+		if (Main.hypnoDebug && FlxG.keys.justPressed.NINE) // DEBUG RESET SHOP
+		{
+			FlxG.save.data.itemsPurchased = [];
+			FlxG.save.data.cartridgesOwned = ['HypnoWeek'];
+			FlxG.save.data.unlockedSongs = ['safety-lullaby', 'left-unchecked', 'lost-cause'];
+			FlxG.save.data.playedSongs = ['safety-lullaby','left-unchecked','lost-cause'];
+			FlxG.save.data.buyVinylFirstTime = false;
+			FlxG.save.data.freeplayFirstTime = false;
+			FlxG.save.flush();
+			
+		}
+
 
 		if (Main.hypnoDebug && FlxG.keys.justPressed.DELETE) {
 			FlxG.save.erase();

@@ -144,8 +144,10 @@ class ForeverAssets
 					tempSplash.addOffset('anim1', -120, -90);
 					tempSplash.addOffset('anim2', -120, -90);
 				}
-				tempSplash.animation.add('anim1', [noteData, 4 + noteData, 8 + noteData, 12 + noteData], 24, false);
-				tempSplash.animation.add('anim2', [16 + noteData, 20 + noteData, 24 + noteData, 28 + noteData], 24, false);
+				var anim:Array<Int> = [for (i in 0...8)noteData + (i * 4)];
+				
+				tempSplash.animation.add('anim1', anim, 24, false);
+				tempSplash.animation.add('anim2', anim, 24, false);
 				tempSplash.animation.play('anim1');
 
 			default:

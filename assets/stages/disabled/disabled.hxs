@@ -1,3 +1,4 @@
+importClass("flixel.addons.text.FlxTypeText");
 var black:FlxSprite;
 var white:FlxSprite;
 
@@ -16,9 +17,13 @@ var staticOverlay:FlxSprite;
 
 var flippedCharactersNow:Bool = false;
 
-var questionareBackground:FlxSprite;
-var questionareWiggles:FNFSprite;
-var questionareWigglesClose:FlxSprite;
+var amusiaStage:Int = 0;
+var amusiaQuestioningPresent:Bool = false;
+var amusiaNoSelected:Bool = false;
+var questionareTextBox:FlxSprite;
+var questionareOptions:FlxSprite;
+var questionareArrow:FlxSprite;
+var questionareText:FlxTypeText;
 
 var hoverFactor:Float = 0;
 var hoverNotes:Bool = false;
@@ -138,6 +143,8 @@ function onCreate() {
     questionareWigglesClose.visible = false;
     questionareWigglesClose.y -= 15;
     questionareWigglesClose.x += 50;
+
+
     
     wigglesJumpscare = new FlxSprite().loadGraphic(Paths.image('jumpscare'));
     wigglesJumpscare.antialiasing = true;
@@ -176,10 +183,129 @@ function onCreatePost() {
     staticOverlay.alpha = 0.6;
     staticOverlay.blend = 9;
 
+    questionareTextBox = new FlxSprite(188, 530).loadGraphic(Paths.image('UI/base/amusia/questionareTextBox'));
+    questionareTextBox.antialiasing = false;
+    add(questionareTextBox);
+    questionareTextBox.cameras = [PlayState.dialogueHUD];
+    questionareTextBox.visible = false;
+
+    questionareOptions = new FlxSprite(926, 530).loadGraphic(Paths.image('UI/base/amusia/questionareAnswerBox'));
+    questionareOptions.antialiasing = false;
+    add(questionareOptions);
+    questionareOptions.cameras = [PlayState.dialogueHUD];
+    questionareOptions.visible = false;
+    questionareText = new FlxTypeText(227, 580, 630, 'Can you sing?', 24, true);
+    questionareText.setFormat(Paths.font("poketext.ttf"), 24, FlxColor.fromRGB(0, 0, 0, 255), "left");
+    questionareText.antialiasing = false;
+    add(questionareText);
+    questionareText.cameras = [PlayState.dialogueHUD];
+    questionareText.visible = false;
+    
+
+    questionareArrow = new FlxSprite(947, 599).loadGraphic(Paths.image('UI/pixel/selector'));
+    questionareArrow.setGraphicSize(Std.int(questionareArrow.width * 2));
+    questionareArrow.updateHitbox();
+    questionareArrow.antialiasing = false;
+    add(questionareArrow);
+    questionareArrow.cameras = [PlayState.dialogueHUD];
+    questionareArrow.visible = false;
+    trace(questionareArrow);
+
     PlayState.vignetteCam.alpha = 0;
 
     add(staticSprite);
     add(staticOverlay);
+    trace(staticSprite, staticOverlay);
+}
+
+function amusiaChangeSelection()
+{
+    amusiaNoSelected = !amusiaNoSelected;
+    FlxG.sound.play(Paths.sound('scrollMenu'), 0.6);
+
+    if (amusiaNoSelected)
+        {
+            questionareArrow.y = 567;
+        }
+    else
+        {
+            questionareArrow.y = 599;
+        }
+
+    trace(amusiaNoSelected);
+}
+
+var amusiaDialogue:Array<String> = [
+    "I just wanted to sing...",
+    "Why... why... why... can't I sing?",
+    "Just... Sing... Sing...",
+    "Why can't I sing? Why? Why?",
+    "Can you sing?",
+    "You're lying.",
+    "You... can sing.",
+    "Give me your sing.",
+    "Give me your sing.",
+    "Give me your sing.",
+];
+
+function amusiaProgress(forced:Bool=false){
+    if(forced)amusiaStage=amusiaDialogue.length-1;
+    if(amusiaStage > amusiaDialogue.length-1)amusiaStage = amusiaDialogue.length-1;
+    trace(amusiaDialogue[amusiaStage]);
+    questionareTextBox.visible = true;
+    questionareText.visible = true;
+    questionareText.resetText(amusiaDialogue[amusiaStage]);
+	questionareText.start(0.06, true);
+    trace(questionareText.text);
+    trace("wow");
+    amusiaStage++;
+    trace(amusiaStage);
+    switch(amusiaStage){
+        case 5:
+            amusiaQuestioningPresent = true;
+            questionareOptions.visible = true;
+            questionareArrow.visible = true;
+        case 6:
+            questionareWiggles.animation.play("give");
+        case 7:
+            questionareWiggles.animation.play("angry");
+        case 8:
+            questionareWiggles.visible = false;
+            questionareWigglesClose.visible = true;
+            questionareWigglesClose.animation.play('glitch');
+            questionareWigglesClose.animation.finishCallback = function(name:String) 
+            {
+                questionareWigglesClose.animation.play('loop');
+            }
+
+            new FlxTimer().start(0.23, function(tmr:FlxTimer)
+            {
+                questionareWigglesClose.y -= 135;
+            });
+        case 10:
+            questionareWiggles.visible = false;
+            questionareWigglesClose.visible = false;
+            questionareBackground.visible = false;
+            questionareTextBox.visible = false;
+            questionareOptions.visible = false;
+            questionareText.visible = false;
+            questionareArrow.visible = false;
+            amusiaQuestioningPresent = false;
+            PlayState.songMusic.stop();
+            PlayState.vocals.stop();
+
+            new FlxTimer().start(5.00, function(tmr:FlxTimer)
+            {
+                PlayState.instance.camera.shake(0.0075, 3.00);
+                wigglesJumpscare.visible = true;
+                FlxG.sound.play(Paths.sound('WigglyTuffJumpscare'));
+
+                new FlxTimer().start(3.00, function(tmr:FlxTimer)
+                {
+                    PlayState.instance.doMoneyBag();
+                });
+            });
+    }
 }
 
 function onUpdate(elapsed) {
@@ -217,6 +343,27 @@ function onUpdate(elapsed) {
             }
         }
         //
+    }
+
+    if (amusiaQuestioningPresent)
+    {
+        var controls = PlayState.instance.controls;
+        if (controls.ACCEPT)
+            {
+                if (!amusiaNoSelected)
+                {
+                    FlxG.sound.play(Paths.sound('confirmMenu'), 0.6);
+                    amusiaProgress(false);
+                }
+                else
+                {
+                    FlxG.sound.play(Paths.sound('errorMenu'), 0.6);
+                }
+            }
+        else if (controls.UI_UP_P || controls.UI_DOWN_P)
+        {
+            amusiaChangeSelection();
+        }
     }
 }
 
@@ -363,16 +510,24 @@ function onEvent(eventName) {
             }
         
         case 'Amusia Run Away':
-            // /*
+            // 
             FlxTween.tween(staticOverlay, {alpha: 1}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.linear});
             FlxTween.tween(staticSprite, {alpha: 1}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.linear});
 
             PlayState.instance.staticCamera = true;
             runningAway = true;
-            // */
+            // 
+        case 'Progress Dialouge':
+            amusiaProgress(false); 
+        case 'Progress Dialogue':
+            amusiaProgress(false);
+        case 'Force End Dialouge':
+            trace("force end");
+            amusiaProgress(true);
         
         case 'Amusia Music Box':
-            // /*
+            // 
+            PlayState.instance.canPause = false;
             PlayState.dadOpponent.visible = false;
             PlayState.boyfriend.visible = false;
 
@@ -395,8 +550,7 @@ function onEvent(eventName) {
             questionareBackground.visible = true;
             PlayState.instance.add(questionareWiggles);
             PlayState.instance.add(questionareWigglesClose);
-            // */
-        case 'Progress Dialogue':
+            // 
     }
 }
 

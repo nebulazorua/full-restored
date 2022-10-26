@@ -141,7 +141,8 @@ class PlayState extends MusicBeatState
 		'purin' => ['hyperrealistic?!', 'purin', "Hang out a bit with Nurse Joy", 'do NOT put your dick in those holes'],
 		'pasta-night' => ['guess you got counterpicked', 'maybe the kiddie table is for you'],
 		'shinto' => ['peak 10/10 expreiuenc', "It's a her you fucking idiot"],
-		'shitno' => ['why is it so cold', 'you got cold feet']
+		'shitno' => ['why is it so cold', 'you got cold feet'],
+		'missingcraft' => ["dig straight down :|", "how you this bad on a kids game song"]
 	];
 	public var botplaySine:Float = 0;
 	public static var campaignScore:Int = 0;
@@ -336,7 +337,7 @@ class PlayState extends MusicBeatState
 
 	//Brimstone Gengar Notes
 	var gengarNoteInvis:Float = 0.0;
-
+	var gengarNoteTimer:Float = 0;
 	public var updateableScript:Array<ForeverModule> = [];
 	public static var staticValues:Map<String, Dynamic> = [];
 	public var camPos:FlxPoint;
@@ -347,6 +348,33 @@ class PlayState extends MusicBeatState
 	// Shop Related Stuff
 	var moneyBag:FlxSprite;
 	
+	// for purin
+	public function purinActivate(){
+		// idk what would happen in real lulla so im just gonna make it take you to Purin immediately
+		// + unlock it in Freeplay
+
+		// THIS IS WHAT HAPPENS THEY JUST FUKCING REMOVED IT FOR NO REASON :Sob:
+
+		if(!FlxG.save.data.unlockedSongs.contains("purin"))FlxG.save.data.unlockedSongs.push("purin");
+		FlxG.save.flush();
+		var poop:String = Highscore.formatSong("purin".toLowerCase(), 2);
+
+		PlayState.SONG = Song.loadFromJson(poop, "purin".toLowerCase(), false);
+		PlayState.isStoryMode = false;
+		PlayState.storyDifficulty = 2;
+
+		PlayState.storyWeek = 1;
+		trace('CUR WEEK' + PlayState.storyWeek);
+
+		if (songMusic != null)
+			songMusic.stop();
+
+		if(vocals != null)
+			vocals.stop();
+
+		Main.switchState(this, new PlayState());
+	}
+
 	// at the beginning of the playstate
 	override public function create()
 	{
@@ -1658,6 +1686,11 @@ class PlayState extends MusicBeatState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		gengarNoteTimer += elapsed;
+		if(gengarNoteTimer > 3 && gengarNoteInvis>0){
+			gengarNoteInvis -= 0.001 * (elapsed/(1/60));
+			if(gengarNoteInvis<0)gengarNoteInvis=0;
+		}
 		
 		stageBuild.stageUpdateConstant(elapsed);
 
@@ -2658,12 +2691,14 @@ class PlayState extends MusicBeatState
 								daNote.tooLate = true;
 								for (note in daNote.childrenNotes)
 									note.tooLate = true;
-								
+								if(daNote.noteType!=1){
 								canSpeak = false;
+								
 								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData,
 									strumLines.members[playerLane].singingCharacters, true);
 								// ambiguous name
 								Timings.updateAccuracy(0);
+								}
 							}
 							else if (daNote.isSustainNote)
 							{
@@ -2851,15 +2886,19 @@ class PlayState extends MusicBeatState
 			}
 
 			if (coolNote.noteType == 1 && characterStrums == boyfriendStrums)
-				{
-					trace('gengar note hit');
-					FlxG.sound.play(Paths.sound('GengarNoteSFX'));
-					if (flashingEnabled) dialogueHUD.flash(0x528E16FF, 0.5);
-					gengarNoteInvis += 0.70;
-					if (gengarNoteInvis > 0.70) gengarNoteInvis = 0.70;				
-					destroyNote(characterStrums, coolNote);
-					return;
-				}
+			{
+				trace('gengar note hit');
+				FlxG.sound.play(Paths.sound('GengarNoteSFX'));
+				if (flashingEnabled) dialogueHUD.flash(0x528E16FF, 0.5);
+				gengarNoteInvis += 0.15;
+				if (gengarNoteInvis > 0.7) gengarNoteInvis = 0.7;		
+				gengarNoteTimer=0;	
+				health -= 0.1;
+				songScore -= 100;
+				missNoteCheck(false, coolNote.noteData, character, false, false);
+				destroyNote(characterStrums, coolNote);
+				return;
+			}
 
 			// special thanks to sam, they gave me the original system which kinda inspired my idea for this new one
 			if (canDisplayJudgement) {
@@ -2898,11 +2937,16 @@ class PlayState extends MusicBeatState
 			if (characterStrums.displayJudgements) {
 				if (!coolNote.isSustainNote)
 				{
-					if (coolNote.childrenNotes.length > 0) 
-						Timings.notesHit++;
+					if (coolNote.childrenNotes.length > 0) {
+						Timings.notesHit+=0.5;
+						Timings.updateAccuracy(50, true, 1);
+					}
 				}
 				else {
-					Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
+					if(coolNote.animation.curAnim.name.contains('end')){
+						Timings.notesHit += 0.5;
+						Timings.updateAccuracy(50, true, 1);
+					}
 					if (coolNote.noteType == 2 && coolNote.animation.curAnim.name.contains('end')) {
 						for (i in character)
 							i.isPressing = false;
@@ -2952,7 +2996,7 @@ class PlayState extends MusicBeatState
 		if (bronzongMechanic && direction == 4)
 			{
 				trace('BELL NOTE MISSED');
-				health -= 0.3;
+				health -= 0.5;
 				blurAmount = 1.0;
 			}
 
@@ -3189,7 +3233,10 @@ class PlayState extends MusicBeatState
 			// numScore.loadGraphic(Paths.image('UI/' + pixelModifier + 'num' + stringArray[scoreInt]));
 			var numScore = ForeverAssets.generateCombo('combo', stringArray[scoreInt], (!negative ? allSicks : false), assetModifier, changeableSkin, 'UI',
 				negative, createdColor, scoreInt);
-			numScore.setPosition(numScore.x + ratingPosition.x, numScore.y + ratingPosition.y);
+
+			if (!Init.trueSettings.get('Simply Judgements'))
+				numScore.setPosition(numScore.x + ratingPosition.x, numScore.y + ratingPosition.y);
+
 			add(numScore);
 			// hardcoded lmao
 			if (!Init.trueSettings.get('Simply Judgements'))
@@ -3272,7 +3319,9 @@ class PlayState extends MusicBeatState
 			because miss judgements can pop, and they dont mess with your sick combo
 		 */
 		var rating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), timing, assetModifier, changeableSkin, 'UI');
-		rating.setPosition(rating.x + ratingPosition.x, rating.y + ratingPosition.y);
+		if (!Init.trueSettings.get('Simply Judgements'))
+			rating.setPosition(rating.x + ratingPosition.x, rating.y + ratingPosition.y);
+		
 		add(rating);
 
 		if (!Init.trueSettings.get('Simply Judgements'))
@@ -3743,9 +3792,15 @@ class PlayState extends MusicBeatState
 				case 0:
 					// unlock freeplay lol
 					UnlockSubstate.queueNewUnlock('freeplay');
+					if (SONG.song.toLowerCase() == 'lost-cause' && !FlxG.save.data.cartridgesOwned.contains("LostSilverWeek"))
+						Main.switchState(this, new CartridgeGuyState());
+					else
+						Main.switchState(this, new StoryMenuState());
+				default:
+					Main.switchState(this, new StoryMenuState());
 			}
 
-			Main.switchState(this, new StoryMenuState());
+			
 		}
 		else 
 		{

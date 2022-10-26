@@ -96,10 +96,10 @@ class HealthIcon extends FlxSprite
 
 					animatedIcon = true;
 				case 'gffisk':
-					var iconGraphic:FlxGraphic = Paths.image('icons/icon-' + iconPath, 'shitpost');
+					var iconGraphic:FlxGraphic = Paths.image('icons/icon-gffisk');
 					loadGraphic(iconGraphic, true, Std.int(iconGraphic.width / 2), iconGraphic.height);
-
-					animation.add(char, [0, 1], 0, false, isPlayer);
+	
+					animation.add(char, [0], 0, false, false);
 					animation.play(char);
 					updateHitbox();
 

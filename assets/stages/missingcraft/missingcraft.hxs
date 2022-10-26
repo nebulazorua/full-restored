@@ -1,0 +1,40 @@
+var groundNoShadow:FlxSprite;
+var startGlitching:Bool = false;
+var endGlitching:Bool = false;
+
+var backgroundShader:FlxGraphicsShader;
+var missingnoShader:FlxGraphicsShader;
+var boyfrebShader:FlxGraphicsShader;
+
+var background:FlxSprite;
+var ground:FlxSprite;
+var glitchAmount:Float = 0;
+
+var randomShitTimer:FlxTimer;
+
+function onCreate() {
+    PlayState.defaultCamZoom = 0.9;
+	PlayState.assetModifier = 'pixel';
+	PlayState.cameraCentered = true;
+	PlayState.instance.camZooming = false;
+	
+	var bg:FNFSprite = new FNFSprite(0, 0).loadGraphic(Paths.image('unknown'));
+	bg.setGraphicSize(Std.int(bg.width * 1.5));
+	bg.updateHitbox();
+	bg.antialiasing = false;
+	bg.x -= bg.width / 4;
+	//bg.y -= bg.height / 3;
+	bg.antialiasing = true;
+	bg.scrollFactor.set(1, 1);
+	bg.active = false;
+	add(bg);
+
+	var gf:Character = new Character().setCharacter(0, 0, 'minecrftgf');
+	gf.screenCenter();
+	add(gf);
+}
+
+function onCreatePost() {
+	PlayState.dadOpponent.visible = false;
+	//PlayState.boyfriend.x += 400;
+}

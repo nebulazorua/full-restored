@@ -47,6 +47,7 @@ typedef ShopItem =
 	var price:Float;
 	var animName:String;
 	var songUnlock:String;
+	@:optional var songsUnlock:Array<String>;
 	var songDescription:String;
 	var unlockRequirements:Array<String>;
 	var xOffset:Int;
@@ -312,41 +313,42 @@ class ShopState extends MusicBeatState
 			{
 				var rawJson = File.getContent(Paths.getPath('images/shop/${i}/${i}.json', TEXT));
 				var swagShit:ShopItem = cast Json.parse(rawJson).itemDetail;
-				itemArray.push(swagShit);
+				var id = swagShit.lane + (swagShit.row * 3);
+				itemArray[id] = swagShit;
 
 				trace('images/shop/${i}/item');
 
 				// le sprite
 				var shopItem:FlxSprite = new FlxSprite(647, 116);
 				shopItem.frames = Paths.getSparrowAtlas('shop/${i}/item');
-				shopItem.animation.addByPrefix('idle', itemArray[itemsCreated].animName, 24, true);
+				shopItem.animation.addByPrefix('idle', itemArray[id].animName, 24, true);
 				shopItem.animation.play('idle');
-				shopItem.x = 682 + (itemArray[itemsCreated].lane * 190);
-				shopItem.y = 135 + (itemArray[itemsCreated].row * 145);
-				shopItem.x += itemArray[itemsCreated].xOffset;
-				shopItem.y += itemArray[itemsCreated].yOffset;
+				shopItem.x = 682 + (itemArray[id].lane * 190);
+				shopItem.y = 135 + (itemArray[id].row * 145);
+				shopItem.x += itemArray[id].xOffset;
+				shopItem.y += itemArray[id].yOffset;
 				shopItem.antialiasing = true;
-				shopItem.ID = itemArray[itemsCreated].lane + (itemArray[itemsCreated].row * 3);
-				shopItem.setGraphicSize(Std.int(shopItem.width * itemArray[itemsCreated].scale));
+				shopItem.ID = id;//itemArray[id].lane + (itemArray[id].row * 3);
+				shopItem.setGraphicSize(Std.int(shopItem.width * itemArray[id].scale));
 				shopItem.antialiasing = true;
 				shopItem.alpha = 0.0001;
 				itemSprites.add(shopItem);
 
-				if (FlxG.save.data.itemsPurchased.contains(itemArray[itemsCreated].name))
+				if (FlxG.save.data.itemsPurchased.contains(itemArray[id].name))
 					shopItem.color = FlxColor.GRAY;
 
 				// shop
 				var shopItemPriceText:FlxText = new FlxText(650, 116, 100);
 				shopItemPriceText.setFormat(Paths.font("poke.ttf"), 32, FlxColor.WHITE, "center");
-				shopItemPriceText.text = '' + itemArray[itemsCreated].price;
-				shopItemPriceText.x = 695 + (itemArray[itemsCreated].lane * 182);
-				shopItemPriceText.y = 238 + (itemArray[itemsCreated].row * 140);
-				shopItemPriceText.ID = itemArray[itemsCreated].lane + (itemArray[itemsCreated].row * 3);
+				shopItemPriceText.text = '' + itemArray[id].price;
+				shopItemPriceText.x = 695 + (itemArray[id].lane * 182);
+				shopItemPriceText.y = 238 + (itemArray[id].row * 140);
+				shopItemPriceText.ID = shopItem.ID; // itemArray[id].lane + (itemArray[id].row * 3);
 				shopItemPriceText.alpha = 0.0001;
 
 				itemPrices.add(shopItemPriceText);
 
-				if (FlxG.save.data.itemsPurchased.contains(itemArray[itemsCreated].name))
+				if (FlxG.save.data.itemsPurchased.contains(itemArray[id].name))
 				{
 					shopItemPriceText.color = FlxColor.GRAY;
 					shopItemPriceText.text = 'OWNED';
@@ -442,7 +444,7 @@ class ShopState extends MusicBeatState
 			if (!existingSongs.contains(i.toLowerCase()))
 				addToFreeplayList(i);
 		}
-		// addToFreeplayList('missingcraft', 'shitpost');
+
 
 		grpSongs = new FlxTypedSpriteGroup<Alphabet>();
 		grpLocked = new FlxTypedSpriteGroup<LockSprite>();
@@ -715,10 +717,16 @@ class ShopState extends MusicBeatState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
 		if (Main.hypnoDebug && FlxG.keys.justPressed.SEVEN) // DEBUG GIVES MONEY
 		{
 			FlxG.save.data.money = 9999;
+			FlxG.save.flush();
+		}
+
+		if (Main.hypnoDebug && FlxG.keys.justPressed.EIGHT) // DEBUG REMOVES MONEY
+		{
+			FlxG.save.data.money = 0;
+			FlxG.save.flush();
 		}
 
 		var fakeElapsed:Float = CoolUtil.clamp(elapsed, 0, 1);
@@ -1131,7 +1139,7 @@ class ShopState extends MusicBeatState
 
 		if (inShop)
 		{
-			shopHand.x = 425 + ((curItemSelected % 3) * 200);
+			shopHand.x = 425 + (itemArray[curItemSelected].lane* 200);
 			shopHand.y = 100 + (itemArray[curItemSelected].row * 128);
 		}
 
@@ -1162,7 +1170,7 @@ class ShopState extends MusicBeatState
 
 			return;
 		}
-		if (!FlxG.save.data.itemsPurchased.contains(itemArray[curItemSelected].name)
+		if ((!FlxG.save.data.itemsPurchased.contains(itemArray[curItemSelected].name))
 			&& FlxG.save.data.money >= itemArray[curItemSelected].price)
 		{
 			FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -1172,6 +1180,7 @@ class ShopState extends MusicBeatState
 				FlxG.save.data.itemsPurchased.push(itemArray[curItemSelected].name);
 			currencyText.text = FlxG.save.data.money;
 
+			
 			itemSprites.forEach(function(spr:FlxSprite)
 			{
 				if (spr.ID == (curItemSelected))
@@ -1192,7 +1201,10 @@ class ShopState extends MusicBeatState
 			switch (itemArray[curItemSelected].name)
 			{
 				default:
-					unlockSongCutscene(itemArray[curItemSelected].songUnlock);
+					if (itemArray[curItemSelected].songsUnlock!=null)
+						unlockSongCutscene(itemArray[curItemSelected].songsUnlock);
+					else
+						unlockSongCutscene([itemArray[curItemSelected].songUnlock]);
 				case 'Pokemon Silver':
 					{
 						if (!FlxG.save.data.cartridgesOwned.contains('LostSilverWeek'))
@@ -1281,34 +1293,117 @@ class ShopState extends MusicBeatState
 		Main.switchState(this, new PlayState());
 	}
 
-	function unlockSongCutscene(?songUnlock:String = '') {
+	function unlockSongCutscene(songsUnlock:Array<String>)
+	{
 		inShop = false;
 		switchSubmenus();
 		inCutscene = true;
 		canControl = false;
 
-		new FlxTimer().start(0.25, function(tmr:FlxTimer){
+		var daTimer = new FlxTimer();
+		var idx:Int = 0;
+		
+		daTimer.start(0.25, function(tmr:FlxTimer){
+			var songUnlock:String = songsUnlock[idx];
+			var mySong:String = CoolUtil.spaceToDash(songUnlock.toLowerCase());
+			if (!FlxG.save.data.unlockedSongs.contains(mySong))
+				FlxG.save.data.unlockedSongs.push(mySong);
+			FlxG.save.flush();
+			freeplaySelected = true;
+
+			new FlxTimer().start(0.5, function(tmr:FlxTimer)
+			{
+				var selectionTo:Int = 0;
+				for (i in 0...songs.length)
+				{
+					if (mySong.contains(CoolUtil.spaceToDash(songs[i].songName.toLowerCase())))
+						selectionTo = i;
+				}
+
+				var curSelection = verticalSelection;
+				var selectionTimer:FlxTimer = new FlxTimer();
+				selectionTimer.start(0.1, function(tmr:FlxTimer)
+				{
+					if (verticalSelection > selectionTo)
+						curSelection--;
+					else if (verticalSelection < selectionTo)
+						curSelection++;
+					else
+					{
+						new FlxTimer().start(1, function(tmr:FlxTimer)
+						{
+							var selectedLock:LockSprite = null;
+							for (j in grpLocked)
+							{
+								if (j.lockIdentifier == verticalSelection)
+								{
+									selectedLock = j;
+									break;
+								}
+							}
+							if (selectedLock != null)
+							{
+								selectedLock.unlock();
+								// I like the sound
+								FlxG.sound.play(Paths.sound('errorMenu'));
+							}
+
+							
+							new FlxTimer().start((idx == songsUnlock.length - 1)?1:0.2, function(tmr:FlxTimer)
+							{
+								if(idx==songsUnlock.length-1){
+									inCutscene = false;
+									canControl = true;
+								}else{
+									idx++;
+									daTimer.reset(0.1);
+								}
+							});
+							
+						});
+						selectionTimer.active = false;
+						return;
+					}
+					updateVerticalSelection(curSelection, grpSongs.members.length - 1);
+				}, Std.int(Math.abs(verticalSelection - selectionTo)) + 1);
+			});
+		});
+	}
+
+	/*function unlockSongCutscene(?songUnlock:String = '')
+	{
+		inShop = false;
+		switchSubmenus();
+		inCutscene = true;
+		canControl = false;
+
+		new FlxTimer().start(0.25, function(tmr:FlxTimer)
+		{
 			var mySong:String = CoolUtil.spaceToDash(songUnlock.toLowerCase());
 			if (!FlxG.save.data.unlockedSongs.contains(mySong))
 				FlxG.save.data.unlockedSongs.push(mySong);
 			FlxG.save.flush();
 
 			freeplaySelected = true;
-			new FlxTimer().start(0.5, function(tmr:FlxTimer){
+			new FlxTimer().start(0.5, function(tmr:FlxTimer)
+			{
 				var selectionTo:Int = 0;
-				for (i in 0...songs.length) {
-					if (mySong.contains(CoolUtil.spaceToDash(songs[i].songName.toLowerCase()))) 
+				for (i in 0...songs.length)
+				{
+					if (mySong.contains(CoolUtil.spaceToDash(songs[i].songName.toLowerCase())))
 						selectionTo = i;
 				}
 
 				var curSelection = verticalSelection;
 				var selectionTimer:FlxTimer = new FlxTimer();
-				selectionTimer.start(0.1, function(tmr:FlxTimer){
+				selectionTimer.start(0.1, function(tmr:FlxTimer)
+				{
 					if (verticalSelection > selectionTo)
 						curSelection--;
 					else if (verticalSelection < selectionTo)
 						curSelection++;
-					else {
+					else
+					{
 						new FlxTimer().start(1, function(tmr:FlxTimer)
 						{
 							var selectedLock:LockSprite = null;
@@ -1338,10 +1433,9 @@ class ShopState extends MusicBeatState
 					}
 					updateVerticalSelection(curSelection, grpSongs.members.length - 1);
 				}, Std.int(Math.abs(verticalSelection - selectionTo)) + 1);
-				
 			});
 		});
-	}
+	}*/
 
 	function switchShopSel(amount:Int, ?subMenu:Bool = false)
 	{
@@ -1415,6 +1509,7 @@ class ShopState extends MusicBeatState
 		{
 			itemSprites.forEach(function(spr:FlxSprite)
 			{
+				trace(curItemSelected, spr.ID);
 				spr.alpha = 0.5;
 				if (spr.ID == (curItemSelected))
 				{

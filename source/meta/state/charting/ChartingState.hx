@@ -462,6 +462,7 @@ class ChartingState extends MusicBeatState
 	{
 		var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % PlayState.numberOfKeys, 0, daNoteAlt, false, null);
 		// I love how there's 3 different engines that use this exact same variable name lmao
+		// yoo im one of them!! -neb
 		note.rawNoteData = daNoteInfo;
 		note.sustainLength = daSus;
 		note.setGraphicSize(gridSize, gridSize);

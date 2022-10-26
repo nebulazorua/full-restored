@@ -132,7 +132,7 @@ function onCreatePost() {
 function onUpdate(elapsed) {
     if (FlxG.mouse.overlaps(purinHitbox))
 		{
-			if (FlxG.mouse.pressed && FlxG.save.data.itemsPurchased.contains('Lit Candle'))
+			if (FlxG.mouse.justPressed && FlxG.save.data.itemsPurchased.contains('Lit Candle'))
 				{
 					PlayState.instance.purinActivate();
 				}

@@ -1766,7 +1766,7 @@ class Character extends FNFSprite
 				characterData.facingDirection = LEFT;
 
 			case 'gffisk':
-				frames = Paths.getSparrowAtlas('characters/gffisk_assets', 'shitpost');
+				frames = Paths.getSparrowAtlas('characters/gffisk_assets');
 				animation.addByPrefix('idle', 'gffisk idle', 24);
 				animation.addByPrefix('singUP', 'gffisk up', 24);
 				animation.addByPrefix('singRIGHT', 'gffisk right', 24);
@@ -1786,7 +1786,7 @@ class Character extends FNFSprite
 				characterData.camOffsetX = 180;
 				characterData.camOffsetY = -120;
 			case 'hypno-sdan':
-				frames = Paths.getSparrowAtlas('characters/hypno_sdan_assets', 'shitpost');
+				frames = Paths.getSparrowAtlas('characters/hypno_sdan_assets');
 				animation.addByPrefix('danceLeft', 'hypno sdan dance left', 24);
 				animation.addByPrefix('danceRight', 'hypno sdan dance right', 24);
 				animation.addByPrefix('singUP', 'hypno sdan up', 24);
@@ -1806,7 +1806,7 @@ class Character extends FNFSprite
 				characterData.camOffsetX = -360;
 				characterData.camOffsetY = -120;
 			case 'minecrftno':
-				frames = Paths.getSparrowAtlas('characters/minecrftno', 'shitpost');
+				frames = Paths.getSparrowAtlas('characters/minecrftno');
 				animation.addByIndices('danceLeft', 'missingo_idle', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 				animation.addByIndices('danceRight', 'missingo_idle', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28], "", 24, false);
 				animation.addByPrefix('intro', 'missingo_intro', 24, false);
@@ -1824,7 +1824,7 @@ class Character extends FNFSprite
 				
 				antialiasing = true;
 			case 'minecrftbf':
-				frames = Paths.getSparrowAtlas('characters/bf_but_in_minecrftno', 'shitpost');
+				frames = Paths.getSparrowAtlas('characters/bf_but_in_minecrftno');
 				animation.addByPrefix('idle', 'lolbf_idle', 24, false);
 				animation.addByPrefix('singUP', 'lolbf_up', 24, false);
 				animation.addByPrefix('singLEFT', 'lolbf_left', 24, false);
@@ -1837,7 +1837,7 @@ class Character extends FNFSprite
 				// updateHitbox();
 				antialiasing = true;
 			case 'minecrftgf':
-				frames = Paths.getSparrowAtlas('characters/gf_but_in_minecrftno', 'shitpost');
+				frames = Paths.getSparrowAtlas('characters/gf_but_in_minecrftno');
 				animation.addByPrefix('idle', 'lolgf', 24, true);
 				playAnim('idle');
 				

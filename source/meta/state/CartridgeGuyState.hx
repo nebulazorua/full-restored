@@ -110,16 +110,20 @@ class CartridgeGuyState extends MusicBeatState
 								noText.visible = false;
 								yesText.visible = false;
 								canSelect = false;
-								FlxG.sound.play(Paths.sound('cartridgeYes'), 0.4);
-								FlxTween.tween(blackOverlay, {alpha: 1.0}, 4.0, {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween) {Main.switchState(this, new StoryMenuState());}});
+								cartridgeGuy.animation.play('idle');
+								dialougeText.prefix = '';
+								dialougeText.size = 48;
+								dialougeText.resetText("If your curiousity calls for more, you can meet me elsewhere.");
+								dialougeText.start(0.055, true);
+								new FlxTimer().start(3.0, function(tmr:FlxTimer)
+								{
+									FlxG.sound.play(Paths.sound('cartridgeYes'), 0.4);
+									FlxTween.tween(blackOverlay, {alpha: 1.0}, 4.0, {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween) {Main.switchState(this, new StoryMenuState());}});
 
-								if (!FlxG.save.data.cartridgesOwned.contains('LostSilverWeek')) FlxG.save.data.cartridgesOwned.push('LostSilverWeek');
-								if (!FlxG.save.data.itemsPurchased.contains('Pokemon Silver')) FlxG.save.data.itemsPurchased.push('Pokemon Silver');
+									if (!FlxG.save.data.cartridgesOwned.contains('LostSilverWeek')) FlxG.save.data.cartridgesOwned.push('LostSilverWeek');
+									if (!FlxG.save.data.itemsPurchased.contains('Pokemon Silver')) FlxG.save.data.itemsPurchased.push('Pokemon Silver');
 
-								if (!FlxG.save.data.mainMenuOptionsUnlocked.contains('freeplay')) FlxG.save.data.mainMenuOptionsUnlocked.push('freeplay');
-								if (!FlxG.save.data.mainMenuOptionsUnlocked.contains('pokedex')) FlxG.save.data.mainMenuOptionsUnlocked.push('pokedex');
-								if (!FlxG.save.data.mainMenuOptionsUnlocked.contains('gallery')) FlxG.save.data.mainMenuOptionsUnlocked.push('gallery');
-
+								});
 								FlxG.save.flush();
 							}
 						if (curSelect == 1)
@@ -131,15 +135,15 @@ class CartridgeGuyState extends MusicBeatState
 								cartridgeGuy.animation.play('idle');
 								dialougeText.prefix = '';
 								dialougeText.size = 48;
-								dialougeText.resetText('If your curiosity calls for more of these, meet me elsewhere.');
+								dialougeText.resetText("If you'd like to change your mind, you can meet me elsewhere.");
 								dialougeText.start(0.055, true);
 
 								new FlxTimer().start(5.0, function(tmr:FlxTimer)
-									{
-										FlxG.sound.play(Paths.sound('cartridgeNo'), 0.4);
-										FlxTween.tween(cartridgeGuy, {'scale.x': 0.5, 'scale.y': 0.5, alpha: 0.0001, y: cartridgeGuy.y - 30}, 3.0, {ease: FlxEase.quadOut});
-										FlxTween.tween(blackOverlay, {alpha: 1.0}, 4.0, {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween) {Main.switchState(this, new StoryMenuState());}});
-									});
+								{
+									FlxG.sound.play(Paths.sound('cartridgeNo'), 0.4);
+									FlxTween.tween(cartridgeGuy, {'scale.x': 0.5, 'scale.y': 0.5, alpha: 0.0001, y: cartridgeGuy.y - 30}, 3.0, {ease: FlxEase.quadOut});
+									FlxTween.tween(blackOverlay, {alpha: 1.0}, 4.0, {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween) {Main.switchState(this, new meta.state.menus.MainMenuState());}});
+								});
 
 								FlxG.save.flush();
 							}

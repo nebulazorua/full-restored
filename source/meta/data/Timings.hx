@@ -38,7 +38,7 @@ class Timings
 	];
 
 	public static var ratingFinal:String = "f";
-	public static var notesHit:Int = 0;
+	public static var notesHit:Float = 0;
 	public static var segmentsHit:Int = 0;
 	public static var comboDisplay:String = '';
 

@@ -88,6 +88,52 @@ class ScriptHandler
 		exp.set("HealthIcon", HealthIcon);
         exp.set("PlayState", PlayState);
 		exp.set("CelebiNote", CelebiNote);
+
+		// Functions (Custom)
+		exp.set("getClass", function(className:String)
+		{
+			return Type.resolveClass(className);
+		});
+		exp.set("importClass", function(className:String)
+		{
+			// importClass("flixel.util.FlxSort") should give you FlxSort.byValues, etc
+			// i would LIKE to do like.. flixel.util.* but idk if I can get everything in a namespace
+			var classSplit:Array<String> = className.split(".");
+			var daClassName = classSplit[classSplit.length - 1]; // last one
+			if (daClassName == '*')
+			{
+				var daClass = Type.resolveClass(className);
+				while (classSplit.length > 0 && daClass == null)
+				{
+					daClassName = classSplit.pop();
+					daClass = Type.resolveClass(classSplit.join("."));
+					if (daClass != null)
+						break;
+				}
+				if (daClass != null)
+				{
+					for (field in Reflect.fields(daClass))
+					{
+						exp.set(field, Reflect.field(daClass, field));
+					}
+				}
+				else
+				{
+					FlxG.log.error('Could not import class ${daClass}');
+					trace('Could not import class ${daClass}');
+				}
+			}
+			else
+			{
+				var daClass = Type.resolveClass(className);
+				if(daClass==null){
+					FlxG.log.error('Could not import class ${daClass}');
+					trace('Could not import class ${daClass}');
+					return;
+				}
+				exp.set(daClassName, daClass);
+			}
+		});
         
         //
 		parser.allowTypes = true;

@@ -173,14 +173,14 @@ function onUpdate(elapsed) {
 	}
 
     PlayState.strumLines.members[PlayState.playerLane].allNotes.forEachAlive(function(daNote:Note)
-        {
-            daNote.alpha = 1.0 - PlayState.instance.gengarNoteInvis;
-        });
-
-    if (PlayState.instance.gengarNoteInvis > 0.0001) 
     {
-        PlayState.instance.gengarNoteInvis -= 0.00020 * ((elapsed) * 120);
-    }
+        var alpha = 1.0;
+        if (daNote.tooLate || (daNote.parentNote != null && daNote.parentNote.tooLate))alpha = 0.3;
+        
+        daNote.alpha = alpha - (alpha * PlayState.instance.gengarNoteInvis);
+    });
+
+
 
     if (gameboyFilter != null)
         {

@@ -179,6 +179,16 @@ function onCreate() {
 
 	add(jeff);
 
+	var gold:FNFSprite = new FNFSprite(8000, 205); //lazy since im not motivated to really work on this project anymore
+	gold.frames = Paths.getSparrowAtlas('GOLD_PASTA_NIGHT');
+	gold.animation.addByPrefix('idle', 'GOLD PASTA NIGHT instance 1', 24, true);
+	gold.playAnim('idle');
+	gold.velocity.x = -100;
+	gold.antialiasing = true;
+	gold.setGraphicSize(Std.int(gold.width * 1.2));
+	gold.scrollFactor.set(0.9, 0.9);
+	
+
 	var tableboppers:FNFSprite = new FNFSprite(consistentPosition[0] + 900 * consistentSize, consistentPosition[1] + 750 * consistentSize);
 	tableboppers.frames = Paths.getSparrowAtlas('Mousetable');
 	tableboppers.animation.addByPrefix('bop', 'Mousetable', 24, false);
@@ -199,6 +209,7 @@ function onCreate() {
 
 	add(tableboppers);
 	add(jeffArm);
+	add(gold);
 
 	pastaBoppers.push(tableboppers);			
 	pastaBoppers.push(jack);		
@@ -211,6 +222,27 @@ function onCreate() {
 	pastaBoppers.push(slenderBitch);
 	pastaBoppers.push(peach);
 	pastaBoppers.push(shitno);
+
+	var gb:FNFSprite = new FNFSprite(-6000, 350); //lazy since im not motivated to really work on this project anymore
+	gb.frames = Paths.getSparrowAtlas('GB_PastaNight_Assets');
+	gb.animation.addByPrefix('idle', 'GBWalkPioladepana', 24, true);
+	gb.playAnim('idle');
+	gb.velocity.x = 150;
+	gb.flipX = true;
+	gb.antialiasing = true;
+	gb.setGraphicSize(Std.int(gb.width * 1.65));
+	gb.scrollFactor.set(0.9, 0.9);
+	add(gb);
+	
+	var gb2:FNFSprite = new FNFSprite(19000, 350); //lazy since im not motivated to really work on this project anymore
+	gb2.frames = Paths.getSparrowAtlas('GB_PastaNight_Assets');
+	gb2.animation.addByPrefix('idle', 'GBWalkPioladepana', 24, true);
+	gb2.playAnim('idle');
+	gb2.velocity.x = -150;
+	gb2.antialiasing = true;
+	gb2.setGraphicSize(Std.int(gb.width * 1.65));
+	gb2.scrollFactor.set(0.9, 0.9);
+	add(gb2);
 	
 	var chair:FNFSprite = new FNFSprite(tableboppers.x - 535, tableboppers.y + 65).loadGraphic(Paths.image('CHAIRS'));
 	chair.antialiasing = true;
@@ -244,4 +276,5 @@ function onUpdate(elapsed) {
 	
 	var swagRect = FlxRect.weak(0, 0, saled.width, saled.height - 16);
 	saled.clipRect = swagRect;
+	
 }

@@ -1,5 +1,4 @@
 {
-	"sliderVelocities": [],
 	"song": {
 		"player1": "minecrftbf",
 		"notes": [
@@ -84,7 +83,15 @@
 				"mustHitSection": false
 			},
 			{
-				"sectionNotes": [],
+				"sectionNotes": [
+					[
+						21333.3333333333,
+						-1,
+						"Missingno Intro",
+						"",
+						""
+					]
+				],
 				"lengthInSteps": 16,
 				"mustHitSection": true
 			},
@@ -1213,6 +1220,41 @@
 						1,
 						2.27373675443232e-12,
 						0
+					],
+					[
+						64500,
+						-1,
+						"Missingno",
+						"",
+						""
+					],
+					[
+						64666.6666666667,
+						-1,
+						"Missingno",
+						"",
+						""
+					],
+					[
+						64833.3333333334,
+						-1,
+						"Missingno",
+						"",
+						""
+					],
+					[
+						65000,
+						-1,
+						"Missingno",
+						"",
+						""
+					],
+					[
+						65166.6666666667,
+						-1,
+						"Missingno",
+						"",
+						""
 					]
 				],
 				"lengthInSteps": 16,
@@ -1936,11 +1978,61 @@
 			},
 			{
 				"lengthInSteps": 16,
+				"typeOfSection": 0,
+				"sectionNotes": [],
+				"altAnim": false,
+				"bpm": 175,
+				"changeBPM": false,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"typeOfSection": 0,
+				"lengthInSteps": 16,
+				"sectionCamera": 1,
+				"altAnim": false,
+				"mustHitSection": true,
+				"changeBPM": false,
+				"bpm": 180
+			},
+			{
+				"sectionNotes": [],
+				"typeOfSection": 0,
+				"lengthInSteps": 16,
+				"sectionCamera": 1,
+				"altAnim": false,
+				"mustHitSection": true,
+				"changeBPM": false,
+				"bpm": 180
+			},
+			{
+				"sectionNotes": [],
+				"typeOfSection": 0,
+				"lengthInSteps": 16,
+				"sectionCamera": 1,
+				"altAnim": false,
+				"mustHitSection": true,
+				"changeBPM": false,
+				"bpm": 180
+			},
+			{
+				"lengthInSteps": 16,
 				"altAnim": false,
 				"typeOfSection": 0,
 				"sectionNotes": [],
-				"bpm": 175,
+				"bpm": 180,
 				"changeBPM": false,
+				"sectionCamera": 1,
+				"mustHitSection": true
+			},
+			{
+				"lengthInSteps": 16,
+				"altAnim": false,
+				"typeOfSection": 0,
+				"sectionNotes": [],
+				"bpm": 180,
+				"changeBPM": false,
+				"sectionCamera": 1,
 				"mustHitSection": true
 			}
 		],
@@ -1948,9 +2040,9 @@
 		"initialSpeed": 0.9,
 		"sliderVelocities": null,
 		"song": "MissingCraft",
-		"stage": "stage",
 		"validScore": true,
 		"needsVoices": true,
+		"stage": "missingcraft",
 		"bpm": 180,
 		"speed": 3.2
 	}

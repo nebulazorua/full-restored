@@ -19,6 +19,7 @@ using StringTools;
 class Note extends FNFSprite
 {
 	public var strumTime:Float = 0;
+	public var hitbox:Float = Timings.msThreshold;
 
 	public var noteData:Int = 0;
 	public var noteAlt:Float = 0;
@@ -78,6 +79,11 @@ class Note extends FNFSprite
 		this.noteData = noteData;
 		this.noteAlt = noteAlt;
 		this.noteType = noteType;
+		switch(noteType){
+			case 1:
+				hitbox *= 0.5;
+			default:
+		}
 
 		if (PlayState.defaultDownscroll)
 			downscrollNote = true;
@@ -98,8 +104,8 @@ class Note extends FNFSprite
 
 		if (lane == PlayState.playerLane)
 		{
-			if (strumTime > Conductor.songPosition - (Timings.msThreshold) 
-				&& strumTime < Conductor.songPosition + (Timings.msThreshold))
+			if (strumTime > Conductor.songPosition - (hitbox) 
+				&& strumTime < Conductor.songPosition + (hitbox))
 				canBeHit = true;
 			else
 				canBeHit = false;

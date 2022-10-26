@@ -2,6 +2,7 @@ var nursejoy;
 var nurseangle:Float;
 var darkoverlay:Character;
 var jigf:Character;
+var hpTween:FlxTween;
 function onCreate() {
     PlayState.defaultCamZoom = 0.75;
 	var consistentPosition:Array<Float> = [-735, -500];
@@ -76,21 +77,56 @@ function onCreatePost() {
 
 function onUpdate(elapsed) {
 	nursejoy.angle = nurseangle + Math.sin((180 / Math.PI) * ((Conductor.songPosition / 1000) / 36)) * 3;
+	PlayState.uiHUD.healthBar.alpha = PlayState.uiHUD.healthBarBG.alpha;
+	for (i in PlayState.uiHUD.iconGroup) {
+		i.alpha = PlayState.uiHUD.healthBarBG.alpha;
+	}	
+	
+	
 }
 
 function onEvent(eventName) {
     switch (eventName) {
         default:
             trace('an event was called in death toll. woohoo');
+		case 'purinunturn':
+			if(hpTween!=null){
+				hpTween.cancel();
+				hpTween = null;
+			}
+			hpTween = FlxTween.tween(PlayState.uiHUD.healthBarBG, {alpha: 1}, .5);
+			PlayState.dadOpponent.visible = true;		
+			PlayState.defaultCamZoom -= 0.55;
+			jigf.visible = false;
+			PlayState.instance.dadStrums.singingCharacters = [PlayState.dadOpponent];	
+			PlayState.dadOpponent.playAnim('turn', false, true);
+			PlayState.dadOpponent.animation.finishCallback = null;
+			PlayState.instance.manualCameraPosition.set(0, 0);
+			PlayState.instance.staticCamera = false;
+			PlayState.dadOpponent.animation.callback = function(name:String, frameNo:Int, frameIdx:Int){
+				if(frameIdx==0 && name=='turn'){
+					PlayState.dadOpponent.dance();
+					PlayState.dadOpponent.animation.callback = null;
+				}
+			};
 		case 'purinturn':
+			if(hpTween!=null){
+				hpTween.cancel();
+				hpTween = null;
+			}
+			hpTween = FlxTween.tween(PlayState.uiHUD.healthBarBG, {alpha: 0}, .5);
 			PlayState.dadOpponent.playAnim('turn');
+			PlayState.dadOpponent.animation.callback = null;
+			PlayState.defaultCamZoom += 0.55;		
+			PlayState.instance.manualCameraPosition.set(PlayState.dadOpponent.getMidpoint().x - 20, PlayState.dadOpponent.getMidpoint().y);
+			PlayState.instance.staticCamera = true;
 			PlayState.dadOpponent.animation.finishCallback = function(name:String){
-                if (name == 'turn') {										
+                if (name == 'turn') {
 					PlayState.dadOpponent.visible = false;												
 					jigf.visible = true;
 					PlayState.instance.dadStrums.singingCharacters = [jigf];	
-					PlayState.defaultCamZoom += 0.55;										
+					PlayState.dadOpponent.animation.finishCallback = null;							
                 }
-        }
+       		}
 	}
 }

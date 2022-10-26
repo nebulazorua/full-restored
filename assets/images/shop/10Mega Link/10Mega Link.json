@@ -1,0 +1,17 @@
+{
+"itemDetail":  
+    {
+        "name": "Mega Link",
+        "price": 200,
+        "animName": "megalink",
+        "songUnlock": "missingcraft",
+        "songsUnlock": ["missingcraft", "rednecks", "sansno", "through-the-fire-and-flames"],
+        "songDescription": "I got this for 20 bucks, but you'll pay 10 times that for it.",
+        "unlockRequirements": [""],
+        "xOffset": 5,
+        "yOffset": 8,
+        "lane": 0,
+        "row": 3,
+        "scale": 1
+    }
+}

@@ -1,9 +1,14 @@
 var girlTits:FNFSprite;
+var missingCart:FNFSprite;
+var girlTitsHitbox:FlxSprite;
+var floor:FNFSprite;
 
 var bg;
 var stageFront;
 var stageCurtains;
 
+var clickedGirl:Bool = false;
+var clickedCart:Bool = false;
 var legacyCutscene:FNFSprite;
 
 function onCreate() {
@@ -37,6 +42,29 @@ function onCreate() {
 	girlTits.antialiasing = true;
 	add(girlTits);
 
+	missingCart = new FNFSprite(600, 576).loadGraphic(Paths.image('missingnoCart'));
+	missingCart.setGraphicSize(Std.int(missingCart.width * 0.25));
+	missingCart.updateHitbox();
+	missingCart.antialiasing = true;
+	missingCart.elasticity = 0.2;
+	missingCart.solid = true;
+	missingCart.immovable = false;
+	missingCart.visible = false;
+	add(missingCart);
+
+	girlTitsHitbox = new FlxSprite(600, 576);
+	girlTitsHitbox.makeGraphic(88, 120, FlxColor.fromRGB(255, 255, 255));
+	girlTitsHitbox.visible = false;
+	add(girlTitsHitbox);
+
+	floor = new FlxSprite(127, 676);
+	floor.immovable = true;
+	floor.solid = true;
+	floor.makeGraphic(1024, 30, FlxColor.fromRGB(255, 255, 255));
+	floor.visible = false;
+	add(floor);
+
+
 	legacyCutscene = new FNFSprite(500, 50);
 	legacyCutscene.frames = Paths.getSparrowAtlas('they_took_everything_from_me');
 	legacyCutscene.animation.addByPrefix('speech', 'GlitchySpeak', 24, false);
@@ -47,6 +75,68 @@ function onCreate() {
 	add(legacyCutscene);
 	legacyCutscene.setGraphicSize(Std.int(legacyCutscene.width * 1.25));
 }
+
+function onUpdate(elapsed) {
+	if(girlTits.visible && !clickedGirl){
+		if (FlxG.mouse.overlaps(girlTitsHitbox))
+		{
+			if (FlxG.mouse.justPressed)
+			{
+				clickedGirl=true;
+				FlxTween.tween(girlTits.scale, {x: 1.3, y: 0.7}, 0.2, {
+					ease: FlxEase.cubeInOut,
+					onComplete: function(twn:FlxTween){
+						missingCart.visible = true;
+						missingCart.velocity.set(-100, -6000);
+						missingCart.acceleration.set(20, 6000);
+						girlTits.scale.x = 0.7;
+						girlTits.scale.y = 1.3;
+						FlxTween.tween(girlTits.scale, {x: 1, y: 1}, 0.75, {ease: FlxEase.cubeInOut});
+					}
+				});
+				trace("missing no!!");
+			}
+		}
+	}
+	if(missingCart.visible && !clickedCart){
+		if (FlxG.mouse.overlaps(missingCart))
+		{
+			if (FlxG.mouse.justPressed)
+			{
+				clickedCart = true;
+				if(!FlxG.save.data.cartridgesOwned.contains("GlitchWeek")){
+					FlxG.save.data.cartridgesOwned.push("GlitchWeek");
+					FlxG.save.flush();
+				}
+				var cartX = missingCart.scale.x;
+				var cartY = missingCart.scale.y;
+
+				FlxTween.tween(missingCart.scale, {x: cartX*2, y: cartY*0.5}, 0.1, {
+					ease: FlxEase.cubeInOut,
+					onComplete: function(twn:FlxTween){
+						FlxTween.tween(missingCart.scale, {x: 0, y: cartY*3}, 0.1, {
+							ease: FlxEase.cubeInOut,
+							onComplete: function(twn:FlxTween){
+								missingCart.visible = false;
+							}
+						});
+					}
+				});
+			}
+		}
+	}
+	if(missingCart.visible){
+		FlxG.collide(floor, missingCart, function(a:FlxSprite, b:FlxSprite){
+			if(missingCart.velocity.x!=0)
+				missingCart.velocity.x += 10;
+		});
+		if(missingCart.velocity.x > 0){
+			missingCart.velocity.x = 0;
+			missingCart.acceleration.x = 0;
+		}
+	}
+}
+
 
 function onBeat(beat) {
 	girlTits.animation.play('idle');
@@ -68,6 +158,9 @@ function onCreatePost() {
 	PlayState.instance.dadStrums.visible = false;
 
 	legacyCutscene.cameras = [PlayState.dialogueHUD];
+
+	FlxG.mouse.visible = true;
+	FlxG.mouse.useSystemCursor = true;
 }
 
 function onEvent(event) {
@@ -98,6 +191,7 @@ function onEvent(event) {
 
 			PlayState.boyfriend.visible = false;
 			PlayState.dadOpponent.visible = false;
+			FlxG.mouse.visible = false;
 			girlTits.visible = false;
 			legacyCutscene.visible = true;
 			legacyCutscene.animation.play('speech');
