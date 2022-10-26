@@ -155,7 +155,8 @@ class Paths
 					else
 					{
 						newGraphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
-						trace('new bitmap $key, not textured');
+						// trace('new bitmap $key, not textured');
+						// holy fucking shit this is annoying as hell
 					}
 					newGraphic.persist = true;
 					currentTrackedAssets.set(key, newGraphic);

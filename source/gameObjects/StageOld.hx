@@ -42,7 +42,6 @@ class StageOld extends FlxTypedGroup<FlxSprite>
 	public var bygonNewStuff:haxe.ds.List<FlxSprite> = new haxe.ds.List<FlxSprite>();
 
 
-
 	public var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
 
 	public var brimstoneBackground:FlxSprite;
@@ -98,6 +97,8 @@ class StageOld extends FlxTypedGroup<FlxSprite>
 					curStage = 'cave';
 				case 'death-toll':
 					curStage = 'hell';
+				case 'through-the-fire-and-the-flames':
+					curStage = "ttfatf";
 				default:
 					curStage = 'stage';
 			}

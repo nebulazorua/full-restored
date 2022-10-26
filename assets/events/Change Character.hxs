@@ -1,11 +1,30 @@
 function eventFunction(params) {
-    var prevFlipX = PlayState.dadOpponent.flipX;
-	PlayState.dadOpponent.x -= PlayState.dadOpponent.characterData.offsetX;
-	PlayState.dadOpponent.y -= (PlayState.dadOpponent.characterData.offsetY - (PlayState.dadOpponent.frameHeight * PlayState.dadOpponent.scale.y));
-
-    PlayState.dadOpponent.setCharacter(PlayState.dadOpponent.x, PlayState.dadOpponent.y, params[0]);
-    if (PlayState.dadOpponent.flipX != prevFlipX) 
-        PlayState.dadOpponent.flipLeftRight();
+    switch(params[1]){
+        case "dad":
+            var prevFlipX = PlayState.dadOpponent.flipX;
+            PlayState.dadOpponent.x -= PlayState.dadOpponent.characterData.offsetX;
+            PlayState.dadOpponent.y -= (PlayState.dadOpponent.characterData.offsetY - (PlayState.dadOpponent.frameHeight * PlayState.dadOpponent.scale.y));
+        
+            PlayState.dadOpponent.setCharacter(PlayState.dadOpponent.x, PlayState.dadOpponent.y, params[0]);
+            if (PlayState.dadOpponent.flipX != prevFlipX) 
+                PlayState.dadOpponent.flipLeftRight();
+        case "bf":
+            var prevFlipX = PlayState.boyfriend.flipX;
+            PlayState.boyfriend.x -= PlayState.boyfriend.characterData.offsetX;
+            PlayState.boyfriend.y -= (PlayState.boyfriend.characterData.offsetY - (PlayState.boyfriend.frameHeight * PlayState.boyfriend.scale.y));
+        
+            PlayState.boyfriend.setCharacter(PlayState.boyfriend.x, PlayState.boyfriend.y, params[0]);
+            if (PlayState.boyfriend.flipX != prevFlipX) 
+                PlayState.boyfriend.flipLeftRight();
+        default:
+            var prevFlipX = PlayState.dadOpponent.flipX;
+            PlayState.dadOpponent.x -= PlayState.dadOpponent.characterData.offsetX;
+            PlayState.dadOpponent.y -= (PlayState.dadOpponent.characterData.offsetY - (PlayState.dadOpponent.frameHeight * PlayState.dadOpponent.scale.y));
+        
+            PlayState.dadOpponent.setCharacter(PlayState.dadOpponent.x, PlayState.dadOpponent.y, params[0]);
+            if (PlayState.dadOpponent.flipX != prevFlipX) 
+                PlayState.dadOpponent.flipLeftRight();
+    }
 }
 
 function initFunction(params) {
