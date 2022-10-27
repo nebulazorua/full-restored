@@ -832,7 +832,7 @@ class PlayState extends MusicBeatState
 		dialogueHUD.bgColor.alpha = 0;
 		FlxG.cameras.add(dialogueHUD);
 
-		if (sys.FileSystem.exists(Paths.songJson(SONG.song.toLowerCase(), 'lyrics', false))) {
+		if (sys.FileSystem.exists(Paths.songJson(SONG.song.toLowerCase(), 'lyrics', false)) && !PlayState.old) {
 			trace('ly rics');
 			var myLyrics:Array<LyricMeasure> = Lyrics.parseLyrics(SONG.song.toLowerCase());
 			var lyrics:Lyrics = new Lyrics(myLyrics);
@@ -2487,71 +2487,71 @@ class PlayState extends MusicBeatState
 	}
 
 	function hbEnding() {
-				var dsCam = new FlxCamera();
-				dsCam.bgColor.alpha = 0;
-				allUIs.push(dsCam);
-				FlxG.cameras.add(dsCam);
-				//to layer bullshit on top of strumline lol
+		var dsCam = new FlxCamera();
+		dsCam.bgColor.alpha = 0;
+		allUIs.push(dsCam);
+		FlxG.cameras.add(dsCam);
+		//to layer bullshit on top of strumline lol
 
-				var blackscreen:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-				blackscreen.cameras = [dsCam];
-				add(blackscreen);
-				blackscreen.alpha = 0;
+		var blackscreen:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+		blackscreen.cameras = [dsCam];
+		add(blackscreen);
+		blackscreen.alpha = 0;
 
-				var ds1:FlxSprite = new FlxSprite().loadGraphic(Paths.image('UI/base/hellbell/ds_01'));
-				ds1.antialiasing = true;
-				ds1.scale.set(0.72, 0.72);
-				ds1.updateHitbox();
-				ds1.cameras = [dsCam];
-				ds1.screenCenter(X);
-				ds1.x += 10;
-				ds1.y -= 30;
-				ds1.scale.set(1.15, 1.15);
-				add(ds1);
+		var ds1:FlxSprite = new FlxSprite().loadGraphic(Paths.image('UI/base/hellbell/ds_01'));
+		ds1.antialiasing = true;
+		ds1.scale.set(0.72, 0.72);
+		ds1.updateHitbox();
+		ds1.cameras = [dsCam];
+		ds1.screenCenter(X);
+		ds1.x += 10;
+		ds1.y -= 30;
+		ds1.scale.set(1.15, 1.15);
+		add(ds1);
 
-				var dsbf:FlxSprite = new FlxSprite().loadGraphic(Paths.image('UI/base/hellbell/ds_03'));
-				dsbf.antialiasing = true;
-				dsbf.scale.set(0.72, 0.72);
-				dsbf.updateHitbox();
-				dsbf.cameras = [dsCam];
-				dsbf.screenCenter(X);
-				dsbf.x += 10;
-				dsbf.y -= 30;
-				add(dsbf);
-				dsbf.alpha = 0;
+		var dsbf:FlxSprite = new FlxSprite().loadGraphic(Paths.image('UI/base/hellbell/ds_03'));
+		dsbf.antialiasing = true;
+		dsbf.scale.set(0.72, 0.72);
+		dsbf.updateHitbox();
+		dsbf.cameras = [dsCam];
+		dsbf.screenCenter(X);
+		dsbf.x += 10;
+		dsbf.y -= 30;
+		add(dsbf);
+		dsbf.alpha = 0;
 
-				camZooming = false;
-				FlxTween.tween(uiHUD, {alpha: 0}, 1);
-				FlxTween.tween(iconP1, {alpha: 0}, 1);
-				FlxTween.tween(iconP2, {alpha: 0}, 1);				
-				for (i in 0...strumHUD.length) {
-					FlxTween.tween(strumHUD[i], {alpha: 0}, 1);
-				}
+		camZooming = false;
+		FlxTween.tween(uiHUD, {alpha: 0}, 1);
+		FlxTween.tween(iconP1, {alpha: 0}, 1);
+		FlxTween.tween(iconP2, {alpha: 0}, 1);				
+		for (i in 0...strumHUD.length) {
+			FlxTween.tween(strumHUD[i], {alpha: 0}, 1);
+		}
 
-				new FlxTimer().start(0.7, function(tmr:FlxTimer) {
-					FlxTween.tween(FlxG.camera, {zoom: 0.4}, 2.5, {ease: FlxEase.quadOut});	
-					FlxTween.tween(ds1.scale, {x: 0.72, y: 0.72}, 2.5, {
-						ease: FlxEase.quadOut,
-						onComplete: function(tween:FlxTween)
-						{
-							new FlxTimer().start(1.5, function(tmr:FlxTimer) {
-								FlxG.sound.play(Paths.sound('bimbembooff'));
-								FlxTween.tween(blackscreen, {alpha: 1}, 1);							
-								new FlxTimer().start(0.7, function(tmr:FlxTimer) {
-									FlxTween.tween(dsbf, {alpha: 0.3}, 1.8);
-									new FlxTimer().start(3.4, function(tmr:FlxTimer) {
-										camGame.alpha = 0;
-										FlxTween.tween(dsCam, {alpha: 0}, 0.3);
-										new FlxTimer().start(0.4, function(tmr:FlxTimer) {
-											//wait
-										});	
-									});	
+		new FlxTimer().start(0.7, function(tmr:FlxTimer) {
+			FlxTween.tween(FlxG.camera, {zoom: 0.4}, 2.5, {ease: FlxEase.quadOut});	
+			FlxTween.tween(ds1.scale, {x: 0.72, y: 0.72}, 2.5, {
+				ease: FlxEase.quadOut,
+				onComplete: function(tween:FlxTween)
+				{
+					new FlxTimer().start(1.5, function(tmr:FlxTimer) {
+						FlxG.sound.play(Paths.sound('bimbembooff'));
+						FlxTween.tween(blackscreen, {alpha: 1}, 1);							
+						new FlxTimer().start(0.7, function(tmr:FlxTimer) {
+							FlxTween.tween(dsbf, {alpha: 0.3}, 1.8);
+							new FlxTimer().start(3.4, function(tmr:FlxTimer) {
+								camGame.alpha = 0;
+								FlxTween.tween(dsCam, {alpha: 0}, 0.3);
+								new FlxTimer().start(0.4, function(tmr:FlxTimer) {
+									//wait
 								});	
-								
-							});														
-						}									
-					});	
-				});
+							});	
+						});	
+						
+					});														
+				}									
+			});	
+		});
 	}
 
 	function getPositionArrayCenter():Array<Float> {
@@ -2692,12 +2692,12 @@ class PlayState extends MusicBeatState
 								for (note in daNote.childrenNotes)
 									note.tooLate = true;
 								if(daNote.noteType!=1){
-								canSpeak = false;
-								
-								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData,
-									strumLines.members[playerLane].singingCharacters, true);
-								// ambiguous name
-								Timings.updateAccuracy(0);
+									canSpeak = false;
+									
+									missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData,
+										strumLines.members[playerLane].singingCharacters, true);
+									// ambiguous name
+									Timings.updateAccuracy(0);
 								}
 							}
 							else if (daNote.isSustainNote)
@@ -2718,6 +2718,8 @@ class PlayState extends MusicBeatState
 										{
 											missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData,
 												strumLines.members[playerLane].singingCharacters, true);
+											Timings.updateAccuracy(0);
+											Timings.notesHit -= 0.5;
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}
@@ -3515,7 +3517,7 @@ class PlayState extends MusicBeatState
 		unspawnNotes = ChartLoader.generateChartType(SONG, determinedChartType, this);
 		if (sys.FileSystem.exists(Paths.songJson(SONG.song.toLowerCase(), 'events', old))) {
 			trace('events found');
-			var eventJson:SwagSong = Song.loadFromJson('events'+(old ? '_old' : ''), SONG.song.toLowerCase(), old);
+			var eventJson:SwagSong = Song.loadFromJson('events', SONG.song.toLowerCase(), old);
 			if (eventJson != null)
 				eventList = ChartLoader.generateChartType(eventJson, 'event', this);
 		}

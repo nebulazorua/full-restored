@@ -241,8 +241,10 @@ class Paths
 		return getPath('$key.hxs', TEXT, library);
 	}
 
-	static public function songJson(song:String, secondSong:String, old:Bool, ?library:String)
+	static public function songJson(song:String, secondSong:String, old:Bool, ?library:String){
+		trace(song, secondSong);
 		return getPath('songs/${song.toLowerCase()}/${secondSong.toLowerCase() + (old ? '_old' : '')}.json', TEXT, library);
+	}
 
 	static public function sound(key:String, ?library:String):Dynamic {
 		var sound:Sound = returnSound('sounds', key, library);

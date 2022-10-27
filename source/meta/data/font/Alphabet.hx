@@ -31,6 +31,7 @@ class Alphabet extends FlxTypedSpriteGroup<AlphaCharacter>
 	public var disableX:Bool = false;
 	public var controlGroupID:Int = 0;
 	public var textIdentifier:Int = 0;
+	public var songId:Int = 0;
 	public var extensionJ:Int = 0;
 
 	public var infiniteShuffle:Bool = false;

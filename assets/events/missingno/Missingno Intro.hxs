@@ -20,14 +20,15 @@ function eventFunction(params) {
 	
 	if (PlayState.old) {
 		// timer that zooms camera after lol
-		var newTimer:FlxTimer = new FlxTimer().start((Conductor.crochet / 1000) * 6, function(timer:FlxTimer)
+		var newTimer:FlxTimer = new FlxTimer().start((Conductor.crochet / 1000) * 5, function(timer:FlxTimer)
 		{
 			PlayState.cameraCentered = false;
+			PlayState.defaultCamZoom = 0.8;
+			PlayState.instance.camZooming = true;
 			PlayState.songDisplayName = PlayState.SONG.song;
 		});
-		FlxTween.tween(PlayState, {defaultCamZoom: 0.8}, (Conductor.crochet / 1000), {ease: FlxEase.linear});
-	} else
-		PlayState.instance.camZooming = true;
+	}
+	
 	PlayState.songDisplayName = PlayState.SONG.song;
 }
 
