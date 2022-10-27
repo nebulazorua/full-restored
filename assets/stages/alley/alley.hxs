@@ -130,6 +130,7 @@ function onCreatePost() {
 }
 
 function onUpdate(elapsed) {
+	if(purinHitbox!=null){
     if (FlxG.mouse.overlaps(purinHitbox))
 		{
 			if (FlxG.mouse.justPressed && FlxG.save.data.itemsPurchased.contains('Lit Candle'))
@@ -137,6 +138,7 @@ function onUpdate(elapsed) {
 					PlayState.instance.purinActivate();
 				}
 		}
+	}
 }
 
 function onBeat(beat) {
