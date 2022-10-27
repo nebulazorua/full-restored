@@ -13,11 +13,18 @@ var midgroundL:FlxSprite;
 var stageForegroundL:FlxSprite;
 var brimestoneHandL:FlxSprite;
 
+//lost cause
+var bgLC:FlxSprite;
+
+//brimstone
+var floorBrim:FlxSprite;
+var gravesBrim:FlxSprite;
+
 function onCreate() {
     //bygone purpose 
         //boyfriend.x = 966;
         //dad.x = 50;
-        PlayState.defaultCamZoom = 0.05;
+        PlayState.defaultCamZoom = 0.8;
 
         var consistentPosition:Array<Float> = [-300, -300];
 
@@ -29,7 +36,6 @@ function onCreate() {
         backgroundB.antialiasing = true;
         backgroundB.scrollFactor.set(0.6, 0.6);
         backgroundB.active = false;
-        add(backgroundB);
 
         moonB = new FlxSprite(0, 0);
         moonB.loadGraphic(Paths.image('BG1 Moon'));
@@ -39,7 +45,6 @@ function onCreate() {
         moonB.antialiasing = true;
         moonB.scrollFactor.set(0.7, 0.7);
         moonB.active = false;
-        add(moonB);
 
         buildingsB = new FlxSprite(0, 0);
         buildingsB.loadGraphic(Paths.image('BG1 Buildings'));
@@ -49,7 +54,6 @@ function onCreate() {
         buildingsB.antialiasing = true;
         buildingsB.scrollFactor.set(0.75, 0.75);
         buildingsB.active = false;
-        add(buildingsB);
 
         bridgeRopeB = new FlxSprite(0, 0);
         bridgeRopeB.loadGraphic(Paths.image('BridgeRope'));
@@ -57,122 +61,177 @@ function onCreate() {
         bridgeRopeB.setPosition(bridgeRopeB.width / 2.25, -64);
         bridgeRopeB.scrollFactor.set(0.9, 0.9);
         bridgeRopeB.active = false;
-        add(bridgeRopeB);
 
         bridgeB = new FlxSprite(0, 0);
         bridgeB.loadGraphic(Paths.image('Bridge'));
         bridgeB.antialiasing = true;
         bridgeB.scrollFactor.set(0.9, 0.9);
         bridgeB.active = false;
-        foreground.add(bridgeB);
 
-        foreground.add(bridgeB);
-        bygonStuff.add(backgroundB);
-        bygonStuff.add(buildingsB);
-        bygonStuff.add(bridgeB);
-
-        // trace(boyfriend.x);
-        // trace(dad.x);
     //hypno p1-2
-        //boyfriend.x = 1166;
-        //dad.x = -150;
+
         var consistentHyp12:Array<Float> = [-800, -300];
         var resizeBG:Float = 0.7;
         backgroundL = new FlxSprite(consistentHyp12[0], consistentHyp12[1]);
         backgroundL.loadGraphic(Paths.image('BACKGROUND'));
         backgroundL.setGraphicSize(Std.int(backgroundL.width * resizeBG));
+        backgroundL.setPosition(consistentHyp12[0], consistentHyp12[1]);
         backgroundL.updateHitbox();
         backgroundL.antialiasing = true;
         backgroundL.scrollFactor.set(0.6, 0.6);
         backgroundL.active = false;
-        // backgroundL.visible = false;
-        add(backgroundL);
+        backgroundL.visible = false;
 
         grassL = new FlxSprite(consistentHyp12[0], consistentHyp12[1]);
         grassL.loadGraphic(Paths.image('Behind the clouds and fence'));
         grassL.setGraphicSize(Std.int(grassL.width * resizeBG));
+        grassL.setPosition(consistentHyp12[0], consistentHyp12[1]);
         grassL.updateHitbox();
         grassL.antialiasing = true;
         grassL.scrollFactor.set(0.7, 0.7);
         grassL.active = false;
-        // grassL.visible = false;
-        add(grassL);
+        grassL.visible = false;
 
         fogL = new FlxSprite(consistentHyp12[0], consistentHyp12[1]);
         fogL.loadGraphic(Paths.image('Behind the Fence'));
         fogL.setGraphicSize(Std.int(fogL.width * resizeBG));
+        fogL.setPosition(consistentHyp12[0], consistentHyp12[1]);
         fogL.updateHitbox();
         fogL.scrollFactor.set(0.8, 0.8);
         fogL.antialiasing = true;
         fogL.active = false;
-        // fogL.visible = false;
-        add(fogL);
+        fogL.visible = false;
 
         midgroundL = new FlxSprite(consistentHyp12[0], consistentHyp12[1]);
         var name:String = 'MIDGROUND';
         name = name + ' BLOOD';
         midgroundL.loadGraphic(Paths.image(name));
         midgroundL.setGraphicSize(Std.int(midgroundL.width * resizeBG));
+        midgroundL.setPosition(consistentHyp12[0], consistentHyp12[1]);
         midgroundL.updateHitbox();
         midgroundL.antialiasing = true;
         // midground.scrollFactor.set(0.9, 0.9);
         midgroundL.active = false;
-        // midgroundL.visible = false;
-        add(midgroundL);
+        midgroundL.visible = false;
 
         stageForegroundL = new FlxSprite(consistentHyp12[0] - 100, consistentHyp12[1]);
         stageForegroundL.loadGraphic(Paths.image('FOREGROUND TREE'));
         stageForegroundL.setGraphicSize(Std.int(stageForegroundL.width * resizeBG));
+        stageForegroundL.setPosition(consistentHyp12[0] - 100, consistentHyp12[1]);
         stageForegroundL.updateHitbox();
         stageForegroundL.antialiasing = true;
         stageForegroundL.scrollFactor.set(1.2, 1.2);
         stageForegroundL.active = false;
-        // stageForegroundL.visible = false;
+        stageForegroundL.visible = false;
+
+    //lost cause
+        bgLC = new FlxSprite(-450, -600);
+        bgLC.loadGraphic(Paths.image('cave'));
+        bgLC.setGraphicSize(Std.int(bgLC.width * 1));
+        bgLC.updateHitbox();
+        bgLC.antialiasing = true;
+        bgLC.visible = false;
+
+    //brimstone
+        var consisBuried:Array<Float> = [-1130, -350];
+        var resizeBGBrim:Float = PlayState.daPixelZoom;
+
+        brimstoneBackground = new FlxSprite(consisBuried[0], consisBuried[1]);
+        brimstoneBackground.loadGraphic(Paths.image('brimstoneBack'));
+        brimstoneBackground.setGraphicSize(Std.int(brimstoneBackground.width * resizeBGBrim));
+        brimstoneBackground.updateHitbox();
+        // background.scrollFactor.set(0.9, 0.9);
+        brimstoneBackground.active = false;
+        brimstoneBackground.visible = false;
+
+        floorBrim = new FlxSprite(consisBuried[0], consisBuried[1]);
+        floorBrim.loadGraphic(Paths.image('floor'));
+        floorBrim.setGraphicSize(Std.int(floorBrim.width * resizeBGBrim));
+        floorBrim.updateHitbox();
+        // floor.scrollFactor.set(0.9, 0.9);
+        floorBrim.active = false;
+        floorBrim.visible = false;
+
+        gravesBrim = new FlxSprite(consisBuried[0], consisBuried[1]);
+        gravesBrim.loadGraphic(Paths.image('graves'));
+        gravesBrim.setGraphicSize(Std.int(gravesBrim.width * resizeBGBrim));
+        gravesBrim.updateHitbox();
+        // graves.scrollFactor.set(0.9, 0.9);
+        gravesBrim.active = false;
+        gravesBrim.visible = false;
+
+        add(backgroundB);
+        add(moonB);
+        add(buildingsB);
+        add(bridgeRopeB);
+        foreground.add(bridgeB);
+
+        add(backgroundL);
+        add(grassL);
+        add(fogL);
+        add(midgroundL);
         foreground.add(stageForegroundL);
-        
-        bygonStuff.add(backgroundL);
-        bygonStuff.add(grassL);
-        bygonStuff.add(fogL);
-        bygonStuff.add(midgroundL);
-        foreground.add(stageForegroundL);
+
+        add(bgLC);
+
+        add(brimstoneBackground);
+        add(floorBrim);
+        add(gravesBrim);
 }
 
 function onCreatePost() {
-	PlayState.instance.disableCountdown = false;
+	PlayState.instance.disableCountdown = true;
 	PlayState.instance.dadStrums.visible = false;
+    PlayState.dadOpponent.visible = false;
+    PlayState.instance.tranceNotActiveYet = true;
 
-	if (FlxG.save.data.itemsPurchased.contains('Lit Candle') && !FlxG.save.data.activatedPurin)
-		{
-			FlxG.mouse.visible = true;
-			FlxG.mouse.useSystemCursor = true;
-		}
+    PlayState.uiHUD.visible = false;
+    PlayState.instance.iconP2.visible = false;
+    PlayState.instance.iconP1.visible = false;
+    
+	PlayState.instance.gfStand = new Boyfriend();
+	PlayState.instance.gfStand.setCharacter(PlayState.boyfriend.x - 340, PlayState.boyfriend.y + 360, 'gf-stand');
+	PlayState.instance.gfStand.flipLeftRight();
+	PlayState.instance.boyfriendStrums.character.push(PlayState.instance.gfStand);
+	PlayState.instance.add(PlayState.instance.gfStand);
+	// PlayState.instance.lcBar1();
+
+	if (PlayState.instance.gfStand.atlasCharacter != null) {
+		PlayState.instance.gfStand.atlasCharacter.visible = false;
+		add(PlayState.instance.gfStand.atlasCharacter);
+		PlayState.instance.gfStand.atlasCharacter.x -= 1730;
+		PlayState.instance.gfStand.atlasCharacter.y -= 400;
+		// PlayState.instance.gfStand.characterData.camOffsetX += 450;
+		// PlayState.instance.gfStand.characterData.camOffsetY += 500;
+	} else 
+		PlayState.instance.gfStand.visible = false;
 }
 
 function onUpdate(elapsed) {
-    // trace(dad.x);
-    // trace(boyfriend.x);
-    switch(PlayState.curBeat){
-        case 68:
-            trace("BALLS");
-            backgroundL.visible = true;
-            grassL.visible = true;
-            fogL.visible = true;
-            midgroundL.visible = true;
-            stageForegroundL.visible = true;
-    }
+
 }
 
 function onBeat(beat) {
-    switch(beat){
-        case 68:
-            trace("COCK");
-    }
+    
+}
+
+function flashyy() {
+    var camflash = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.WHITE);
+    camflash.scrollFactor.set();
+    camflash.screenCenter();
+    add(camflash);
+    
+    camflash.alpha = 1;
+    PlayState.defaultCamZoom += 0.08;
+    FlxTween.tween(camflash, {alpha: 0}, 0.5);
 }
 
 function onEvent(eventName) {
     switch (eventName) { 
         case 'TTFATF Unchecked':
-            trace("DICK!!!");
+            flashyy();
+            PlayState.defaultCamZoom = 0.6;
+
             backgroundB.visible = false;
             moonB.visible = false;
             buildingsB.visible = false;
@@ -185,7 +244,80 @@ function onEvent(eventName) {
             midgroundL.visible = true;
             stageForegroundL.visible = true;
 
-            PlayState.boyfriend.x += 200;
-            PlayState.dadOpponent.x -= 200;
-    }
+            // PlayState.boyfriend.x += 200;
+            // PlayState.dadOpponent.x -= 200;
+            PlayState.dadOpponent.visible = true;
+            PlayState.instance.tranceNotActiveYet = false;
+            FlxTween.tween(PlayState.instance.pendulum, {alpha: 1});
+            // PlayState.instance.pendulum.alpha = 1;
+        case 'TTFATF Lost':
+            flashyy();
+            PlayState.defaultCamZoom = 0.6;
+            PlayState.instance.flipCharacters();
+            PlayState.dadOpponent.visible = true;
+
+            backgroundB.visible = false;
+            moonB.visible = false;
+            buildingsB.visible = false;
+            bridgeRopeB.visible = false;
+            bridgeB.visible = false;
+
+            backgroundL.visible = false;
+            grassL.visible = false;
+            fogL.visible = false;
+            midgroundL.visible = false;
+            stageForegroundL.visible = false;
+
+            bgLC.visible = true;
+
+            if (PlayState.instance.gfStand.atlasCharacter != null)
+                PlayState.instance.gfStand.atlasCharacter.visible = true;
+            else
+                PlayState.instance.gfStand.visible = true;
+            PlayState.instance.gfStand.dance();
+
+
+            // PlayState.instance.boyfriendStrums.singingCharacters = [PlayState.instance.gfStand.atlasCharacter];
+            PlayState.instance.flipHealthbar(); 
+        case 'TTFATF Mono':
+            flashyy();
+            PlayState.defaultCamZoom = 0.85;
+
+            backgroundB.visible = false;
+            moonB.visible = false;
+            buildingsB.visible = false;
+            bridgeRopeB.visible = false;
+            bridgeB.visible = false;
+
+            backgroundL.visible = false;
+            grassL.visible = false;
+            fogL.visible = false;
+            midgroundL.visible = false;
+            stageForegroundL.visible = false;
+
+            bgLC.visible = false;
+            PlayState.instance.tranceNotActiveYet = true;
+            FlxTween.tween(PlayState.instance.pendulum, {alpha: 0});
+        case 'TTFATF Buried':
+            flashyy();
+            PlayState.defaultCamZoom = 0.55;
+
+            backgroundB.visible = false;
+            moonB.visible = false;
+            buildingsB.visible = false;
+            bridgeRopeB.visible = false;
+            bridgeB.visible = false;
+
+            backgroundL.visible = false;
+            grassL.visible = false;
+            fogL.visible = false;
+            midgroundL.visible = false;
+            stageForegroundL.visible = false;
+
+            bgLC.visible = false;
+
+            brimstoneBackground.visible = true;
+            floorBrim.visible = true;
+            gravesBrim.visible = true;
+        }
 }

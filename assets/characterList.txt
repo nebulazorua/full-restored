@@ -4,7 +4,6 @@ gf
 hypno
 hypno-two
 abomination-hypno
-buryman
 buried
 missingno
 ba-missingno

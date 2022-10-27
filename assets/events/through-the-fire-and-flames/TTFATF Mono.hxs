@@ -1,0 +1,19 @@
+function eventFunction(params) {
+    PlayState.dadOpponent.x -= PlayState.dadOpponent.characterData.offsetX;
+    PlayState.dadOpponent.y -= (PlayState.dadOpponent.characterData.offsetY - (PlayState.dadOpponent.frameHeight * PlayState.dadOpponent.scale.y));
+
+    var newX:Float = ((FlxG.width / 2) - ((PlayState.dadOpponent.width / 2) + (PlayState.dadOpponent.width / 4)));
+    var newY:Float = ((FlxG.height / 2) - (PlayState.dadOpponent.height / 4));
+
+    PlayState.dadOpponent.setCharacter(newX, newY, 'gold');
+
+    PlayState.instance.boyfriendStrums.singingCharacters = [PlayState.boyfriend];
+    PlayState.boyfriend.visible = false;
+    PlayState.instance.gfStand.visible = false;
+    PlayState.instance.gfStand.atlasCharacter.visible = false;
+    PlayState.boyfriend.setPosition(dadOpponent.x, dadOpponent.y);
+}
+
+function initFunction(params) {
+    var characterPreload1:Character = new Character().setCharacter(0, 0, 'gold');
+}
