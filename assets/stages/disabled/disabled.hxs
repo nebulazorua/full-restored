@@ -246,6 +246,9 @@ var amusiaDialogue:Array<String> = [
     "Give me your sing.",
     "Give me your sing.",
     "Give me your sing.",
+    "Sing."
+    "Sing."
+    "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
 ];
 
 function amusiaProgress(forced:Bool=false){

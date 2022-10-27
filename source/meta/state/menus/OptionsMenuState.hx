@@ -124,7 +124,7 @@ class OptionsMenuState extends MusicBeatSubState
 		centralTextbox.screenCenter();
 		centralTextbox.scale.set(3, 3);
 
-		FlxTween.tween(centralTextbox, {boxWidth: 12, boxHeight: 16}, 0.25, {ease: FlxEase.circOut});
+		FlxTween.tween(centralTextbox, {boxWidth: 8, boxHeight: 12}, 0.25, {ease: FlxEase.circOut});
 
 		add(bg);
 		add(centralTextbox);
