@@ -15,7 +15,6 @@ typedef SwagSong =
 	var notes:Array<SwagSection>;
 	var bpm:Float;
 	var needsVoices:Bool;
-	var events:Array<Dynamic>;
 	var speed:Float;
 
 	var player1:String;
@@ -34,7 +33,6 @@ class Song
 	public var needsVoices:Bool = true;
 	public var speed:Float = 1;
 	public var lanes:Int = 2;
-	var events:Array<Dynamic>;
 
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
@@ -64,30 +62,6 @@ class Song
 	public static function parseJSONshit(rawJson:String):SwagSong {
 		var swagShit:SwagSong = cast Json.parse(rawJson).song;
 		swagShit.validScore = true;
-
-		if(swagShit.events == null)
-			{
-				swagShit.events = [];
-				for (secNum in 0...swagShit.notes.length)
-				{
-					var sec:SwagSection = swagShit.notes[secNum];
-	
-					var i:Int = 0;
-					var notes:Array<Dynamic> = sec.sectionNotes;
-					var len:Int = notes.length;
-					while(i < len)
-					{
-						var note:Array<Dynamic> = notes[i];
-						if(note[1] < 0)
-						{
-							swagShit.events.push([note[0], [[note[2], note[3], note[4]]]]);
-							notes.remove(note);
-							len = notes.length;
-						}
-						else i++;
-					}
-				}
-			}
 		return swagShit;
 	}
 }

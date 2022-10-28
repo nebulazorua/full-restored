@@ -38,7 +38,6 @@ import openfl.events.IOErrorEvent;
 import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
-import sys.FileSystem;
 
 using StringTools;
 
@@ -289,20 +288,9 @@ class OriginalChartingState extends MusicBeatState
 			clearEvents();
 		});
 
-		var loadEventJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Load Events", function()
+		var loadEventJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Load Event", function()
 		{
-			// loadJson(_song.song.toLowerCase(), true);
-			var file:String = Paths.json(_song.song.toLowerCase() + '/events');
-			trace(">>" + file + "<<");
-			// if (FileSystem.exists(file))
-			// {
-			// 	clearEvents();
-			// 	var events:SwagSong = Song.loadFromJson('events', _song.song, PlayState.old);
-			// 	_song.events = events.events;
-			// 	changeSection(curSection);
-			// }
-			addevent();
-			updateGrid();
+			loadJson(_song.song.toLowerCase(), true);
 		});
 
 		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 60, "Reload JSON", function()
@@ -505,17 +493,6 @@ class OriginalChartingState extends MusicBeatState
 			loadSong(daSong);
 		};
 		//
-	}
-
-	function addevent(){
-		for (daSection in 0..._song.notes.length)
-			{
-				for (note in _song.notes[daSection].sectionNotes) {
-					if (note[1] == -1)
-						_song.notes[daSection].sectionNotes.push(note[1]);
-				}
-			}
-			updateGrid();
 	}
 
 	function pauseMusic()
@@ -1373,7 +1350,6 @@ class OriginalChartingState extends MusicBeatState
 			song: _song.song,
 			notes: [],
 			bpm: _song.bpm,
-			events: _song.events,
 			needsVoices: _song.needsVoices,
 			speed: _song.speed,
 			player1: _song.player1,
