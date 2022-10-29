@@ -79,7 +79,7 @@ import Init.SettingTypes;
  * Pendulum
  * Rate per Beats (2, min 1, max 8)
  * Psyshock (true by default)
- * Psyshock Damage (1.0)
+ * Psyshock Damage Percent (1.0)
  * Ghost Tapping (most likely not as it ruins the mechanic/requires a rewrite to function properly based on accuracy)
  * 
  * Typhlosion
@@ -208,15 +208,26 @@ class OptionsMenuState extends MusicBeatSubState
 			],
 			"Mechanics" => [
 				["Mechanics", confirmOption, generateExtra, updateOption],
+				["Custom Settings"],
 				["Pendulum"],
 				["Pendulum Enabled", confirmOption, generateExtra, updateOption],
 				["Psyshock", confirmOption, generateExtra, updateOption],
-				["Rate per Beats", confirmOption, generateExtra, updateOption],
-				["Psyshock Damage", confirmOption, generateExtra, updateOption],
+				["Beat Time", confirmOption, generateExtra, updateOption],
+				["Psyshock Damage Percent", confirmOption, generateExtra, updateOption],
+				
+				["Frostbite"],
+				["Freezing Enabled", confirmOption, generateExtra, updateOption],
+				["Freezing Rate Percent", confirmOption, generateExtra, updateOption],
+				["Typhlosion Uses", confirmOption, generateExtra, updateOption],
+				["Typhlosion Warmth Percent", confirmOption, generateExtra, updateOption],
+				["Typhlosion Diminishing Returns", confirmOption, generateExtra, updateOption],
+
 				["Feraligatr"],
 				["Forced Accuracy", confirmOption, generateExtra, updateOption],
 				["Accuracy Cap", confirmOption, generateExtra, updateOption],
 
+				["Hell Bell"],
+				["Fifth Key", confirmOption, generateExtra, updateOption],
 
 			],
 			"Effects" => [
@@ -261,6 +272,8 @@ class OptionsMenuState extends MusicBeatSubState
 		loadGroup("main");
 	}
 
+	var pressTimers:Map<FlxObject, Float> = [];
+	
 	function updateOption(){
 		var name = currentScreen[curSelected][0];
 		if (!Init.trueSettings.exists(name) || !Init.gameSettings.exists(name))
@@ -274,8 +287,23 @@ class OptionsMenuState extends MusicBeatSubState
 
 				var left = controls.UI_LEFT;
 				var right = controls.UI_RIGHT;
-
+				
 				var selector:PixelSelector = cast currentExtras.get(currentDisplayed.members[curSelected]);
+				if (pressTimers.get(selector) == null)
+					pressTimers.set(selector, 0);
+
+				if(left || right)
+					pressTimers.set(selector, pressTimers.get(selector) + FlxG.elapsed);
+				else
+					pressTimers.set(selector, 0);
+				
+				if (pressTimers.get(selector) >= 0.1){ // every 0.1 seconds that its held
+					pressTimers.set(selector, pressTimers.get(selector) - 0.1);
+					pressLeft = left;
+					pressRight = right;
+				}
+				
+
 
 				if (!left)
 					selector.selectorPlay('left');
@@ -421,7 +449,6 @@ class OptionsMenuState extends MusicBeatSubState
 					var selector:PixelSelector = new PixelSelector(10, 0, data[0], options);
 					selector.scale.set(3, 3);
 					selector.updateHitbox();
-					trace(selector.height);
 					
 					return selector;
 				case Checkmark:
@@ -483,18 +510,18 @@ class OptionsMenuState extends MusicBeatSubState
 		var m = curSelected;
 		// TODO: rewrite scrolling so that it stays in the middle til the end idfk
 		// I hate doing this shit lol
-		if (curSelected > 13)
-			m -= curSelected - 13;
+		if (curSelected > 12)
+			m -= curSelected - 12;
 		
 		selector.y += 36 * m;
 		for (i in 0...currentDisplayed.members.length)
 		{
 			var s = i;
-			if (curSelected > 13)
-				s -= curSelected-13;
+			if (curSelected > 12)
+				s -= curSelected-12;
 
 			var text = currentDisplayed.members[i];
-			text.visible=s <= 14 && s >= 0;
+			text.visible=s < 13 && s >= 0;
 			text.scale.set(centralTextbox.scale.x * (centralTextbox.boxWidth / expanseHorizontal), centralTextbox.scale.y * (centralTextbox.boxHeight / expanseVertical));
 			text.updateHitbox();
 			text.screenCenter();

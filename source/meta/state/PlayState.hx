@@ -341,13 +341,21 @@ class PlayState extends MusicBeatState
 	var mxBlock:FlxSprite;
 
 	//Frostbite Mechanics
-	var useFrostbiteMechanic:Bool = false;
+	var useFrostbiteMechanic(get, default):Bool = false;
+	function get_useFrostbiteMechanic(){ // forces freezing off if you have it off in options
+		if(!Init.trueSettings.get("Freezing Enabled") && gameplayMode==CUSTOM || gameplayMode==PUSSY_MODE)
+			return false;
+
+		return useFrostbiteMechanic;
+	}
+
 	var frostbiteTheromometerTyphlosion:FlxSprite;
 	var frostbiteTheromometer:FlxSprite;
 	var frostbiteBar:FlxBar;
 	var coldness:Float = 0.0;
 	var coldnessDisplay:Float = 0.0;
 	var coldnessRate:Float = 0.0;
+	var maxTyphlosion:Int = 10;
 	var typhlosionUses:Int = 10;
 
 	//Brimstone Gengar Notes
@@ -911,6 +919,8 @@ class PlayState extends MusicBeatState
 		pendulum = new FlxSprite();
 		var canPendulum = !(!Init.trueSettings.get("Pendulum Enabled") && gameplayMode == CUSTOM || gameplayMode == PUSSY_MODE);
 		if(canPendulum){
+			if(gameplayMode==CUSTOM)
+				beatInterval = Init.trueSettings.get("Beat Time");
 			if (SONG.player2 == 'hypno')
 			{
 				pendulumShadow = new FlxTypedGroup<FlxSprite>();
@@ -1049,6 +1059,17 @@ class PlayState extends MusicBeatState
 
 		if (useFrostbiteMechanic) // Freezing Mechanic
 		{
+			switch(gameplayMode){
+				case CUSTOM:
+					maxTyphlosion = Init.trueSettings.get("Typhlosion Uses");
+				case FUCK_YOU:
+					maxTyphlosion = Math.floor(maxTyphlosion * 0.4);
+				case HELL_MODE:
+					maxTyphlosion = Math.floor(maxTyphlosion * 0.8);
+				default:
+					// leave it as 10
+			}
+			typhlosionUses = maxTyphlosion;
 			frostbiteBar = new FlxBar(1161 + 36 - 1134, 172 + 14, BOTTOM_TO_TOP, 16, 325, this, 'coldnessDisplay', 0, 1);
 			frostbiteBar.createFilledBar(0xFF133551, 0xFFAAD6FF);
 			add(frostbiteBar);
@@ -1388,7 +1409,7 @@ class PlayState extends MusicBeatState
 				case HELL_MODE:
 					trance += 0.5;
 				case CUSTOM:
-					trance += Init.trueSettings.get("Psyshock Damage");
+					trance += Init.trueSettings.get("Psyshock Damage Percent");
 				default:
 					trance += 0.25;
 			}
@@ -1452,7 +1473,6 @@ class PlayState extends MusicBeatState
 	{
 		if (canChangeIntensity) {
 			snowIntensity = value;
-			trace(value);
 			frostbiteShader.shader.data.intensity.value = [snowIntensity];
 		}
 		return snowIntensity;
@@ -1470,7 +1490,6 @@ class PlayState extends MusicBeatState
 		if (canChangeAmount)
 		{
 			snowAmount = value;
-			trace(value);
 			frostbiteShader.shader.data.amount.value = [Std.int(snowAmount)];
 		}
 		return snowAmount;
@@ -2885,14 +2904,50 @@ class PlayState extends MusicBeatState
 			typhlosion.animation.finishCallback = function(name:String)
 				typhlosion.playAnim('idle');
 			typhlosionUses -= 1;
+			/*
 			switch (typhlosionUses)
 			{
-				case 8: frostbiteTheromometerTyphlosion.animation.play('stage2');
-				case 6: frostbiteTheromometerTyphlosion.animation.play('stage3');
-				case 4: frostbiteTheromometerTyphlosion.animation.play('stage4');
-				case 2: frostbiteTheromometerTyphlosion.animation.play('stage5');
+				case (maxTyphlosion/(10/8)): frostbiteTheromometerTyphlosion.animation.play('stage2');
+				case (maxTyphlosion/(10/6)): frostbiteTheromometerTyphlosion.animation.play('stage3');
+				case (maxTyphlosion/(10/4)): frostbiteTheromometerTyphlosion.animation.play('stage4');
+				case (maxTyphlosion/(10/2)): frostbiteTheromometerTyphlosion.animation.play('stage5');
+			}*/
+			var stages:Array<Float> = [10/8, 10/6, 10/4, 10/2];
+			var stage:String = 'stage1';
+			for(i in 0...stages.length){
+				var n = stages[i];
+				if(typhlosionUses <= Math.floor(maxTyphlosion/n)){
+					stage = 'stage${Std.string(i + 2)}';
+				}
 			}
-			coldness -= (0.35 * (typhlosionUses * 0.075)) + 0.20;
+			frostbiteTheromometerTyphlosion.animation.play(stage);
+
+			var shouldDiminish:Bool=true;
+			var warmthAdd:Float = 0.2;
+			var fuck:Float = (typhlosionUses / maxTyphlosion);
+
+			var diminished = fuck * 0.2625;
+
+			// TODO: let custom set the curve type between normal, hell and fuck you
+			if(gameplayMode == CUSTOM){
+				if (Init.trueSettings.get("Typhlosion Diminishing Returns")){
+					diminished = 0.2625;
+					//logInput = 11;
+				}
+
+				warmthAdd *= Init.trueSettings.get("Typhlosion Warmth Percent")/100;	
+			}else if(gameplayMode == HELL_MODE){
+				var sc = 0.64; // the magic number...
+				// made from just fucking around on desmos til i found a curve i liked
+				// this takes you from 0.4 to 0, so it starts off strong but quickly drops off
+				var factor = (Math.pow(fuck, 3)) / sc;
+				var pos = Math.sqrt(1 * factor - 0) - 0;
+				diminished = pos * sc;
+				warmthAdd = 0.3;
+			}
+			
+			if(diminished<0)diminished=0;
+			coldness -= ((diminished) + warmthAdd);
 
 			if (typhlosionUses == 0)
 				{
@@ -2901,9 +2956,9 @@ class PlayState extends MusicBeatState
 							FlxG.sound.play(Paths.sound('TyphlosionDeath'));
 							typhlosion.playAnim('fire', true);
 							typhlosion.animation.finishCallback = function(name:String)
-								{
-									typhlosion.animation.curAnim.pause();
-								}
+							{
+								typhlosion.animation.curAnim.pause();
+							}
 							FlxTween.tween(typhlosion, {y: typhlosion.y + 500}, 1.5, {ease: FlxEase.quadInOut});
 						});
 				}

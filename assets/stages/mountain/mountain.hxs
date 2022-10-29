@@ -162,34 +162,51 @@ function onCreatePost() {
 	introFog.scrollFactor.set();
 	introFog.alpha = 1.0;
 	add(introFog);
+	setPainStuff();
 }
 
 function onBeat(beat) {
 	if (PlayState.instance.useFrostbiteMechanic)
 		{
-			if (PlayState.instance.coldness < 1.0) 
-				PlayState.instance.coldness += PlayState.instance.coldnessRate;
+			if (PlayState.instance.coldness < 1.0){
+				if(PlayState.gameplayMode == 'CUSTOM')
+					PlayState.instance.coldness += PlayState.instance.coldnessRate * (Init.trueSettings.get("Freezing Rate Percent")/100);
+				else if(PlayState.gameplayMode == 'HELL_MODE')
+					PlayState.instance.coldness += PlayState.instance.coldnessRate * 1.5;
+				else
+					PlayState.instance.coldness += PlayState.instance.coldnessRate;
+			}
 		}
 
 		if (freakachu != null && beat % 2 == 0 && freakachu.animation.curAnim.name != 'painsplit')
 			freakachu.playAnim('idle');
 
 		if (freakachuActive)
-			{
-				painSplitChance += 0.1;
-				painSplitCooldown -= 1;
-			}
+		{
+			painSplitChance += 0.1;
+			painSplitCooldown -= 1;
+		}
 			
 		if (FlxG.random.bool(painSplitChance) && freakachuActive && painSplitCooldown <= 0 && PlayState.health >= 1.25) //feel free to change this
-			{
-				painSplitChance = 0.5;
-				painSplitCooldown = 30;
-				doPainSplit(0.5);
-			}
-		trace(painSplitChance);
+		{
+			
+
+			setPainStuff();
+			doPainSplit(0.5);
+		}
+		trace(painSplitChance, painSplitCooldown);
 
 	}
 
+function setPainStuff(){
+	if(PlayState.gameplayMode == 'HELL_MODE'){
+		painSplitChance = 100; // on hell mode he will always pain split when given a chance
+		painSplitCooldown = 80; // however longer cooldown, this is just to make runs a bit more consistent
+	}else{
+		painSplitCooldown = 30;
+		painSplitChance = 0.5;
+	}
+}
 function onUpdate(elapsed)
 	{
 		if (PlayState.instance.coldness < 0.0) PlayState.instance.coldness = 0.0;
@@ -202,7 +219,10 @@ function onUpdate(elapsed)
 		if (PlayState.instance.coldnessDisplay >= 0.33) PlayState.instance.frostbiteTheromometer.animation.play('stage2');
 		if (PlayState.instance.coldnessDisplay >= 0.66) PlayState.instance.frostbiteTheromometer.animation.play('stage3');
 
-		if (PlayState.instance.coldness >= 0.35 && !shownOnce)
+		var showThreshold = 0.35;
+		if((PlayState.gameplayMode == 'HELL_MODE'))showThreshold=0.75;
+
+		if (PlayState.instance.coldness >= showThreshold && !shownOnce)
 			{
 				if (!shownOnce) FlxTween.tween(frostbiteGuide, {alpha: 1.0}, 0.5, {ease: FlxEase.cubeInOut});
 				shownOnce = true;

@@ -402,12 +402,12 @@ class Init extends FlxState
 			true,
 			"Whether the Pendulum should be enabled on songs that include it",
 		],
-		'Rate per Beats' => [
+		'Beat Time' => [
 			NumberSelector,
-			0,
-			"Speed of the Pendulum. Leave as 0 for default",
+			2,
+			"How many beats must pass before you hit the pendulum again",
 			1,
-			0,
+			1,
 			8
 		],
 		'Psyshock' => [
@@ -415,14 +415,13 @@ class Init extends FlxState
 			true,
 			"Whether Hypno can Psyshock you on songs with the Pendulum",
 		],
-		'Psyshock Damage' => [
+		'Psyshock Damage Percent' => [
 			NumberSelector,
 			12.5,
 			"Determines how much 'trance' the player gains on a Psyshock",
 			0.5,
 			0.5,
-			99.5,
-			"%"
+			99.5
 		],
 		'Shaders' => [
 			Checkmark,
@@ -434,6 +433,42 @@ class Init extends FlxState
 			true, 
 			"Whether to enable the snow on the Mountain stage"
 		],
+		'Freezing Enabled' => [
+			Checkmark,
+			true,
+			"Whether the freezing mechanic should be used on songs which include it",
+		],
+		'Typhlosion Diminishing Returns' => [
+			Checkmark,
+			true,
+			"Whether the warmth provided by Typhlosion reduces for each use",
+		],
+		'Typhlosion Uses' => [
+			NumberSelector,
+			10,
+			"How many times you can use your typhlosion before it dies",
+			1,
+			2,
+			20,
+		],
+		'Typhlosion Warmth Percent' => [
+			NumberSelector,
+			100,
+			"How much warmth your Typhlosion gives you",
+			0.5,
+			5,
+			200
+		],
+
+		'Freezing Rate Percent' => [
+			NumberSelector,
+			100,
+			"How fast you freeze",
+			0.5,
+			0,
+			200
+		],
+
 		'Fifth Key' => [
 			Checkmark, 
 			true, 

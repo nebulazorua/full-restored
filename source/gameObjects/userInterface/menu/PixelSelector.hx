@@ -27,7 +27,6 @@ class PixelSelector extends FlxTypedSpriteGroup<FlxSprite>
 		super(x, y);
 
 		this.options = options;
-		trace(options);
 
 		// oops magic numbers
 		var shiftX = 0;
@@ -123,7 +122,6 @@ class PixelSelector extends FlxTypedSpriteGroup<FlxSprite>
 	{
 		objectArray.push(object);
 		positionLog.push([object.x, object.y]);
-        trace(object, object.x, object.y);
 		return super.add(object);
 	}
 }
