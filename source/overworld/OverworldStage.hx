@@ -1,3 +1,7 @@
+// TODO: partially rewrite this to make it easier to add multiple overworlds
+// ofc prob wonr be a way to like, add rooms n shit, cus no need
+// but just the ability to easily use Cinnabar for Missingno and Pokemon Tower for Brimstone
+
 package overworld;
 
 import flixel.tweens.FlxTween;

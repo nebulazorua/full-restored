@@ -88,6 +88,7 @@ class PauseSubState extends MusicBeatSubState
 			add(newText);
 			grpText.push(newText);
 		}
+		
 		expanseHorizontal = 8 / mainTextbox.boxInternalDivision;
 		expanseVertical = 4 / mainTextbox.boxInternalDivision;
 		mainTextbox.boxInterval = Std.int(mainTextbox.boxInterval / mainTextbox.boxInternalDivision);

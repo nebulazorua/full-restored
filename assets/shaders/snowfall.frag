@@ -19,7 +19,7 @@ void main()
     uv = vec2(openfl_TextureCoordv.x * 2.0, openfl_TextureCoordv.y);
     // gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     gl_FragColor = texture2D(bitmap, openfl_TextureCoordv);
-    
+
     for(int i=0; i<amount; i++) {
         float j = float(i) * 2.0;
         float realIntensity = intensity * 1.0;

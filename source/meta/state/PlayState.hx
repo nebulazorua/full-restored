@@ -76,6 +76,7 @@ enum abstract GameModes(String) to String {
 	var NORMAL;
 	var PUSSY_MODE;
 	var FUCK_YOU;
+	var CUSTOM;
 }
 
 class PlayState extends MusicBeatState
@@ -273,11 +274,25 @@ class PlayState extends MusicBeatState
 	var psyshockParticle:FlxSprite;	
 	var cameraFlash:FlxSprite;
 
-	public var tranceActive:Bool = false;
+	public var tranceActive(get, default):Bool = false;
+	function get_tranceActive(){
+		if (!Init.trueSettings.get("Pendulum Enabled") && gameplayMode == CUSTOM || gameplayMode == PUSSY_MODE)
+			return false;
+
+		return tranceActive;
+	}
 	public var tranceNotActiveYet:Bool = false;
 	public var fadePendulum:Bool = false;
 
-	var accuracyMod:Bool = false;
+	var accuracyMod(get, default):Bool = false;
+	function get_accuracyMod()
+	{
+		if (!Init.trueSettings.get("Forced Accuracy") && gameplayMode == CUSTOM || gameplayMode == PUSSY_MODE)
+			return false;
+
+		return accuracyMod;
+	}
+
 	var accuracySound:FlxSound;
 	var accuracyText:FlxText;
 	var accuracyBelow:Bool = false;
@@ -342,8 +357,15 @@ class PlayState extends MusicBeatState
 	public static var staticValues:Map<String, Dynamic> = [];
 	public var camPos:FlxPoint;
 
-	public static var bronzongMechanic:Bool = false;
+	public static var bronzongMechanic(get, default):Bool = false;
 	var blurAmount:Float = 0.0;
+
+	static function get_bronzongMechanic(){ // forces 5key off if you have it off in options
+		if(!Init.trueSettings.get("Fifth Key") && gameplayMode==CUSTOM || gameplayMode==PUSSY_MODE)
+			return false;
+
+		return bronzongMechanic;
+	}
 
 	// Shop Related Stuff
 	var moneyBag:FlxSprite;
@@ -353,7 +375,7 @@ class PlayState extends MusicBeatState
 		// idk what would happen in real lulla so im just gonna make it take you to Purin immediately
 		// + unlock it in Freeplay
 
-		// THIS IS WHAT HAPPENS THEY JUST FUKCING REMOVED IT FOR NO REASON :Sob:
+		// THIS *IS* WHAT HAPPENS THEY JUST FUKCING REMOVED IT FOR NO REASON :Sob:
 
 		if(!FlxG.save.data.unlockedSongs.contains("purin"))FlxG.save.data.unlockedSongs.push("purin");
 		FlxG.save.flush();
@@ -375,10 +397,28 @@ class PlayState extends MusicBeatState
 		Main.switchState(this, new PlayState());
 	}
 
+	function gameplayModeFromString(s:String){
+		switch(s){
+			case 'Normal':
+				return NORMAL;
+			case 'Off':
+				return PUSSY_MODE;
+			case 'Hell':
+				return HELL_MODE;
+			case 'Fuck You':
+				return FUCK_YOU;
+			case 'Custom':
+				return CUSTOM;
+			default:
+				return NORMAL;
+		}
+		return NORMAL;
+	}
 	// at the beginning of the playstate
 	override public function create()
 	{
 		super.create();
+		gameplayMode = gameplayModeFromString(Init.trueSettings.get("Mechanics"));
 		instance = this;
 
 		var time = Sys.time();
@@ -865,10 +905,12 @@ class PlayState extends MusicBeatState
 		
 		// switch song
 		stageBuild.stageCreatePost();
-		
-		if (gameplayMode != PUSSY_MODE) {
-			// switch character
-			pendulum = new FlxSprite();
+	
+
+		// switch character
+		pendulum = new FlxSprite();
+		var canPendulum = !(!Init.trueSettings.get("Pendulum Enabled") && gameplayMode == CUSTOM || gameplayMode == PUSSY_MODE);
+		if(canPendulum){
 			if (SONG.player2 == 'hypno')
 			{
 				pendulumShadow = new FlxTypedGroup<FlxSprite>();
@@ -937,106 +979,106 @@ class PlayState extends MusicBeatState
 				add(tranceDeathScreen);
 				tranceDeathScreen.alpha = 0;
 
-				psyshockParticle = new FlxSprite();
-				psyshockParticle.frames = Paths.getSparrowAtlas('characters/hypno/Psyshock');
-				psyshockParticle.animation.addByPrefix('psyshock', 'Full Psyshock Particle', 24, false);
-				psyshockParticle.animation.play('psyshock');
-				psyshockParticle.updateHitbox();
-				psyshockParticle.visible = false;
-				add(psyshockParticle);
-				psyshockParticle.scale.set(0.85, 0.85);
-				psyshockParticle.animation.finishCallback = function(name:String)
-					{
-						psyshockParticle.visible = false;
-						// trace('IT SHOULD DO THE THING FUCK YOU');
-					};
-					
-				// pregen flash graphic
-				flashGraphic = FlxG.bitmap.create(10, 10, FlxColor.fromString('0xFFFFAFC1'), true, 'flash-DoNotDelete');
-				Paths.excludeAsset('flash-DoNotDelete');
-				flashGraphic.persist = true;
-				cameraFlash = new FlxSprite().loadGraphic(flashGraphic);
-				cameraFlash.setGraphicSize(FlxG.width, FlxG.height);
-				cameraFlash.updateHitbox();
-				cameraFlash.cameras = [dialogueHUD];
-				add(cameraFlash);
-				cameraFlash.alpha = 0;
+				if (gameplayMode != CUSTOM || Init.trueSettings.get("Psyshock")){
+					psyshockParticle = new FlxSprite();
+					psyshockParticle.frames = Paths.getSparrowAtlas('characters/hypno/Psyshock');
+					psyshockParticle.animation.addByPrefix('psyshock', 'Full Psyshock Particle', 24, false);
+					psyshockParticle.animation.play('psyshock');
+					psyshockParticle.updateHitbox();
+					psyshockParticle.visible = false;
+					add(psyshockParticle);
+					psyshockParticle.scale.set(0.85, 0.85);
+					psyshockParticle.animation.finishCallback = function(name:String)
+						{
+							psyshockParticle.visible = false;
+							// trace('IT SHOULD DO THE THING FUCK YOU');
+						};
+						
+					// pregen flash graphic
+					flashGraphic = FlxG.bitmap.create(10, 10, FlxColor.fromString('0xFFFFAFC1'), true, 'flash-DoNotDelete');
+					Paths.excludeAsset('flash-DoNotDelete');
+					flashGraphic.persist = true;
+					cameraFlash = new FlxSprite().loadGraphic(flashGraphic);
+					cameraFlash.setGraphicSize(FlxG.width, FlxG.height);
+					cameraFlash.updateHitbox();
+					cameraFlash.cameras = [dialogueHUD];
+					add(cameraFlash);
+					cameraFlash.alpha = 0;
 
-				// if (!ClientPrefs.photosensitive)
-				// camHUD.flash(FlxColor.fromString('0xFFFFAFC1'), 0.1, null, true);
+					// if (!ClientPrefs.photosensitive)
+					// camHUD.flash(FlxColor.fromString('0xFFFFAFC1'), 0.1, null, true);
 
-				FlxG.sound.play(Paths.sound('Psyshock'), 0);
+					FlxG.sound.play(Paths.sound('Psyshock'), 0);
+				}
 				tranceSound = FlxG.sound.play(Paths.sound('TranceStatic'), 0, true);
+				
 			}
 
 			if (fadePendulum)
 				pendulumFade();
-			if (accuracyMod)
-			{
-				accuracyThreshold = 90;
-				if (gameplayMode == HELL_MODE)
-					accuracyThreshold = 98;
-
-				accuracyText = new FlxText();
-				accuracyText.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
-				accuracyText.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
-				accuracyText.cameras = [camHUD];
-				accuracyText.antialiasing = true;
-
-				iconFeraligatr = new HealthIcon('feraligatr', false);
-				iconFeraligatr.cameras = [camHUD];
-				// group.add(iconFeraligatr);
-				accuracyText.color = FlxColor.WHITE;
-				group.add(accuracyText);
-				//
-				accuracySound = new FlxSound().loadEmbedded(Paths.sound('feraligatrWakes'), false, false, die);
-				FlxG.sound.list.add(accuracySound);
-			}
-
-			if (bronzongMechanic) {
-				boyfriendStrums.keyAmount = 5;
-				boyfriendStrums.xPos = placement - (!Init.trueSettings.get('Centered Notefield') ? midPoint : 0);
-				boyfriendStrums.regenerateStrums();
-			}
-
-			if (useFrostbiteMechanic) // Freezing Mechanic
-			{
-				frostbiteBar = new FlxBar(1161 + 36 - 1134, 172 + 14, BOTTOM_TO_TOP, 16, 325, this, 'coldnessDisplay', 0, 1);
-				frostbiteBar.createFilledBar(0xFF133551, 0xFFAAD6FF);
-				add(frostbiteBar);
-				frostbiteBar.cameras = [camHUD];
-
-				frostbiteTheromometerTyphlosion = new FlxSprite(1164 - 1134, 119);
-				frostbiteTheromometerTyphlosion.frames = Paths.getSparrowAtlas('UI/base/TyphlosionVit');
-				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage1', 'Typh1', 24, true);
-				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage2', 'Typh2', 24, true);
-				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage3', 'Typh3', 24, true);
-				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage4', 'Typh4', 24, true);
-				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage5', 'Typh5', 24, true);
-				frostbiteTheromometerTyphlosion.animation.play('stage1');
-				frostbiteTheromometerTyphlosion.updateHitbox();
-				frostbiteTheromometerTyphlosion.antialiasing = true;
-				add(frostbiteTheromometerTyphlosion);
-				frostbiteTheromometerTyphlosion.cameras = [camHUD];
-
-				frostbiteTheromometer = new FlxSprite(1161 - 1134, 172);
-				frostbiteTheromometer.frames = Paths.getSparrowAtlas('UI/base/Thermometer');
-				frostbiteTheromometer.animation.addByPrefix('stage1', 'Therm1', 24, true);
-				frostbiteTheromometer.animation.addByPrefix('stage2', 'Therm2', 24, true);
-				frostbiteTheromometer.animation.addByPrefix('stage3', 'Therm3', 24, true);
-				frostbiteTheromometer.animation.play('stage1');
-				frostbiteTheromometer.updateHitbox();
-				frostbiteTheromometer.antialiasing = true;
-				add(frostbiteTheromometer);
-				frostbiteTheromometer.cameras = [camHUD];
-			}
-		} else {
-			// pussy mode stuff
-			tranceActive = false;
-			bronzongMechanic = false;
-			useFrostbiteMechanic = false;
-			accuracyMod = false;
 		}
+		if (accuracyMod)
+		{
+			accuracyThreshold = 90;
+			if (gameplayMode == HELL_MODE)
+				accuracyThreshold = 98;
+			else if(gameplayMode==CUSTOM)
+				accuracyThreshold = Init.trueSettings.get("Accuracy Cap");
+
+			accuracyText = new FlxText();
+			accuracyText.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
+			accuracyText.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
+			accuracyText.cameras = [camHUD];
+			accuracyText.antialiasing = true;
+
+			iconFeraligatr = new HealthIcon('feraligatr', false);
+			iconFeraligatr.cameras = [camHUD];
+			// group.add(iconFeraligatr);
+			accuracyText.color = FlxColor.WHITE;
+			group.add(accuracyText);
+			//
+			accuracySound = new FlxSound().loadEmbedded(Paths.sound('feraligatrWakes'), false, false, die);
+			FlxG.sound.list.add(accuracySound);
+		}
+
+		if (bronzongMechanic) {
+			boyfriendStrums.keyAmount = 5;
+			boyfriendStrums.xPos = placement - (!Init.trueSettings.get('Centered Notefield') ? midPoint : 0);
+			boyfriendStrums.regenerateStrums();
+		}
+
+		if (useFrostbiteMechanic) // Freezing Mechanic
+		{
+			frostbiteBar = new FlxBar(1161 + 36 - 1134, 172 + 14, BOTTOM_TO_TOP, 16, 325, this, 'coldnessDisplay', 0, 1);
+			frostbiteBar.createFilledBar(0xFF133551, 0xFFAAD6FF);
+			add(frostbiteBar);
+			frostbiteBar.cameras = [camHUD];
+
+			frostbiteTheromometerTyphlosion = new FlxSprite(1164 - 1134, 119);
+			frostbiteTheromometerTyphlosion.frames = Paths.getSparrowAtlas('UI/base/TyphlosionVit');
+			frostbiteTheromometerTyphlosion.animation.addByPrefix('stage1', 'Typh1', 24, true);
+			frostbiteTheromometerTyphlosion.animation.addByPrefix('stage2', 'Typh2', 24, true);
+			frostbiteTheromometerTyphlosion.animation.addByPrefix('stage3', 'Typh3', 24, true);
+			frostbiteTheromometerTyphlosion.animation.addByPrefix('stage4', 'Typh4', 24, true);
+			frostbiteTheromometerTyphlosion.animation.addByPrefix('stage5', 'Typh5', 24, true);
+			frostbiteTheromometerTyphlosion.animation.play('stage1');
+			frostbiteTheromometerTyphlosion.updateHitbox();
+			frostbiteTheromometerTyphlosion.antialiasing = true;
+			add(frostbiteTheromometerTyphlosion);
+			frostbiteTheromometerTyphlosion.cameras = [camHUD];
+
+			frostbiteTheromometer = new FlxSprite(1161 - 1134, 172);
+			frostbiteTheromometer.frames = Paths.getSparrowAtlas('UI/base/Thermometer');
+			frostbiteTheromometer.animation.addByPrefix('stage1', 'Therm1', 24, true);
+			frostbiteTheromometer.animation.addByPrefix('stage2', 'Therm2', 24, true);
+			frostbiteTheromometer.animation.addByPrefix('stage3', 'Therm3', 24, true);
+			frostbiteTheromometer.animation.play('stage1');
+			frostbiteTheromometer.updateHitbox();
+			frostbiteTheromometer.antialiasing = true;
+			add(frostbiteTheromometer);
+			frostbiteTheromometer.cameras = [camHUD];
+		}
+
 
 		// create the game camera
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -1317,6 +1359,7 @@ class PlayState extends MusicBeatState
 	var brimstoneDistortionTime:Float = 0;
 
 	public function psyshock(?real:Bool = true) {
+		if (!Init.trueSettings.get("Psyshock") && gameplayMode==CUSTOM)return;
 		psyshockParticle.setPosition(dadOpponent.x + 825, dadOpponent.y - 75);
 
 		if (dadOpponent.curCharacter == 'hypno-two')
@@ -1341,7 +1384,14 @@ class PlayState extends MusicBeatState
 		if (flashingEnabled) flash();
 
 		if (real)
-			trance += 0.25;
+			switch(gameplayMode){
+				case HELL_MODE:
+					trance += 0.5;
+				case CUSTOM:
+					trance += Init.trueSettings.get("Psyshock Damage");
+				default:
+					trance += 0.25;
+			}
 		else {
 			tranceDeathScreen.alpha += 0.1;
 			tranceCanKill = false;
@@ -1385,7 +1435,10 @@ class PlayState extends MusicBeatState
 		if (!frostSet)
 		{
 			frostbiteShader = new ShaderFilter(new GraphicsShader("", Paths.shader('snowfall')));
-			vignetteCam.setFilters([frostbiteShader]);
+			if(Init.trueSettings.get("Snow Enabled"))
+				vignetteCam.setFilters([frostbiteShader]);
+			else
+				frostbiteShader.shader.data.amount.value = [0];
 			frostSet = true;
 		}
 	}
@@ -1412,6 +1465,8 @@ class PlayState extends MusicBeatState
 
 	function set_snowAmount(value:Float):Float
 	{
+		if (!Init.trueSettings.get("Snow Enabled"))
+			value = 0;
 		if (canChangeAmount)
 		{
 			snowAmount = value;

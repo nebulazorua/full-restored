@@ -629,7 +629,6 @@ class ShopState extends MusicBeatState
 
 				// songText.controllable = true;
 				oldGrpSongs.add(songText);
-				trace(i, displayName, songText);
 
 				// create lock sprite lol
 				var lockSprite:LockSprite = new LockSprite();
@@ -807,7 +806,6 @@ class ShopState extends MusicBeatState
 			var chartExists:Bool = FileSystem.exists(Paths.songJson(i, i + '-hard', old, library));
 			if (library != null)
 				chartExists = openfl.utils.Assets.exists(Paths.songJson(i, i + '-hard', old, library), TEXT);
-			trace(j, old, i, chartExists, Paths.songJson(i, i + '-hard', old, library));
 			if (chartExists)
 			{
 				var castSong:SwagSong = Song.loadFromJson(i + '-hard', i, library, old);
@@ -1022,9 +1020,6 @@ class ShopState extends MusicBeatState
 			}
 		}
 
-		// TODO: rewrite this cus freeplay and freeplay old
-		// .. fuck it for now im just gonna copy paste it lol!
-		//
 		for (i in 0...limiter + 1)
 		{
 			var item:Alphabet = null;
@@ -2276,16 +2271,14 @@ class ShopState extends MusicBeatState
 			{
 				if (i.textIdentifier == daVar)
 				{
-					trace(i.text, i.textIdentifier, daVar);
 					item = i.text;
 					break;
 				}
 			}
-			trace(item.toLowerCase());
 			
 			if (!FlxG.save.data.playedSongs.contains(CoolUtil.spaceToDash(songList[daVar].songName.toLowerCase())))
 				item = 'unknown'; 
-			trace(page);
+
 			if(page == FREEPLAY)
 				switchPortrait(item);
 			else if(page==FREEPLAY_OLD)

@@ -42,7 +42,10 @@ class ChartLoader
 						var daStrumTime:Float = songNotes[0] - Init.trueSettings['Offset']; // - | late, + | early
 						switch (songNotes[1]) {
 							default:
-								if (PlayState.bronzongMechanic && songNotes[1] == 8) {
+								if (songNotes[1] == 8) {
+									if (!PlayState.bronzongMechanic)
+										continue;
+									
 									var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, 4, 2, 0);
 									swagNote.noteSpeed = songData.speed;
 	

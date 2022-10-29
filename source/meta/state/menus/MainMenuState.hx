@@ -71,6 +71,8 @@ class MainMenuState extends MusicBeatState
 
 	override public function create() {
 		super.create();
+		persistentUpdate=true;
+		persistentDraw=true;
 
 		ForeverTools.resetMenuMusic();
 		Discord.changePresence('MAIN MENU', 'Main Menu');
@@ -160,7 +162,7 @@ class MainMenuState extends MusicBeatState
 			}
 
 			if (canSelect) 
-				textGroup.members[i].alpha = 0.6;
+				textGroup.members[i].alpha = FlxMath.lerp(textGroup.members[i].alpha, 0.6, elapsedLerp /  1.25);
 			else textGroup.members[i].alpha = FlxMath.lerp(textGroup.members[i].alpha, 0, elapsedLerp / 2);
 			if (i == curSelection)
 				textGroup.members[i].alpha = 1;

@@ -26,8 +26,10 @@ using StringTools;
 **/
 enum SettingTypes
 {
-	Checkmark;
-	Selector;
+	Checkmark; // checkbox/on and off togle
+	StringSelector; // select from list of strings
+	NumberSelector; // choose a number
+	Custom; // anything else
 }
 
 /**
@@ -50,6 +52,8 @@ class Init extends FlxState
 	public static var FORCED = 'forced';
 	public static var NOT_FORCED = 'not forced';
 
+	// Neb: I hate how this works so im rewriting it lol
+	/*
 	public static var gameSettings:Map<String, Dynamic> = [
 		'Downscroll' => [
 			false,
@@ -173,6 +177,282 @@ class Init extends FlxState
 		],
 
 
+	];*/
+
+	// new settings shit kinda
+
+	/* Settings are defined like this:
+		'Name' => [
+			Type,
+			DefaultValue,
+			Description,
+			MiscData
+		]
+
+		MiscData depends on type.
+		If its a NumSelector, MiscData is, in order: Step, Min, Max, Suffix (optional)
+		so:
+		'FPS Cap' => [
+			NumberSelector,
+			60,
+			"Sets the target framerate of the application",
+			30,
+			30,
+			360,
+			""
+		]
+
+		StringSelector just has an array of selections
+
+		'Note Clipping' => [
+			StringSelector,
+			"FNF",
+			"Sets how notes are clipped",
+			["Stepmania", "FNF"]
+		]
+		
+
+		// Checkmark and Custom have nothing
+
+	*/
+	public static var gameSettings:Map<String, Dynamic> = [
+		'Downscroll' => [
+			Checkmark,
+			false,
+			'Whether to have the strumline vertically flipped in gameplay.',
+			
+		],
+		'Auto Pause' => [
+			Checkmark, 
+			true, 
+			'', 
+		],
+		'FPS Counter' => [
+			Checkmark, 
+			true, 
+			'Whether to display the FPS counter.', 
+		],
+		'Memory Counter' => [
+			Checkmark,
+			true,
+			'Whether to display approximately how much memory is being used.',
+			
+		],
+		'Debug Info' => [
+			Checkmark,
+			false,
+			'Whether to display information like your game state.',
+			
+		],
+		'Reduced Movements' => [
+			Checkmark,
+			false,
+			'Whether to reduce movements, like icons bouncing or beat zooms in gameplay.',
+			
+		],
+		'Flashing Lights' => [
+			Checkmark,
+			true,
+			'Enables flashing lights, turn this off if you are epileptic or sensitive to flashing lights!',
+			
+		],
+		'Stage Opacity' => [
+			NumberSelector,
+			0,
+			'Darkens non-ui elements, useful if you find the characters and backgrounds distracting.',
+
+			5,
+			0,
+			100
+		],
+		'Opacity Type' => [
+			StringSelector,
+			'UI',
+			'Choose whether the filter will be behind the notes or the UI',
+			
+			['UI', 'Notes']
+		],
+		'Counter' => [
+			StringSelector,
+			'None',
+			'Choose whether you want somewhere to display your judgements, and where you want it.',
+			
+			['Left', 'None', 'Right']
+		],
+		'Display Accuracy' => [
+			Checkmark, 
+			true,
+			'Whether to display your accuracy on screen.'
+		],
+		'Disable Antialiasing' => [
+			Checkmark,
+			false,
+			'Whether to disable Anti-aliasing. Helps improve performance in FPS.',
+			
+		],
+		'No Camera Note Movement' => [
+			Checkmark,
+			false,
+			'When enabled, left and right notes no longer move the camera.',
+			
+		],
+		'Use Forever Chart Editor' => [
+			Checkmark,
+			false,
+			'When enabled, uses the custom Forever Engine chart editor!',
+			
+		],
+		'Disable Note Splashes' => [
+			Checkmark,
+			false,
+			'Whether to disable note splashes in gameplay. Useful if you find them distracting.',
+			
+		],
+
+		'Offset' => [
+			Custom, 
+			0, 
+			"offset"
+		],
+		'Filter' => [
+			StringSelector,
+			'none',
+			'Choose a filter for colorblindness.',
+			['none', 'Deuteranopia', 'Protanopia', 'Tritanopia']
+		],
+		"Clip Style" => [
+			StringSelector,
+			'stepmania',
+			"Chooses a style for hold note clippings; StepMania: Holds under Receptors; FNF: Holds over receptors",
+			['StepMania', 'FNF']
+		],
+		"UI Skin" => [
+			StringSelector,
+			'default',
+			'Choose a UI Skin for judgements, combo, etc.',
+			[]
+		],
+		"Note Skin" => [
+			StringSelector, 
+			'default', 
+			'Choose a note skin.', 
+			[]
+		],
+		"Framerate Cap" => [
+			NumberSelector, 
+			120, 
+			'Define your maximum FPS.', 
+			30, 
+			30, 
+			360
+		],
+		"Opaque Arrows" => [
+			Checkmark,
+			false,
+			"Makes the arrows at the top of the screen opaque again.",
+			
+		],
+		"Opaque Holds" => [
+			Checkmark, 
+			false, 
+			"Huh, why isnt the tail cut off?"
+		],
+		'Ghost Tapping' => [
+			Checkmark,
+			true,
+			"Enables Ghost Tapping, allowing you to press inputs without missing.",
+			
+		],
+		'Centered Notefield' => [
+			Checkmark,  
+			false, 
+			"Center the notes, disables the enemy's notes."
+		],
+		"Custom Titlescreen" => [
+			Checkmark,
+			false,
+			"Enables the custom Forever Engine titlescreen! (only effective with a restart)",
+			
+		],
+		'Skip Text' => [
+			StringSelector,
+			'freeplay only',
+			'Decides whether to skip cutscenes and dialogue in gameplay. May be always, only in freeplay, or never.',
+			['never', 'freeplay only', 'always']
+		],
+		'Fixed Judgements' => [
+			Checkmark,
+			false,
+			"Fixes the judgements to the camera instead of to the world itself, making them easier to read.",
+			
+		],
+		'Simply Judgements' => [
+			Checkmark,
+			false,
+			"Simplifies the judgement animations, displaying only one judgement / rating sprite at a time.",
+		],
+		'Mechanics' => [
+			StringSelector,
+			'normal',
+			'Presets for the mechanics settings. "custom" lets you set them yourself.',
+			['Off', 'Normal', 'Hell', 'Custom'] // TODO: add fuck you
+		],
+		'Pendulum Enabled' => [
+			Checkmark,
+			true,
+			"Whether the Pendulum should be enabled on songs that include it",
+		],
+		'Rate per Beats' => [
+			NumberSelector,
+			0,
+			"Speed of the Pendulum. Leave as 0 for default",
+			1,
+			0,
+			8
+		],
+		'Psyshock' => [
+			Checkmark,
+			true,
+			"Whether Hypno can Psyshock you on songs with the Pendulum",
+		],
+		'Psyshock Damage' => [
+			NumberSelector,
+			12.5,
+			"Determines how much 'trance' the player gains on a Psyshock",
+			0.5,
+			0.5,
+			99.5,
+			"%"
+		],
+		'Shaders' => [
+			Checkmark,
+			true,
+			"Whether to load shaders or not",
+		],
+		'Snow Enabled' => [
+			Checkmark, 
+			true, 
+			"Whether to enable the snow on the Mountain stage"
+		],
+		'Fifth Key' => [
+			Checkmark, 
+			true, 
+			"Whether to enable the bell notes on Death Toll"
+		],
+		'Forced Accuracy' => [
+			Checkmark, 
+			true, 
+			"Whether Insomnia should have its forced accuracy gimmick"
+		],
+		"Accuracy Cap" => [
+			NumberSelector, 
+			90,
+			'The minimum accuracy you can have in Insomnia before Feraligatr kills you', 
+			1, 
+			5, 
+			100
+		],
+
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];
@@ -294,26 +574,48 @@ class Init extends FlxState
 		{
 			var settingsMap:Map<String, Dynamic> = FlxG.save.data.settings;
 			for (singularSetting in settingsMap.keys())
-				if (gameSettings.get(singularSetting) != null && gameSettings.get(singularSetting)[3] != FORCED)
+				if (gameSettings.get(singularSetting) != null)
 					trueSettings.set(singularSetting, FlxG.save.data.settings.get(singularSetting));
 		}
 
 		if (FlxG.save.data != null)
-			{
-				FlxG.sound.muted = FlxG.save.data.mute;
-				FlxG.sound.volume = FlxG.save.data.volume;
+		{
+			FlxG.sound.muted = FlxG.save.data.mute == null ? false : FlxG.save.data.mute;
+			FlxG.sound.volume = FlxG.save.data.volume == null?3:FlxG.save.data.volume;
+		}
+		// validate all the options
+		for(key => data in gameSettings){
+			var val:Dynamic = trueSettings.get(key);
+			switch(data[0]){
+				case NumberSelector:
+					var def:Float = data[1];
+					var min:Float = data[4];
+					var max:Float = data[5];
+					if(!Std.isOfType(val, Float)){
+						trueSettings.set(key, def);
+						val = def;
+					}
+
+					// TODO: check if it lines up w/ the snap, and if not then snap it
+
+					if(val < min)
+						trueSettings.set(key, min);
+					else if(val > max)
+						trueSettings.set(key, max);
+					
+					
+				case StringSelector:
+					var options:Array<String> = data[3];
+					if(!options.contains(val))
+						trueSettings.set(key, data[1]);
+				case Checkmark:
+					if (!Std.isOfType(val, Bool))
+						trueSettings.set(key, data[1]);
+				default:
+					// nothing
 			}
+		}
 
-		// lemme fix that for you
-		if (!Std.isOfType(trueSettings.get("Framerate Cap"), Int)
-			|| trueSettings.get("Framerate Cap") < 30
-			|| trueSettings.get("Framerate Cap") > 360)
-			trueSettings.set("Framerate Cap", 30);
-
-		if (!Std.isOfType(trueSettings.get("Stage Opacity"), Int)
-			|| trueSettings.get("Stage Opacity") < 0
-			|| trueSettings.get("Stage Opacity") > 100)
-			trueSettings.set("Stage Opacity", 100);
 		saveSettings();
 
 		updateAll();
