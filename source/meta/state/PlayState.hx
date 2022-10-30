@@ -82,7 +82,7 @@ enum abstract GameModes(String) to String {
 class PlayState extends MusicBeatState
 {
 	public var startTimer:FlxTimer;
-
+	static var kms:Int = 0;
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
 	@:isVar
@@ -919,8 +919,17 @@ class PlayState extends MusicBeatState
 		pendulum = new FlxSprite();
 		var canPendulum = !(!Init.trueSettings.get("Pendulum Enabled") && gameplayMode == CUSTOM || gameplayMode == PUSSY_MODE);
 		if(canPendulum){
-			if(gameplayMode==CUSTOM)
-				beatInterval = Init.trueSettings.get("Beat Time");
+			switch(gameplayMode){
+				case CUSTOM:
+					beatInterval = Init.trueSettings.get("Beat Time");
+				case HELL_MODE:
+					beatInterval = 1;
+				case FUCK_YOU:
+					beatInterval = 0.5; // good luck :)
+				default:
+				
+			}
+
 			if (SONG.player2 == 'hypno')
 			{
 				pendulumShadow = new FlxTypedGroup<FlxSprite>();
@@ -1772,7 +1781,7 @@ class PlayState extends MusicBeatState
 			if (i.alive && i.exists('onUpdate')) {
 				i.get('onUpdate')(elapsed);
 			} else
-				updateableScript.splice(updateableScript.indexOf(i), 1);
+				updateableScript.remove(i);
 		}
 		
 		// update accuracy mod
@@ -2428,7 +2437,7 @@ class PlayState extends MusicBeatState
 						if (module.exists("eventFunction"))
 							module.get("eventFunction")(eventList[i].params);
 						stageBuild.dispatchEvent(eventList[i].eventName);
-						if (module.exists("onUpdate"))
+						if (module.exists("onUpdate") && !updateableScript.contains(module))
 							updateableScript.push(module);
 						// */
 						trace(eventList.splice(i, 1));

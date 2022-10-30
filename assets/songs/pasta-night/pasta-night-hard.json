@@ -100,6 +100,13 @@
 						5,
 						0,
 						0
+					],
+					[
+						16538.4615384615,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"lengthInSteps": 16,
@@ -373,6 +380,13 @@
 						9,
 						0,
 						0
+					],
+					[
+						23076.9230769231,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"lengthInSteps": 16,
@@ -658,6 +672,13 @@
 						9,
 						0,
 						0
+					],
+					[
+						29230.7692307692,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"lengthInSteps": 16,
@@ -1015,6 +1036,13 @@
 						7,
 						0,
 						0
+					],
+					[
+						37948.717948718,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"lengthInSteps": 16,
@@ -1391,6 +1419,13 @@
 						"Pasta Camera",
 						"-1",
 						""
+					],
+					[
+						45897.4358974359,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"lengthInSteps": 16,
@@ -1591,6 +1626,13 @@
 						5,
 						384.615384615385,
 						0
+					],
+					[
+						54358.9743589744,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"lengthInSteps": 16,
@@ -2135,6 +2177,13 @@
 						8,
 						0,
 						0
+					],
+					[
+						70384.6153846154,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"altAnim": false,
@@ -2619,6 +2668,13 @@
 						7,
 						0,
 						0
+					],
+					[
+						79743.5897435898,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"altAnim": false,
@@ -3995,6 +4051,13 @@
 						"Pasta Camera",
 						"",
 						""
+					],
+					[
+						101538.461538462,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"altAnim": false,
@@ -4261,6 +4324,13 @@
 						4,
 						0,
 						0
+					],
+					[
+						111666.666666667,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"altAnim": false,
@@ -4848,6 +4918,13 @@
 						4,
 						256.410256410256,
 						0
+					],
+					[
+						131282.051282051,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"altAnim": false,
@@ -5911,6 +5988,13 @@
 						4,
 						0,
 						0
+					],
+					[
+						152564.102564103,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"altAnim": false,
@@ -6223,6 +6307,13 @@
 						"Pasta Camera",
 						"1",
 						""
+					],
+					[
+						159743.58974359,
+						-1,
+						"Pow",
+						"hell",
+						""
 					]
 				],
 				"altAnim": false,
@@ -7092,13 +7183,53 @@
 			},
 			{
 				"lengthInSteps": 16,
-				"altAnim": false,
 				"typeOfSection": 0,
 				"sectionNotes": [],
+				"altAnim": false,
+				"sectionCamera": 1,
 				"bpm": 117,
 				"changeBPM": false,
-				"sectionCamera": 1,
 				"mustHitSection": true
+			},
+			{
+				"lengthInSteps": 16,
+				"typeOfSection": 0,
+				"sectionNotes": [],
+				"altAnim": false,
+				"sectionCamera": 1,
+				"bpm": 117,
+				"changeBPM": false,
+				"mustHitSection": true
+			},
+			{
+				"lengthInSteps": 16,
+				"typeOfSection": 0,
+				"sectionNotes": [],
+				"altAnim": false,
+				"sectionCamera": 1,
+				"bpm": 117,
+				"changeBPM": false,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"typeOfSection": 0,
+				"lengthInSteps": 16,
+				"sectionCamera": 1,
+				"altAnim": false,
+				"mustHitSection": true,
+				"changeBPM": false,
+				"bpm": 117
+			},
+			{
+				"sectionNotes": [],
+				"typeOfSection": 0,
+				"lengthInSteps": 16,
+				"sectionCamera": 1,
+				"altAnim": false,
+				"mustHitSection": true,
+				"changeBPM": false,
+				"bpm": 117
 			},
 			{
 				"lengthInSteps": 16,

@@ -28,7 +28,7 @@
 	<assets path="shitpost" library="shitpost" embed="true"/>
 	<assets path="dlls/" rename='' />
 	<assets path="plugins/" rename='' />
-	<assets path="FE-CrashDialog.exe" type="template" if="windows release" />
+	<assets path="FE-CrashDialog.exe" type="template" if="windows" />
 	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits"/>
 	<!--<assets path="mods" />-->
 

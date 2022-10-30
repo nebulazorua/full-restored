@@ -5,6 +5,8 @@ function returnDescription()
     return 'Makes MX hit the pow block\nReversing the scroll direction.';
 
 function eventFunction(params) {
+    if(params[0]=='hell' && PlayState.gameplayMode!='HELL_MODE')return;
+    
     startReverse = 0;
     doReverse = false;
     var him:Boyfriend = PlayState.instance.mx;
