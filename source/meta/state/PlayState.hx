@@ -1766,6 +1766,7 @@ class PlayState extends MusicBeatState
 
 	static var accuracyThreshold:Float = 90;
 
+	var resyncTimer:Float = 0;
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -2023,7 +2024,7 @@ class PlayState extends MusicBeatState
 				else
 				{
 					// Conductor.songPosition = FlxG.sound.music.time;
-					Conductor.songPosition += elapsed * 1000;
+					/*Conductor.songPosition += elapsed * 1000;
 
 					if (!paused)
 					{
@@ -2038,7 +2039,23 @@ class PlayState extends MusicBeatState
 							// Conductor.songPosition += FlxG.elapsed * 1000;
 							// trace('MISSED FRAME');
 						}
+					}*/
+					if (songMusic.playing)
+					{ // new resync stuff, should keep everything relatively in sync, better than how vanilla psych does it anyway
+						// should have no stuttering etc
+						// this is based on how Stepmania keeps everything synced, actually
+						// -neb
+						if (songMusic.time == Conductor.lastSongPos)
+							resyncTimer += elapsed * 1000;
+						else
+							resyncTimer = 0;
+
+						Conductor.songPosition = songMusic.time + resyncTimer;
+
+						Conductor.lastSongPos = songMusic.time;
 					}
+					else
+						Conductor.songPosition += elapsed * 1000;
 
 					// penduluuum
 					if (pendulum != null && tranceActive) {
@@ -2899,9 +2916,9 @@ class PlayState extends MusicBeatState
 			hypnoRating.cameras = [PlayState.camHUD];
 			hypnoRating.alpha = 1.0;
 			hypnoRating.animation.finishCallback = function(name:String)
-				{
-					hypnoRating.destroy();
-				}
+			{
+				hypnoRating.destroy();
+			}
 		}
 	}
 
@@ -3011,8 +3028,8 @@ class PlayState extends MusicBeatState
 				trace('gengar note hit');
 				FlxG.sound.play(Paths.sound('GengarNoteSFX'));
 				if (flashingEnabled) dialogueHUD.flash(0x528E16FF, 0.5);
-				gengarNoteInvis += 0.15;
-				if (gengarNoteInvis > 0.7) gengarNoteInvis = 0.7;		
+				gengarNoteInvis += gameplayMode==HELL_MODE?0.3:0.15;
+				if (gengarNoteInvis > (gameplayMode==HELL_MODE?1:0.7)) gengarNoteInvis = (gameplayMode==HELL_MODE?1:0.7);		
 				gengarNoteTimer=0;	
 				health -= 0.1;
 				songScore -= 100;
@@ -3117,7 +3134,11 @@ class PlayState extends MusicBeatState
 		if (bronzongMechanic && direction == 4)
 			{
 				trace('BELL NOTE MISSED');
-				health -= 0.5;
+				if(gameplayMode==HELL_MODE)
+					health -= 1;
+				else
+					health -= 0.25;
+				
 				blurAmount = 1.0;
 			}
 
@@ -3693,7 +3714,7 @@ class PlayState extends MusicBeatState
 				psyshockCooldown--;
 		}
 
-		if (songMusic != null && Math.abs(songMusic.time - Conductor.songPosition) > 20
+		/*if (songMusic != null && Math.abs(songMusic.time - Conductor.songPosition) > 20
 		|| (SONG.needsVoices && vocals != null && Math.abs(vocals.time - Conductor.songPosition) > 20))
 			resyncVocals();
 		//*/

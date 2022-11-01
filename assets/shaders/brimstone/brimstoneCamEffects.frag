@@ -29,7 +29,7 @@ float[4] gb_colors_distance(vec3 color) {
 vec3 closest_gb(vec3 color) {
     int best_i = 0;
     float best_d = 2.;
-    
+
     vec3 gb_colors[4] = gb_colors();
     for (int i = 0; i < 4; i++) {
         float dis = distance(gb_colors[i], color);
@@ -43,13 +43,13 @@ vec3 closest_gb(vec3 color) {
 
 vec3[2] gb_2_closest(vec3 color) {
  	float distances[4] = gb_colors_distance(color);
-    
+
     int first_i = 0;
     float first_d = 2.;
-    
+
     int second_i = 0;
     float second_d = 2.;
-    
+
     for (int i = 0; i < distances.length(); i++) {
         float d = distances[i];
         if (distances[i] <= first_d) {
@@ -67,19 +67,19 @@ vec3[2] gb_2_closest(vec3 color) {
     if (first_i < second_i)
         result = vec3[2](colors[first_i], colors[second_i]);
     else
-     	result = vec3[2](colors[second_i], colors[first_i]);   
+     	result = vec3[2](colors[second_i], colors[first_i]);
     return result;
 }
 
 bool needs_dither(vec3 color) {
     float distances[4] = gb_colors_distance(color);
-    
+
     int first_i = 0;
     float first_d = 2.;
-    
+
     int second_i = 0;
     float second_d = 2.;
-    
+
     for (int i = 0; i < distances.length(); i++) {
         float d = distances[i];
         if (d <= first_d) {
@@ -100,7 +100,7 @@ vec3 return_gbColor(vec3 sampleColor) {
     if (needs_dither(sampleColor)) {
         endColor = vec3(gb_2_closest(sampleColor)[int(dither_2[int(openfl_TextureCoordv.x)][int(openfl_TextureCoordv.y)])]);
     } else
-        endColor = vec3(closest_gb(texture2D(bitmap, openfl_TextureCoordv).rgb));
+        endColor = vec3(closest_gb(flixel_texture2D(bitmap, openfl_TextureCoordv).rgb));
     return endColor;
 }
 
@@ -109,7 +109,11 @@ vec3 buried_grave_color = vec3(121.0, 133.0, 142.0) / 255.0;
 vec3 buried_wall_color = vec3(107., 130., 149.) / 255.0;
 
 void main() {
-    vec4 sampleColor = texture2D(bitmap, openfl_TextureCoordv);
+    vec4 sampleColor = flixel_texture2D(bitmap, openfl_TextureCoordv);
+    /*if(intensity==0.0){
+      gl_FragColor = sampleColor;
+      return;
+    }*/
     vec3 colors[4] = gb_colors();
     if (sampleColor.a != 0.0) {
         vec3 colorB = return_gbColor(sampleColor.rgb);
@@ -120,7 +124,7 @@ void main() {
             colorB = colors[2];
         if (sampleColor.rgb == buried_wall_color)
             colorB = colors[2];
-        newColor = vec4(mix(sampleColor.rgb * sampleColor.a, colorB.rgb, intensity), sampleColor.a);
+        newColor = vec4(mix(sampleColor.rgb, colorB.rgb, intensity), sampleColor.a);
         gl_FragColor = newColor;
     } else
         gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);

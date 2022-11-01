@@ -25,7 +25,7 @@ function eventFunction(params) {
 		ease: FlxEase.sineIn,
 		onComplete: function(tween:FlxTween)
 		{
-			PlayState.instance.vignette = new ShaderFilter(new GraphicsShader("", Paths.shader('brimstone/vignetteApparition')));
+			PlayState.instance.vignette = new ShaderFilter(new FlxGraphicsShader("", Paths.shader('brimstone/vignetteApparition')));
 			PlayState.vignetteCam.setFilters([PlayState.instance.vignette]);
 			FlxTween.tween(PlayState.camGame, {zoom: PlayState.defaultCamZoom}, (Conductor.stepCrochet * 32) / 1000,
 				{ease: FlxEase.sineOut, startDelay: (Conductor.stepCrochet * 16) / 1000});

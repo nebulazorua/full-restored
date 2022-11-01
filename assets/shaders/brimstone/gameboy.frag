@@ -46,9 +46,9 @@ float[4] gb_colors_distance(vec3 color) {
 vec3 closest_gb(vec3 color) {
     int best_i = 0;
     float best_d = 2.;
-    
+
     vec3 gb_colors[4] = gb_colors();
-    
+
     for (int i = 0; i < 4; i++) {
         float dis = distance(gb_colors[i], color);;
         if (dis < best_d) {
@@ -65,13 +65,13 @@ vec2 get_tile_sample(vec2 coords, vec2 res) {
 
 vec3[2] gb_2_closest(vec3 color) {
  	float distances[4] = gb_colors_distance(color);
-    
+
     int first_i = 0;
     float first_d = 2.;
-    
+
     int second_i = 0;
     float second_d = 2.;
-    
+
     for (int i = 0; i < distances.length(); i++) {
         float d = distances[i];
         if (distances[i] <= first_d) {
@@ -89,19 +89,19 @@ vec3[2] gb_2_closest(vec3 color) {
     if (first_i < second_i)
         result = vec3[2](colors[first_i], colors[second_i]);
     else
-     	result = vec3[2](colors[second_i], colors[first_i]);   
+     	result = vec3[2](colors[second_i], colors[first_i]);
     return result;
 }
 
 bool needs_dither(vec3 color) {
     float distances[4] = gb_colors_distance(color);
-    
+
     int first_i = 0;
     float first_d = 2.;
-    
+
     int second_i = 0;
     float second_d = 2.;
-    
+
     for (int i = 0; i < distances.length(); i++) {
         float d = distances[i];
         if (d <= first_d) {
@@ -131,7 +131,12 @@ vec3 buried_grave_color = vec3(121.0, 133.0, 142.0) / 255.0;
 
 void main() {
 
-    vec4 color = texture2D(bitmap, openfl_TextureCoordv);
+    vec4 color = flixel_texture2D(bitmap, openfl_TextureCoordv);
+    if(interpolation==0.0){
+      gl_FragColor = color;
+      return;
+    }
+
     vec3 sampleColor = color.xyz;
     // gb colors
     vec3 colors[4] = gb_colors();
@@ -146,7 +151,7 @@ void main() {
         if (colorA == buried_grave_color)
             colorB = colors[2];
         newColor = mix(colorA, colorB, interpolation);
-        gl_FragColor = vec4(newColor, 1.0);
+        gl_FragColor = vec4(newColor, 1.0) * color.a;
     } else
         gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 }

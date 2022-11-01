@@ -11,7 +11,7 @@ var realGengar:Bool = false;
 var gengarDisplacement:Array<Float> = [-50, -100];
 
 var gengarInvis:Float = 0.0;
-var gameboyFilter:GraphicsShader;
+var gameboyFilter:FlxGraphicsShader;
 
 var pukeCooldown:Int = 80;
 var currentGB:Float = 0.0;
@@ -49,11 +49,16 @@ function onCreate() {
 function onCreatePost() {
     PlayState.instance.pausePortraitRevealed[1] = false;
 
+    if(PlayState.gameplayMode == 'HELL_MODE'){
+        PlayState.instance.tranceActive = true;
+        PlayState.instance.tranceNotActiveYet = true;	
+        PlayState.instance.psyshockCooldown = 9999999; // so it never gets hit
+    }
     /* 
     try pushing it to the main thing, if this works that work I did like 6 months ago will actually be useful
     im hoping it does because of how stupid shadercatalog was, I don't know why I implemented that, so giving it some use is good I guess
     */
-    gameboyFilter = new GraphicsShader("", Paths.shader('brimstone/brimstoneCamEffects'));
+    gameboyFilter = new FlxGraphicsShader("", Paths.shader('brimstone/brimstoneCamEffects'));
     var filterFilter:ShaderFilter = new ShaderFilter(gameboyFilter);
     PlayState.instance.shaderCatalog.insert(0, filterFilter);
     PlayState.camGame.setFilters(PlayState.instance.shaderCatalog);
@@ -155,8 +160,12 @@ function onCreatePost() {
 }
 
 var haventdone = true;
-function onUpdate(elapsed) {
+var psyDown:Float = 80;
 
+function onUpdate(elapsed) {
+    PlayState.instance.beatInterval = 2;
+    PlayState.instance.tranceInterval = 0;
+    PlayState.instance.psyshockCooldown = 9999999;
 	if (whiteHand != null && whiteHand.visible) {
 		whiteHand.y = handY + Math.sin((180 / Math.PI) * ((Conductor.songPosition / 1000) / 48)) * 32;
 		handShadow.x = whiteHand.x - (whiteHand.width / 2) + (whiteHand.width / 12);
@@ -186,7 +195,6 @@ function onUpdate(elapsed) {
         {
             currentGB = FlxMath.lerp(currentGB, targetGBvalue, 0.025);
             gameboyFilter.data.intensity.value = [currentGB];
-            trace(lurp);
         }
 }
 
@@ -198,11 +206,29 @@ function onEvent(eventName) {
             apparitionX = whiteHand.x - 15;
             apparitionY = handY - 48;
             whiteHand.playAnim('transform');
-            whiteHand.animation.finishCallback = function(name:String) {
+            if(PlayState.gameplayMode == 'HELL_MODE'){
+                PlayState.instance.tranceNotActiveYet = false;
+                var tw = FlxTween.tween(PlayState.instance.pendulum, {alpha: 1}, 2);
+                new FlxTimer().start(4, function(tmr:FlxTimer)
+                {		
+                    tw.cancel();
+                    PlayState.instance.pendulum.alpha = 1;
+                });
+                whiteHand.animation.finishCallback = function(name:String) {
+                if (name == 'transform') {
+                    whiteHand.visible = false;
+                    apparition.visible = true;
+                    tw.cancel();
+                    PlayState.instance.pendulum.alpha = 1;
+                }
+            }
+            }else{
+                whiteHand.animation.finishCallback = function(name:String) {
                 if (name == 'transform') {
                     whiteHand.visible = false;
                     apparition.visible = true;
                 }
+            }
             }
         case 'Brimstone Background Desaturate':
             // get muk outta here
@@ -389,6 +415,13 @@ function mukSplatter() {
 
 function onStep(beat)
     {
+        if(!PlayState.instance.tranceNotActiveYet)
+            psyDown--;
+
+        if(psyDown <= 0){
+            psyDown = 80;
+            PlayState.instance.psyshock();
+        }
         if (muk != null && muk.visible && muk.animation.curAnim.name == 'idle')
             {
                 pukeCooldown--;
@@ -405,7 +438,10 @@ function onStep(beat)
                     new FlxTimer().start((Conductor.stepCrochet * 4) / 1000, function(tmr:FlxTimer){
                         mukSplatter();
                     });
-                    pukeCooldown = 80;
+                    if(PlayState.gameplayMode=='HELL_MODE')
+                        pukeCooldown = 40;
+                    else
+                        pukeCooldown = 80;
                 }
             }
     }
