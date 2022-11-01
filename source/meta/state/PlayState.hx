@@ -2904,6 +2904,7 @@ class PlayState extends MusicBeatState
 	function losePendulum(forced:Bool = false) {
 		if (!strumLines.members[playerLane].autoplay)
 		{
+			trace("FUCk");
 			trance += 0.115;
 
 			var hypnoRating:FlxSprite = new FlxSprite(500, 350); //idk
@@ -3138,7 +3139,7 @@ class PlayState extends MusicBeatState
 					health -= 1;
 				else
 					health -= 0.25;
-				
+
 				blurAmount = 1.0;
 			}
 

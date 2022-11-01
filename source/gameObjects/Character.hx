@@ -1661,13 +1661,13 @@ class Character extends FNFSprite
 				frames = Paths.getSparrowAtlas('characters/steven/steven_phase_1');
 				animation.addByPrefix('idle', 'IDLE', 24, false);
 				animation.addByPrefix('singUP', 'UP', 24, false);
-				animation.addByPrefix('singLEFT', 'LEFT', 24, false);
-				animation.addByPrefix('singRIGHT', 'RIGHT', 24, false);
+				animation.addByPrefix('singLEFT', 'RIGHT', 24, false);
+				animation.addByPrefix('singRIGHT', 'LEFT', 24, false);
 				animation.addByPrefix('singDOWN', 'DOWN', 24, false);
 
 				addOffset('idle');
-				addOffset('singLEFT', -10, 0);
-				addOffset('singRIGHT', -18, 0);
+				addOffset('singRIGHT', -10, 0);
+				addOffset('singLEFT', -18, 0);
 				addOffset('singDOWN', -8, 1);
 				addOffset('singUP', -12, 0);
 

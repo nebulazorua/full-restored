@@ -3,6 +3,9 @@ var bigHypno:FlxSprite;
 
 var alexisGhost:Boyfriend;
 
+function onUpdate(){
+	PlayState.instance.psyshockCooldown = 999999;
+}
 function onCreate() {
 	PlayState.defaultCamZoom = 0.8;
 
@@ -130,6 +133,10 @@ function onCreate() {
 }
 
 function onCreatePost() {
+	if(PlayState.gameplayMode == 'HELL_MODE'){
+		PlayState.instance.tranceActive = true;
+		PlayState.instance.tranceNotActiveYet = true;
+	}
 	PlayState.dadOpponent.visible = false;
 	PlayState.instance.camPos.x += 388;
 	PlayState.instance.camPos.y -= 210;
@@ -147,27 +154,37 @@ function onCreatePost() {
 
 function onEvent(eventName) {
 	switch (eventName) {
+		case 'HUD Fade Mid Song':
+			if(PlayState.gameplayMode == 'HELL_MODE')
+				PlayState.instance.tranceNotActiveYet = !PlayState.instance.tranceNotActiveYet;
+		case 'HUD Fade':
+			if(PlayState.gameplayMode == 'HELL_MODE'){
+				new FlxTimer().start(1, function(tmr:FlxTimer){
+					PlayState.instance.tranceNotActiveYet = false;
+				});
+				PlayState.instance.pendulum.alpha = 1;
+			}
 		case 'Bygone Picture':
 			if (bygoneFuck.alpha <= 0.0001)
-				{
-					FlxTween.tween(bygoneFuck, {alpha: 1}, 6);
-				}
+			{
+				FlxTween.tween(bygoneFuck, {alpha: 1}, 6);
+			}
 			else
-				{
-					PlayState.boyfriend.alpha = 0;
-					FlxTween.cancelTweensOf(bygoneFuck);
-					FlxTween.tween(bygoneFuck, {alpha: 0}, 10);
-				}
+			{
+				PlayState.boyfriend.alpha = 0;
+				FlxTween.cancelTweensOf(bygoneFuck);
+				FlxTween.tween(bygoneFuck, {alpha: 0}, 10);
+			}
 
 		case 'Bygone Transition':
-				FlxTween.tween(bigHypno, {alpha: 1}, 10, {ease: FlxEase.linear});
-				FlxTween.tween(buildings2, {alpha: 1}, 10, {ease: FlxEase.linear});
-				FlxTween.tween(bridge2, {alpha: 1}, 10, {ease: FlxEase.linear});
-				FlxTween.tween(background2, {alpha: 1}, 10, {ease: FlxEase.linear});
-				FlxTween.tween(bridgeRope2, {alpha: 1}, 10, {ease: FlxEase.linear});
-				
-				FlxTween.tween(bridge, {alpha: 0.0}, 10, {ease: FlxEase.linear});
-				FlxTween.tween(bridgeRope, {alpha: 0.0}, 10, {ease: FlxEase.linear});
+			FlxTween.tween(bigHypno, {alpha: 1}, 10, {ease: FlxEase.linear});
+			FlxTween.tween(buildings2, {alpha: 1}, 10, {ease: FlxEase.linear});
+			FlxTween.tween(bridge2, {alpha: 1}, 10, {ease: FlxEase.linear});
+			FlxTween.tween(background2, {alpha: 1}, 10, {ease: FlxEase.linear});
+			FlxTween.tween(bridgeRope2, {alpha: 1}, 10, {ease: FlxEase.linear});
+			
+			FlxTween.tween(bridge, {alpha: 0.0}, 10, {ease: FlxEase.linear});
+			FlxTween.tween(bridgeRope, {alpha: 0.0}, 10, {ease: FlxEase.linear});
 
 		case 'Summon Alexis': // you removed kade's epic awesome comment and now im SAD >:(
 			PlayState.alexis = true;
@@ -185,14 +202,14 @@ function onEvent(eventName) {
 			bygoneAlexisGate.animation.play('open');
 			bygoneAlexisPassing.animation.play('die');
 			bygoneAlexisPassing.animation.finishCallback = function(name:String) 
+			{
+				bygoneAlexisPassing.visible = false;
+				bygoneAlexisGate.animation.play('close');
+				bygoneAlexisGate.animation.finishCallback = function(name:String) 
 				{
-					bygoneAlexisPassing.visible = false;
-					bygoneAlexisGate.animation.play('close');
-					bygoneAlexisGate.animation.finishCallback = function(name:String) 
-						{
-							FlxTween.tween(bygoneAlexisGate, {alpha: 0.0}, 0.5, {ease: FlxEase.quadOut});
-						}
+					FlxTween.tween(bygoneAlexisGate, {alpha: 0.0}, 0.5, {ease: FlxEase.quadOut});
 				}
+			}
 			FlxTween.tween(PlayState.instance.iconP1, {alpha: 0.0}, 1.25, {ease: FlxEase.quadOut});
 	}
 }

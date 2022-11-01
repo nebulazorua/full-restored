@@ -273,6 +273,7 @@ class OptionsMenuState extends MusicBeatSubState
 	}
 
 	var pressTimers:Map<FlxObject, Float> = [];
+	var isHolding:Map<FlxObject, Bool> = [];
 	
 	function updateOption(){
 		var name = currentScreen[curSelected][0];
@@ -294,10 +295,20 @@ class OptionsMenuState extends MusicBeatSubState
 
 				if(left || right)
 					pressTimers.set(selector, pressTimers.get(selector) + FlxG.elapsed);
-				else
+				else{
 					pressTimers.set(selector, 0);
+					isHolding.set(selector, false);
+				}
+
+				if (pressTimers.get(selector) >= 0.3){
+					if (!isHolding.get(selector)){
+						isHolding.set(selector, true);
+						pressTimers.set(selector, 0.1);
+					}
+				}
 				
-				if (pressTimers.get(selector) >= 0.1){ // every 0.1 seconds that its held
+				
+				if (pressTimers.get(selector) >= 0.1 && isHolding.get(selector)){ // every 0.1 seconds that its held
 					pressTimers.set(selector, pressTimers.get(selector) - 0.1);
 					pressLeft = left;
 					pressRight = right;
