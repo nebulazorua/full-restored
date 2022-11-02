@@ -2689,11 +2689,13 @@ class PlayState extends MusicBeatState
 			for (strumline in strumLines)
 			{	
 				strumline.allNotes.forEachAlive(function(daNote:Note) {
-					daNote.downscrollNote = strumline.downscroll;
+					var downscroll = daNote.downscrollNote;
+					if (strumline.downscroll)
+						downscroll = !downscroll;
 
 					// set the notes x and y
 					var downscrollMultiplier = 1;
-					if (daNote.downscrollNote)
+					if (downscroll)
 						downscrollMultiplier = -1;
 
 					var roundedSpeed = FlxMath.roundDecimal(songSpeed, 2);
@@ -2731,7 +2733,7 @@ class PlayState extends MusicBeatState
 
 						if ((daNote.animation.curAnim.name.endsWith('holdend')) && (daNote.prevNote != null)) {
 							daNote.y -= ((daNote.prevNote.height / 2) * downscrollMultiplier);
-							if (daNote.downscrollNote) {
+							if (downscroll) {
 								daNote.y += (daNote.height * 2);
 								if (daNote.endHoldOffset == Math.NEGATIVE_INFINITY) {
 									// set the end hold offset yeah I hate that I fix this like this
@@ -2744,7 +2746,7 @@ class PlayState extends MusicBeatState
 							}
 						}
 						
-						if (daNote.downscrollNote)
+						if (downscroll)
 						{
 							daNote.flipY = true;
 							if ((daNote.parentNote != null && daNote.parentNote.wasGoodHit) 
@@ -2832,8 +2834,8 @@ class PlayState extends MusicBeatState
 					}
 
 					// if the note is off screen (above)
-					if ((((!daNote.downscrollNote) && (daNote.y < -daNote.height))
-						|| ((daNote.downscrollNote) && (daNote.y > (FlxG.height + daNote.height))))
+					if ((((!downscroll) && (daNote.y < -daNote.height))
+						|| ((downscroll) && (daNote.y > (FlxG.height + daNote.height))))
 					&& (daNote.tooLate || daNote.wasGoodHit))
 						destroyNote(strumline, daNote);
 				});

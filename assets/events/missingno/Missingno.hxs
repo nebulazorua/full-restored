@@ -14,27 +14,68 @@ function eventFunction(params) {
             newShader.shader.data.time.value = [Conductor.songPosition / 1000];
         }
 
-        var isDownscroll = FlxG.random.bool(50);
         var boyfriendStrums:Strumline = PlayState.instance.boyfriendStrums;
-        boyfriendStrums.downscroll = isDownscroll;
-        for (i in 0...boyfriendStrums.receptors.length)
-        {
-            if (i == 0) {
-                boyfriendStrums.receptors.members[i].x = FlxG.random.int(100, Std.int(FlxG.width / 3)) - 25;
-                if (isDownscroll)
-                    boyfriendStrums.receptors.members[i].y = FlxG.random.int(Std.int(FlxG.height / 2), FlxG.height - 200);
-                else
-                    boyfriendStrums.receptors.members[i].y = FlxG.random.int(100, 300);
-            } else {
-                var futurex = FlxG.random.int(Std.int(boyfriendStrums.receptors.members[i - 1].x) + 80,
-                    Std.int(boyfriendStrums.receptors.members[i - 1].x) + 400);
-                if (futurex > FlxG.width - 100)
-                    futurex = FlxG.width - 100;
-                boyfriendStrums.receptors.members[i].x = futurex;
-                boyfriendStrums.receptors.members[i].y = FlxG.random.int(Std.int(boyfriendStrums.receptors.members[0].y - 100),
-                    Std.int(boyfriendStrums.receptors.members[0].y + 100));
+        if(PlayState.gameplayMode == 'HELL_MODE'){
+            // maybe move the window? probably not idk!!
+            boyfriendStrums.downscroll = false;
+
+            var shove = FlxG.random.int(100, Std.int(FlxG.width / 4));
+            var bullshitArray:Array<Int> = [-2, -1, 1, 2];
+            var scrolls:Array<Bool>=[false,false,false,false];
+            for (i in 0...boyfriendStrums.receptors.length)
+            {
+                var displacement:Float = FlxG.random.int(50, 100) * FlxG.random.float(-1, 1);
+                var y = displacement;
+                var x = ((shove / 1.5) * bullshitArray[i]);
+                boyfriendStrums.receptors.members[i].setPosition(
+                    ((FlxG.width / 2) - (boyfriendStrums.receptors.members[i].width / 2)) + x, 
+					((FlxG.height / 2) - (boyfriendStrums.receptors.members[i].height / 2)) + y
+                );
+                scrolls[i]=(boyfriendStrums.receptors.members[i].y > (FlxG.height/2));
             }
-            //
+            boyfriendStrums.allNotes.forEachAlive(function(note:Note) {
+                if(note.parentNote==null){
+                    note.downscrollNote = FlxG.random.bool(50);
+                    note.customScrollspeed = true;
+                    note.noteSpeed = FlxG.random.int(250,320)/100;
+                }else{
+                    note.downscrollNote = note.parentNote.downscrollNote;
+                    note.customScrollspeed = true;
+                    note.noteSpeed = note.parentNote.noteSpeed;
+                }
+            });
+            for(note in PlayState.instance.unspawnNotes){
+                if(note.parentNote==null){
+                    note.downscrollNote = FlxG.random.bool(50);
+                    note.customScrollspeed = true;
+                    note.noteSpeed = FlxG.random.int(250,320)/100;
+                }else{
+                    note.downscrollNote = note.parentNote.downscrollNote;
+                    note.customScrollspeed = true;
+                    note.noteSpeed = note.parentNote.noteSpeed;
+                }
+            }
+        }else{
+            var isDownscroll = FlxG.random.bool(50);
+            boyfriendStrums.downscroll = isDownscroll;
+            for (i in 0...boyfriendStrums.receptors.length)
+            {
+                if (i == 0) {
+                    boyfriendStrums.receptors.members[i].x = FlxG.random.int(100, Std.int(FlxG.width / 3)) - 25;
+                    if (isDownscroll)
+                        boyfriendStrums.receptors.members[i].y = FlxG.random.int(Std.int(FlxG.height / 2), FlxG.height - 200);
+                    else
+                        boyfriendStrums.receptors.members[i].y = FlxG.random.int(100, 300);
+                } else {
+                    var futurex = FlxG.random.int(Std.int(boyfriendStrums.receptors.members[i - 1].x) + 80,
+                        Std.int(boyfriendStrums.receptors.members[i - 1].x) + 400);
+                    if (futurex > FlxG.width - 100)
+                        futurex = FlxG.width - 100;
+                    boyfriendStrums.receptors.members[i].x = futurex;
+                    boyfriendStrums.receptors.members[i].y = FlxG.random.int(Std.int(boyfriendStrums.receptors.members[0].y - 100),
+                        Std.int(boyfriendStrums.receptors.members[0].y + 100));
+                }
+            }
         }
         
     }
