@@ -1,5 +1,6 @@
 package meta.data;
 
+import gameObjects.userInterface.UnownSubstate;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.tile.FlxGraphicsShader;
@@ -82,6 +83,7 @@ class ScriptHandler
 		exp.set("Events", Events);
 		exp.set("Conductor", Conductor);
 		exp.set("UIStaticArrow", UIStaticArrow);
+		exp.set("UnownSubstate", UnownSubstate);
 		exp.set("Character", Character);
 		exp.set("Boyfriend", Boyfriend);
 		exp.set("FNFSprite", FNFSprite);

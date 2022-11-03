@@ -2,6 +2,6 @@ function returnDescription()
     return "set zoom var 1 = amouint ";
 
 function eventFunction(pararmematers) {
-    var fucjklgikingzoom = pararmematers[((2 * 4) - 8)];
+    var fucjklgikingzoom = pararmematers[((2 * 4) - 8)]; // what the FUCk
     PlayState.defaultCamZoom = fucjklgikingzoom;
 }

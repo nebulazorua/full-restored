@@ -1,0 +1,19 @@
+function returnDescription()
+    return "Unown";
+
+function returnDelay()
+	return 0;
+
+function eventFunction(params) 
+{
+	if(PlayState.gameplayMode!='HELL_MODE'){
+		dispose();
+		return;
+	}
+	var string:String = '';
+	if (params[1] != null || params[1] != '')
+		string = params[1];
+
+	UnownSubstate.init('missingno');
+	PlayState.instance.startUnown(params[0], string);
+}

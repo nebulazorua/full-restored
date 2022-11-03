@@ -1,4 +1,102 @@
-{	
+{
+	"brimstoneTexts": {
+		"words": [
+			"WHITE HAND",
+			"GHOST",
+			"DEATH",
+			"BURIED ALIVE",
+			"JOIN ME",
+			"GRAVE",
+			"TOMB",
+			"BURYMAN",
+			"DECAY",
+			"CORPSE",
+			"DIE",
+			"GENGAR",
+			"MUK",
+			"BLOOD",
+			"BOO!",
+			"TRANSFORM"
+		],
+		"rareWords": [
+			"REST IN PIECES",
+			"NO REST FOR THE WICKED",
+			"THE BURYMAN SCRIPT",
+			"LAVENDER TOWN SYNDROME",
+			"THANKS ASH",
+			"LARGE LENNY"
+		],
+		"impossibleWords": [
+			"HI! MY NAME IS BIG BOOBS!",
+			"DO NOT FUCK GFS FACE HOLE",
+			"BF REALLY DO BE PACKIN THO",
+			"GEGEGEGAAARRR GE GAR GE GOOOO",
+			"WHY IS HIS TEAM INACCURATE FFS",
+			"BETADCIU TYPE BEAT",
+			"RAPPERS BEWARE YOURE IN FOR A SCARE!"
+		],
+		"harderWords": [
+			"POKEMON TOWER",
+			"FINALLY FRESH MEAT",
+			"APPARITION",
+			"TOMBSTONE",
+			"GRAVESTONE",
+			"ASHES TO ASHES",
+			"MAYBE DEAD IS BEST",
+			"ARCEUS BE DAMNED"
+		]
+	},
+	"missingnoTexts": {
+		"words": [
+			"BIRD",
+			"MISSINGNO",
+			"GHOST",
+			"???",
+			"OLD MAN",
+			"GLITCH",
+			"SURF",
+			"NORMAL",
+			"FOSSIL",
+			"YELLOW",
+			"DONT BELONG",
+			"STRANGLE",
+			"ZUBAT",
+			"FLY",
+			"M",
+			"CORRUPTION",
+			"SKY ATTACK",
+			"WATER GUN",
+			"PAY DAY",
+			"BIND",
+			"EIGHT F",
+			"ACE",
+			"BAD EGG",
+			"DUPLICATE"
+		],
+		"rareWords": [
+			"MEW REALLY WAS UNDER THE TRUCK",
+			"STEVENS WET DREAM LMAO",
+			"BOYFRIEND DUPLICATED CONDOMS",
+			"ARBITRARY CODE EXECUTION"
+		],
+		"impossibleWords": [
+			"?????????????????????????????????????????????????????????????????????????????",
+			"IF ONLY SHADOWFI PROGRAMMED THIS",
+			"ONE PLUS ONE PLUS ONE PLUS ONE PLUS ONE PLUS ONE PLUS ONE PLUS ONE PLUS ONE PLUS ONE",
+			"THEY INJECTED THIS MAN WITH SO MUCH SILLINESS"
+		],
+		"harderWords": [
+			"????????",
+			"AERODACTYL",
+			"KABUTOPS",
+			"ONE HUNDRED TWENTY EIGHT",
+			"CINNABAR",
+			"DRAGONAIR",
+			"VIRIDIAN",
+			"NIDORAN",
+			"COOLTRAINER"
+		]
+	},
 	"monochromeTexts": {
 		"words": [
 			"IM DEAD",

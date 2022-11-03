@@ -285,7 +285,7 @@ function amusiaProgress(forced:Bool=false){
             {
                 questionareWigglesClose.y -= 135;
             });
-        case 10:
+        case 13:
             questionareWiggles.visible = false;
             questionareWigglesClose.visible = false;
             questionareBackground.visible = false;

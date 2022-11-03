@@ -22,6 +22,11 @@ import sys.io.File;
 
 using StringTools;
 
+typedef WordList = {
+	var monochromeTexts:MonochromeWords;
+	var missingnoTexts:MonochromeWords;
+	var brimstoneTexts:MonochromeWords;
+}
 typedef MonochromeWords = {
     var words:Array<String>;
 	var rareWords:Array<String>;
@@ -47,7 +52,7 @@ class UnownSubstate extends MusicBeatSubState
 	public var lose:Void->Void = null;
 	var timer:Int = 10;
 	var timerTxt:FlxText;
-	public function new(theTimer:Int = 15, word:String = '')
+	public function new(theTimer:Int = 15, word:String = '', ?wordList:Array<String>)
 	{
 		timer = theTimer;
 		super();
@@ -63,25 +68,44 @@ class UnownSubstate extends MusicBeatSubState
 		}
         */
 
-		if (PlayState.dadOpponent.curCharacter == 'gold-headless')
-			words = harderWords;
-        
-        // /*
-		if (FlxG.random.int(0, 10) == 0) {
-			words = harderWords;
-			if (FlxG.random.int(0, 10) == 0) {
-				words = rareWords;
-				if (FlxG.random.int(0, 10) == 0)
+		if (wordList!=null)
+			words = wordList;
+		else{
+			var level:Int = 0;
+
+			if (PlayState.dadOpponent.curCharacter == 'gold-headless')
+				level++;
+			if (PlayState.gameplayMode == HELL_MODE && PlayState.SONG.song.toLowerCase()=='monochrome')
+				level++;
+
+
+			while (level < 3){
+				if (FlxG.random.int(0, 10) == 0) 
+					level++;
+				else
+					break;
+			}
+			switch(level){
+				default:
+					words = publicWords;
+				case 1:
+					words = harderWords;
+				case 2:
+					words = rareWords;
+				case 3:
 					words = impossibleWords;
 			}
 		}
 
-		
 		selectedWord = words[FlxG.random.int(0, words.length - 1)];
         // */
 		
 		if (word != '')
 			selectedWord = word;
+
+		if (selectedWord.toLowerCase()=='no more' && PlayState.gameplayMode == HELL_MODE)
+			selectedWord = "NO FUCKING WAY";
+		
 		//i forgor if there's a function to do this
 		selectedWord = selectedWord.toUpperCase();
 		var splitWord = selectedWord.split(' ');
@@ -138,13 +162,25 @@ class UnownSubstate extends MusicBeatSubState
 		add(timerTxt);
 		timerTxt.text = Std.string(timer);
 	}
-
-    public static function init() {
+	static var wordsList:MonochromeWords;
+    public static function init(?song:String) {
 		var rawJson = File.getContent(Paths.getPath('unownTexts.json', TEXT)).trim();
 		while (!rawJson.endsWith("}"))
 			rawJson = rawJson.substr(0, rawJson.length - 1);
         // trace(rawJson);
-		var wordsList:MonochromeWords = cast Json.parse(rawJson).monochromeTexts;
+		var faggot:WordList = cast Json.parse(rawJson);
+		if (song == null)
+			song = PlayState.SONG.song; // because i wanna add missingno words in brimstone!!
+
+		switch (song.toLowerCase()){
+			case 'brimstone':
+				wordsList = faggot.brimstoneTexts;
+			case 'missingno':
+				wordsList = faggot.missingnoTexts;
+			default:
+				wordsList = faggot.monochromeTexts;
+		}
+		
 
 		publicWords = wordsList.words;
 		rareWords = wordsList.rareWords;

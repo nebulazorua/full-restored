@@ -16,7 +16,10 @@ var gameboyFilter:FlxGraphicsShader;
 var pukeCooldown:Int = 80;
 var currentGB:Float = 0.0;
 var targetGBvalue:Float = 0.0;
-
+var fadingGlitch:Bool = false;
+var glitch:FlxGraphicsShader;
+var glitchFilter:ShaderFilter;
+var changeGlitches:Bool = false;
 function onCreate() {
     var consistentPosition:Array<Float> = [-1130, -350];
     var resizeBG:Float = PlayState.daPixelZoom;
@@ -48,23 +51,39 @@ function onCreate() {
 
 function onCreatePost() {
     PlayState.instance.pausePortraitRevealed[1] = false;
-
-    if(PlayState.gameplayMode == 'HELL_MODE'){
-        PlayState.instance.tranceActive = true;
-        PlayState.instance.tranceNotActiveYet = true;	
-        PlayState.instance.psyshockCooldown = 9999999; // so it never gets hit
-    }
     /* 
     try pushing it to the main thing, if this works that work I did like 6 months ago will actually be useful
     im hoping it does because of how stupid shadercatalog was, I don't know why I implemented that, so giving it some use is good I guess
     */
+
     gameboyFilter = new FlxGraphicsShader("", Paths.shader('brimstone/brimstoneCamEffects'));
     var filterFilter:ShaderFilter = new ShaderFilter(gameboyFilter);
+    
+    if(PlayState.gameplayMode == 'HELL_MODE'){
+        PlayState.instance.tranceActive = true;
+        PlayState.instance.tranceNotActiveYet = true;	
+        PlayState.instance.psyshockCooldown = 9999999; // so it never gets hit
+
+        glitch = new FlxGraphicsShader("", Paths.shader('brimstone/hellGlitch'));
+        glitchFilter = new ShaderFilter(glitch);
+
+        glitch.data.prob.value = [0.0];
+        glitch.data.time.value = [0.0];
+        PlayState.instance.shaderCatalog.insert(0, glitchFilter);
+        for (hud in PlayState.instance.allUIs)
+            hud.setFilters([filterFilter, glitchFilter]);
+
+        PlayState.dialogueHUD.setFilters([filterFilter, glitchFilter]);
+    }else{
+        for (hud in PlayState.instance.allUIs)
+            hud.setFilters([filterFilter]);
+
+        PlayState.dialogueHUD.setFilters([filterFilter]);
+    }
     PlayState.instance.shaderCatalog.insert(0, filterFilter);
+
     PlayState.camGame.setFilters(PlayState.instance.shaderCatalog);
-    for (hud in PlayState.instance.allUIs)
-        hud.setFilters([filterFilter]);
-    PlayState.dialogueHUD.setFilters([filterFilter]);
+
     gameboyFilter.data.intensity.value = [0.0];
 
     // IT FUCKING WOOOOORKSSSS
@@ -207,10 +226,10 @@ function onEvent(eventName) {
             apparitionY = handY - 48;
             whiteHand.playAnim('transform');
             if(PlayState.gameplayMode == 'HELL_MODE'){
-                PlayState.instance.tranceNotActiveYet = false;
-                var tw = FlxTween.tween(PlayState.instance.pendulum, {alpha: 1}, 2);
+                var tw = FlxTween.tween(PlayState.instance.pendulum, {alpha: 1}, 3);
                 new FlxTimer().start(4, function(tmr:FlxTimer)
                 {		
+                    PlayState.instance.tranceNotActiveYet = false;
                     tw.cancel();
                     PlayState.instance.pendulum.alpha = 1;
                 });
@@ -219,6 +238,7 @@ function onEvent(eventName) {
                     whiteHand.visible = false;
                     apparition.visible = true;
                     tw.cancel();
+                    PlayState.instance.tranceNotActiveYet = false;
                     PlayState.instance.pendulum.alpha = 1;
                 }
             }
@@ -315,6 +335,14 @@ function onEvent(eventName) {
                 if (name == 'throw2')
                     PlayState.boyfriend.playAnim('idle');
             };
+        case 'Missingno Glitch':
+            if(PlayState.gameplayMode == 'HELL_MODE'){
+                glitch.data.prob.value[0] += 0.08;
+                if(glitch.data.prob.value[0] >= 0.4){
+                    changeGlitches = true;
+                }
+                glitch.data.time.value = [Conductor.songPosition / 1000];             
+            }
         case 'Missingno Switch':
             if (PlayState.instance.boyfriendStrums.singingCharacters.contains(PlayState.boyfriend))
                 {
@@ -329,6 +357,7 @@ function onEvent(eventName) {
         case 'Missingno Leave':
             FlxTween.tween(missingnoBA, {y: missingnoBA.y + missingnoBA.height * 2}, (Conductor.stepCrochet * 24) / 1000, {ease: FlxEase.circInOut, onComplete: function(epic:FlxTween){missingnoBA.visible = false;}});
             //
+            fadingGlitch = true;
             gengar.visible = false;
             hudGengar.visible = true;
             hudGengar.playAnim('leave', true);
@@ -376,11 +405,11 @@ function onEvent(eventName) {
                 realGengar = true;
             }
         case 'Brimstone Key Change':
-            {
-                targetGBvalue = 1.0;
+        {
+            targetGBvalue = 1.0;
 
-                if (currentGB >= 0.99) targetGBvalue = 0.0;
-            }
+            if (currentGB >= 0.99) targetGBvalue = 0.0;
+        }
     }
 }
 
@@ -413,8 +442,27 @@ function mukSplatter() {
     }
 }
 
+var daBeaty:Int = 1;
+function onBeat(beat){
+    if(PlayState.gameplayMode == 'HELL_MODE' && changeGlitches){
+        daBeaty++;
+        if(daBeaty%4==0)
+            glitch.data.time.value[0] += Conductor.crochet / 1000;
+        
+    }      
+}
 function onStep(beat)
     {
+        if(PlayState.gameplayMode == 'HELL_MODE'){
+            if(fadingGlitch){
+                glitch.data.prob.value[0] -= 0.025;
+                if(glitch.data.prob.value[0]<=0){
+                    glitch.data.prob.value[0]=0;
+                    fadingGlitch=false;
+                }
+            }
+        }
+        
         if(!PlayState.instance.tranceNotActiveYet)
             psyDown--;
 
@@ -423,25 +471,25 @@ function onStep(beat)
             PlayState.instance.psyshock();
         }
         if (muk != null && muk.visible && muk.animation.curAnim.name == 'idle')
+        {
+            pukeCooldown--;
+            var possibleNoteList:Array<Note> = [];
+            PlayState.strumLines.members[PlayState.playerLane].allNotes.forEachAlive(function(daNote:Note) {
+                if (daNote.canBeHit && !daNote.isSustainNote && !daNote.tooLate && !daNote.wasGoodHit)
+                    possibleNoteList.push(daNote);
+            });
+            // if there is a list of notes that exists for that control
+            if (pukeCooldown <= 0 && possibleNoteList.length > 0)
             {
-                pukeCooldown--;
-                var possibleNoteList:Array<Note> = [];
-                PlayState.strumLines.members[PlayState.playerLane].allNotes.forEachAlive(function(daNote:Note) {
-                    if (daNote.canBeHit && !daNote.isSustainNote && !daNote.tooLate && !daNote.wasGoodHit)
-                        possibleNoteList.push(daNote);
+                if (muk.animation.curAnim.name != 'outro')
+                    muk.playAnim('puke', true);
+                new FlxTimer().start((Conductor.stepCrochet * 4) / 1000, function(tmr:FlxTimer){
+                    mukSplatter();
                 });
-                // if there is a list of notes that exists for that control
-                if (pukeCooldown <= 0 && possibleNoteList.length > 0)
-                {
-                    if (muk.animation.curAnim.name != 'outro')
-                        muk.playAnim('puke', true);
-                    new FlxTimer().start((Conductor.stepCrochet * 4) / 1000, function(tmr:FlxTimer){
-                        mukSplatter();
-                    });
-                    if(PlayState.gameplayMode=='HELL_MODE')
-                        pukeCooldown = 40;
-                    else
-                        pukeCooldown = 80;
-                }
+                if(PlayState.gameplayMode=='HELL_MODE')
+                    pukeCooldown = 40;
+                else
+                    pukeCooldown = 80;
             }
+        }
     }

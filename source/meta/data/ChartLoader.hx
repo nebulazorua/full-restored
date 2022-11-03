@@ -77,8 +77,6 @@ class ChartLoader
 								} else {
 									var daNoteData:Int = Std.int(songNotes[1] % PlayState.numberOfKeys);
 									var daNoteAlt:Float = 0;
-									if (songNotes.length > 2)
-										daNoteAlt = songNotes[3];
 
 									var daNoteType:Float = Std.int(songNotes[3]);
 

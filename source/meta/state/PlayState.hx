@@ -1418,7 +1418,7 @@ class PlayState extends MusicBeatState
 				case HELL_MODE:
 					trance += 0.5;
 				case CUSTOM:
-					trance += Init.trueSettings.get("Psyshock Damage Percent");
+					trance += 2 * (Init.trueSettings.get("Psyshock Damage Percent") / 100);
 				default:
 					trance += 0.25;
 			}
@@ -2069,7 +2069,7 @@ class PlayState extends MusicBeatState
 							if (pendulumTimeframe < reach || pendulumTimeframe > (1 - reach)) {
 								if (!alreadyHit)
 									canHitPendulum = true;
-							} 
+							}
 							else
 							{
 								alreadyHit = false;
@@ -3034,7 +3034,7 @@ class PlayState extends MusicBeatState
 				gengarNoteInvis += gameplayMode==HELL_MODE?0.3:0.15;
 				if (gengarNoteInvis > (gameplayMode==HELL_MODE?1:0.7)) gengarNoteInvis = (gameplayMode==HELL_MODE?1:0.7);		
 				gengarNoteTimer=0;	
-				health -= 0.1;
+				health -= (gameplayMode == HELL_MODE)?0.5:0.1;
 				songScore -= 100;
 				missNoteCheck(false, coolNote.noteData, character, false, false);
 				destroyNote(characterStrums, coolNote);
@@ -3211,7 +3211,7 @@ class PlayState extends MusicBeatState
 		if (autoplay)
 		{
 			// check if the note was a good hit
-			if (daNote.strumTime <= Conductor.songPosition)
+			if (daNote.strumTime <= Conductor.songPosition && daNote.noteType!=1) // do not hit gengar notes dumbass
 			{
 				// use a switch thing cus it feels right idk lol
 				// make sure the strum is played for the autoplay stuffs
@@ -3522,7 +3522,9 @@ class PlayState extends MusicBeatState
 	{
 		// health += 0.012;
 		var healthBase:Float = 0.06;
-		health += (healthBase * (ratingMultiplier / 100));
+		var val = (healthBase * (ratingMultiplier / 100));
+		if(val<0 && gameplayMode == HELL_MODE)val*=2;// more miss damage
+		health += val;
 	}
 
 	function startSong():Void
@@ -3549,7 +3551,7 @@ class PlayState extends MusicBeatState
 			songMusic.onComplete = doMoneyBag;
 			vocals.play();
 
-			// resyncVocals();
+			resyncVocals();
 
 			// Song duration in a float, useful for the time left feature
 			songLength = songMusic.length;
@@ -3681,11 +3683,13 @@ class PlayState extends MusicBeatState
 	{
 		if (!deadstone) {
 			trace('resyncing vocal time ${vocals.time}');
-			// songMusic.pause();
+			songMusic.pause();
 			vocals.pause();
+			resyncTimer = 0;
 			Conductor.songPosition = songMusic.time;
-			vocals.time = Conductor.songPosition;
-			// songMusic.play();
+			vocals.time = songMusic.time;
+			songMusic.time = Conductor.songPosition;
+			songMusic.play();
 			vocals.play();
 			trace('new vocal time ${Conductor.songPosition}');
 		}
@@ -3717,10 +3721,9 @@ class PlayState extends MusicBeatState
 				psyshockCooldown--;
 		}
 
-		/*if (songMusic != null && Math.abs(songMusic.time - Conductor.songPosition) > 20
-		|| (SONG.needsVoices && vocals != null && Math.abs(vocals.time - Conductor.songPosition) > 20))
+		if ((SONG.needsVoices && vocals != null && Math.abs(vocals.time - songMusic.time) > 50)) // to resync the vocals to the inst
 			resyncVocals();
-		//*/
+		//
 		stageBuild.stageUpdateStep(curStep);
 	}
 
