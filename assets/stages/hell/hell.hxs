@@ -11,6 +11,8 @@ var beelzewalk:Character;
 var beelzescary:Character;
 var contract:FlxSprite;
 var contractY:Float;
+var missContract:FlxSprite; // part of the HUD for Hell Mode
+
 var contractStep:Float;
 
 var dawn:Boyfriend;
@@ -130,6 +132,9 @@ function onCreate() {
 	//PlayState.camHUD.setFilters([gaussian]);
 }
 
+var missContractAnims:Array<String> = ["idle","B","O","Y","F","R","I","E","N","D"];
+var lastMisses:Int = 0;
+
 function onCreatePost() {
 	//PlayState.strumHUD[1].setFilters([gaussian]);
 
@@ -187,6 +192,26 @@ function onCreatePost() {
 	contractY = contract.y;
 	contract.visible = false;
 
+	if(PlayState.gameplayMode == 'HELL_MODE'){
+		missContract = new FlxSprite();
+		missContract.frames = Paths.getSparrowAtlas('characters/beelze/ContractBF');
+		missContract.animation.addByPrefix('idle', 'ContractIdle', 24, false);
+		missContract.animation.addByPrefix('B', 'Contract_BF_01', 24, false);
+		missContract.animation.addByPrefix('O', 'Contract_BF_02', 24, false);
+		missContract.animation.addByPrefix('Y', 'Contract_BF_03', 24, false);
+		missContract.animation.addByPrefix('F', 'Contract_BF_04', 24, false);
+		missContract.animation.addByPrefix('R', 'Contract_BF_05', 24, false);
+		missContract.animation.addByPrefix('I', 'Contract_BF_06', 24, false);
+		missContract.animation.addByPrefix('E', 'Contract_BF_07', 24, false);
+		missContract.animation.addByPrefix('N', 'Contract_BF_08', 24, false);
+		missContract.animation.addByPrefix('D', 'Contract_BF_09', 24, false);
+		missContract.animation.play('idle');
+		missContract.antialiasing = true;
+		missContract.cameras = [PlayState.camHUD];
+		missContract.x = FlxG.width - missContract.width;
+		add(missContract);
+	}
+
 	add(hellbell);	
 	add(beelzewalk);
 	add(beelzescary);
@@ -217,6 +242,17 @@ function onCreatePost() {
 function onUpdate(elapsed) {
 	if (hellbell != null && hellbell.animation.curAnim.name == 'idle') {
 		hellbell.dance();
+	}
+
+	if(PlayState.gameplayMode=='HELL_MODE'){
+		missContract.alpha = PlayState.uiHUD.alpha;
+		if(lastMisses!=PlayState.misses){
+			if(PlayState.misses<missContractAnims.length)
+				missContract.animation.play(missContractAnims[PlayState.misses], true);
+			else
+				PlayState.instance.die();
+		}
+		lastMisses = PlayState.misses;
 	}
 	hellbell.y = bellY + Math.sin((180 / Math.PI) * ((Conductor.songPosition / 1000) / 72)) * 32;
 	hellbell.x = bellX + Math.sin((180 / Math.PI) * ((Conductor.songPosition / 1000) / 96)) * 16;

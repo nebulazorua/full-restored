@@ -44,7 +44,8 @@ function initFunction(params) {
 
     if (PlayState.staticValues.get('vignetteSet') == null) {
         glitchEffect = new ShaderFilter(new GraphicsShader("", Paths.shader('isotope/vignetteGlitch')));
-        PlayState.camGame.setFilters([glitchEffect]);
+        PlayState.instance.shaderCatalog.push(glitchEffect);
+        PlayState.camGame.setFilters(PlayState.instance.shaderCatalog);
         glitchEffect.shader.data.time.value = [0.0];
         glitchEffect.shader.data.prob.value = [0.0];
         glitchEffect.shader.data.vignetteIntensity.value = [0.5];
