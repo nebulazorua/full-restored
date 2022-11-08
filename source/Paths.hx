@@ -242,7 +242,6 @@ class Paths
 	}
 
 	static public function songJson(song:String, secondSong:String, old:Bool, ?library:String){
-		trace(song, secondSong);
 		return getPath('songs/${song.toLowerCase()}/${secondSong.toLowerCase() + (old ? '_old' : '')}.json', TEXT, library);
 	}
 

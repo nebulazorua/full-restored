@@ -1,6 +1,9 @@
 package meta.state;
 
+import lime.media.openal.ALFilter;
 import meta.subState.UnlockSubstate.Unlockable;
+import lime.media.openal.ALEffect;
+import lime.media.openal.AL;
 import flxanimate.FlxAnimate;
 import meta.data.dependency.FNFSprite;
 import gameObjects.userInterface.Lyrics;
@@ -81,6 +84,9 @@ enum abstract GameModes(String) to String {
 
 class PlayState extends MusicBeatState
 {
+	var sndFilter:ALFilter = AL.createFilter();
+	var sndEffect:ALEffect = AL.createEffect();
+
 	public var startTimer:FlxTimer;
 	static var kms:Int = 0;
 	public static var curStage:String = '';
@@ -310,6 +316,8 @@ class PlayState extends MusicBeatState
 	var reducedDrain:Float = 3;
 
 	var moneySound:FlxSound;
+
+	var earRinging:FlxSound;
 	
 	public static var flashGraphic:FlxGraphic;
 
@@ -1064,6 +1072,11 @@ class PlayState extends MusicBeatState
 			boyfriendStrums.keyAmount = 5;
 			boyfriendStrums.xPos = placement - (!Init.trueSettings.get('Centered Notefield') ? midPoint : 0);
 			boyfriendStrums.regenerateStrums();
+
+			if(gameplayMode==HELL_MODE){
+				earRinging = new FlxSound().loadEmbedded(Paths.sound('ear ringing'), true, false);
+				FlxG.sound.list.add(earRinging);
+			}
 		}
 
 		if (useFrostbiteMechanic) // Freezing Mechanic
@@ -1767,6 +1780,9 @@ class PlayState extends MusicBeatState
 	static var accuracyThreshold:Float = 90;
 
 	var resyncTimer:Float = 0;
+	var earBleed:Float = 0;
+	var hpDrain:Float = 0;
+	var drainTimer:Float = 0;
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -2010,6 +2026,32 @@ class PlayState extends MusicBeatState
 			else
 				vocals.volume = soundVolume;
 			songMusic.volume = soundVolume;
+
+			if (gameplayMode == HELL_MODE && SONG.song.toLowerCase() == 'death-toll')
+			{
+				if (earBleed > 0)
+				{
+					earBleed -= elapsed;
+					health -= (0.0075 * (elapsed / (1 / 60)) * hpDrain) * (earBleed / 15);
+
+					if(hpDrain>1){
+						hpDrain -= 0.0025 * (elapsed / (1 / 60));
+						if(hpDrain<1)hpDrain=1;
+					}
+					earRinging.volume = earBleed / 15;
+					AL.filterf(sndFilter, AL.LOWPASS_GAINHF, 1 - earRinging.volume);
+				}
+				else
+				{
+					if (earRinging.playing)
+						earRinging.stop();
+					earBleed = 0;
+					AL.filterf(sndFilter, AL.LOWPASS_GAINHF, 1);
+					drainTimer = 0;
+					if (hpDrain > 0)
+						hpDrain = 0;
+				}
+			}
 			
 			if (!deadstone) {
 				if (startingSong)
@@ -2491,6 +2533,12 @@ class PlayState extends MusicBeatState
 				tranceSound.stop();
 			resetMusic();
 			switch (SONG.song.toLowerCase()) {
+				case 'death-toll':
+					if(earRinging!=null){
+						earRinging.stop();
+						FlxG.sound.list.remove(earRinging); // stop ringing
+						openSubState(new GameOverSubstate(boyfriend.curCharacter, boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+					}
 				case 'brimstone':
 					songMusic.pause();
 					vocals.pause();
@@ -3135,15 +3183,22 @@ class PlayState extends MusicBeatState
 		}
 
 		if (bronzongMechanic && direction == 4)
-			{
-				trace('BELL NOTE MISSED');
-				if(gameplayMode==HELL_MODE)
-					health -= 1;
+		{
+			trace('BELL NOTE MISSED');
+			health -= (gameplayMode == HELL_MODE)?0.5:0.25;
+			if((gameplayMode == HELL_MODE)){
+				earRinging.play();
+				earBleed = 15; // 5 seconds of drain after hitting it
+				if(hpDrain==0)
+					hpDrain++;
 				else
-					health -= 0.25;
+					hpDrain+=0.5; // multiplier for the drain
 
-				blurAmount = 1.0;
+				
 			}
+
+			blurAmount = 1.0;
+		}
 
 		decreaseCombo(popMiss);
 		//
@@ -3657,6 +3712,46 @@ class PlayState extends MusicBeatState
 			FlxG.sound.list.add(vocals);
 		} else
 			Conductor.songPosition = 0;
+			
+
+		switch (SONG.song.toLowerCase())
+		{
+			case 'death-toll':
+				if (gameplayMode == HELL_MODE)
+				{
+					AL.filteri(sndFilter, AL.FILTER_TYPE, AL.FILTER_LOWPASS);
+					AL.filterf(sndFilter, AL.LOWPASS_GAIN, 1);
+					AL.filterf(sndFilter, AL.LOWPASS_GAINHF, 1);
+
+					songMusic.filter = sndFilter;
+					vocals.filter = sndFilter;
+					songMusic.effect = sndEffect;
+					vocals.effect = sndEffect;
+
+					trace(sndEffect, sndFilter);
+					trace('lol!');
+				}
+				else
+				{
+					trace("fuck u");
+					AL.filteri(sndFilter, AL.FILTER_TYPE, AL.FILTER_NULL);
+					AL.effecti(sndEffect, AL.EFFECT_TYPE, AL.EFFECT_NULL);
+
+					songMusic.filter = null;
+					vocals.filter = null;
+					songMusic.effect = null;
+					vocals.effect = null;
+				}
+
+			default:
+				AL.filteri(sndFilter, AL.FILTER_TYPE, AL.FILTER_NULL);
+				AL.effecti(sndEffect, AL.EFFECT_TYPE, AL.EFFECT_NULL);
+
+				songMusic.filter = null;
+				vocals.filter = null;
+				songMusic.effect = null;
+				vocals.effect = null;
+		}
 
 		// generate the chart
 		unspawnNotes = ChartLoader.generateChartType(SONG, determinedChartType, this);
