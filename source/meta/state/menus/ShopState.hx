@@ -2082,31 +2082,35 @@ class ShopState extends MusicBeatState
 		{
 			portraitThread = Thread.create(function()
 			{
-				while (true)
-				{
-					//
-					if (!killThread)
+				try{
+					while (true)
 					{
-						var portrait:Null<String> = Thread.readMessage(false);
-
-						if (portrait != null && portrait != curPortrait)
+						//
+						if (!killThread)
 						{
-							//  get the new portrait
-							if (!FileSystem.exists(Paths.getPath('images/menus/freeplay/$portrait.png', IMAGE)))
-								portrait = 'unknown';
-							mutex.acquire();
-							switchingPortraits = true;
-							if (!lastPortraits.contains(curPortrait))
-								lastPortraits.push(curPortrait);
-							portraitGraphic = Paths.getSparrowAtlas('menus/freeplay/$portrait');
-							portraitLoaded = true;
-							curPortrait = portrait;
-							mutex.release();
-							trace('new graphic $portrait called lol');
+							var portrait:Null<String> = Thread.readMessage(false);
+
+							if (portrait != null && portrait != curPortrait)
+							{
+								//  get the new portrait
+								if (!FileSystem.exists(Paths.getPath('images/menus/freeplay/$portrait.png', IMAGE)))
+									portrait = 'unknown';
+								mutex.acquire();
+								switchingPortraits = true;
+								if (!lastPortraits.contains(curPortrait))
+									lastPortraits.push(curPortrait);
+								portraitGraphic = Paths.getSparrowAtlas('menus/freeplay/$portrait');
+								portraitLoaded = true;
+								curPortrait = portrait;
+								mutex.release();
+								trace('new graphic $portrait called lol');
+							}
 						}
+						else
+							return;
 					}
-					else
-						return;
+				}catch(e:Dynamic){
+					trace(e);
 				}
 			});
 		}
@@ -2119,31 +2123,35 @@ class ShopState extends MusicBeatState
 		{
 			oldPortraitThread = Thread.create(function()
 			{
-				while (true)
-				{
-					//
-					if (!killThread)
+				try{
+					while (true)
 					{
-						var portrait:Null<String> = Thread.readMessage(false);
-
-						if (portrait != null && portrait != oldCurPortrait)
+						//
+						if (!killThread)
 						{
-							//  get the new portrait
-							if (!FileSystem.exists(Paths.getPath('images/menus/freeplay/$portrait.png', IMAGE)))
-								portrait = 'unknown';
-							oldMutex.acquire();
-							oldSwitchingPortraits = true;
-							if (!lastOldPortraits.contains(oldCurPortrait))
-								lastOldPortraits.push(oldCurPortrait);
-							oldPortraitGraphic = Paths.getSparrowAtlas('menus/freeplay/$portrait');
-							oldPortraitLoaded = true;
-							oldCurPortrait = portrait;
-							oldMutex.release();
-							trace('new graphic $portrait called lol');
+							var portrait:Null<String> = Thread.readMessage(false);
+
+							if (portrait != null && portrait != oldCurPortrait)
+							{
+								//  get the new portrait
+								if (!FileSystem.exists(Paths.getPath('images/menus/freeplay/$portrait.png', IMAGE)))
+									portrait = 'unknown';
+								oldMutex.acquire();
+								oldSwitchingPortraits = true;
+								if (!lastOldPortraits.contains(oldCurPortrait))
+									lastOldPortraits.push(oldCurPortrait);
+								oldPortraitGraphic = Paths.getSparrowAtlas('menus/freeplay/$portrait');
+								oldPortraitLoaded = true;
+								oldCurPortrait = portrait;
+								oldMutex.release();
+								trace('new graphic $portrait called lol');
+							}
 						}
+						else
+							return;
 					}
-					else
-						return;
+				}catch(e:Dynamic){
+					trace(e);
 				}
 			});
 		}

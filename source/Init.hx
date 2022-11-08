@@ -474,6 +474,11 @@ class Init extends FlxState
 			true, 
 			"Whether to enable the bell notes on Death Toll"
 		],
+		"Hell Mode Ear Ringing" => [
+			Checkmark,
+			true,
+			"Whether an ear ringing sound should play when missing a bell in Hell Mode Death Toll"
+		],
 		'Forced Accuracy' => [
 			Checkmark, 
 			true, 

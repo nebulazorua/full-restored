@@ -234,7 +234,8 @@ class OptionsMenuState extends MusicBeatSubState
 				["Shaders", confirmOption, generateExtra, updateOption],
 				["Snowfall"],
 				["Snow Enabled", confirmOption, generateExtra, updateOption],
-
+				["Death Toll"],
+				["Hell Mode Ear Ringing", confirmOption, generateExtra, updateOption],
 			],
 		];
 		super.create();

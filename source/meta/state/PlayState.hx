@@ -2031,15 +2031,19 @@ class PlayState extends MusicBeatState
 			{
 				if (earBleed > 0)
 				{
+					var progress = earBleed / 15;
 					earBleed -= elapsed;
-					health -= (0.0075 * (elapsed / (1 / 60)) * hpDrain) * (earBleed / 15);
+					health -= (0.0075 * (elapsed / (1 / 60)) * hpDrain) * progress;
 
 					if(hpDrain>1){
 						hpDrain -= 0.0025 * (elapsed / (1 / 60));
 						if(hpDrain<1)hpDrain=1;
 					}
-					earRinging.volume = earBleed / 15;
-					AL.filterf(sndFilter, AL.LOWPASS_GAINHF, 1 - earRinging.volume);
+					if (Init.trueSettings.get('Hell Mode Ear Ringing'))
+						earRinging.volume = progress;
+					else
+						earRinging.volume = 0;
+					AL.filterf(sndFilter, AL.LOWPASS_GAINHF, 1 - progress);
 				}
 				else
 				{
