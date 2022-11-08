@@ -461,14 +461,14 @@ function onStep(beat)
                     fadingGlitch=false;
                 }
             }
-        }
         
-        if(!PlayState.instance.tranceNotActiveYet)
-            psyDown--;
+            if(!PlayState.instance.tranceNotActiveYet)
+                psyDown--;
 
-        if(psyDown <= 0){
-            psyDown = 80;
-            PlayState.instance.psyshock();
+            if(psyDown <= 0){
+                psyDown = 80;
+                PlayState.instance.psyshock();
+            }
         }
         if (muk != null && muk.visible && muk.animation.curAnim.name == 'idle')
         {
