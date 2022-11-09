@@ -42,7 +42,8 @@ class ChartLoader
 						var daStrumTime:Float = songNotes[0] - Init.trueSettings['Offset']; // - | late, + | early
 						switch (songNotes[1]) {
 							default:
-								if (songNotes[1] == 8) {
+								@:bypassAccessor
+								if (songNotes[1] == 8 && PlayState.bronzongMechanic) { // bypassAccessor and checking bronzongMechanic for pasta night
 									if (!PlayState.bronzongMechanic)
 										continue;
 									

@@ -2111,6 +2111,7 @@ class ShopState extends MusicBeatState
 					}
 				}catch(e:Dynamic){
 					trace(e);
+					portraitThread=null;
 				}
 			});
 		}
@@ -2130,19 +2131,25 @@ class ShopState extends MusicBeatState
 						if (!killThread)
 						{
 							var portrait:Null<String> = Thread.readMessage(false);
-
 							if (portrait != null && portrait != oldCurPortrait)
 							{
+								trace(portrait);
 								//  get the new portrait
 								if (!FileSystem.exists(Paths.getPath('images/menus/freeplay/$portrait.png', IMAGE)))
 									portrait = 'unknown';
+								trace("portrait... " + portrait);
 								oldMutex.acquire();
 								oldSwitchingPortraits = true;
+								trace("switching ports..");
 								if (!lastOldPortraits.contains(oldCurPortrait))
 									lastOldPortraits.push(oldCurPortrait);
+
+								trace("push to last");
 								oldPortraitGraphic = Paths.getSparrowAtlas('menus/freeplay/$portrait');
 								oldPortraitLoaded = true;
+								trace("shit LOADED");
 								oldCurPortrait = portrait;
+								trace("old current is " + oldCurPortrait);
 								oldMutex.release();
 								trace('new graphic $portrait called lol');
 							}
@@ -2152,6 +2159,7 @@ class ShopState extends MusicBeatState
 					}
 				}catch(e:Dynamic){
 					trace(e);
+					oldPortraitThread = null; // so on next switch itll be fixed
 				}
 			});
 		}

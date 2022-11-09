@@ -212,21 +212,21 @@
 	<SubTexture name="DECAY 2 idle0012" x="3073" y="1145" width="216" height="248" frameX="0" frameY="-1" frameWidth="217" frameHeight="249"/>
 	<SubTexture name="DECAY 2 idle0013" x="3073" y="1145" width="216" height="248" frameX="0" frameY="-1" frameWidth="217" frameHeight="249"/>
 	<SubTexture name="DECAY 2 idle0014" x="3073" y="1145" width="216" height="248" frameX="0" frameY="-1" frameWidth="217" frameHeight="249"/>
-	<SubTexture name="STARE idle 0000" x="3294" y="1145" width="204" height="251" frameX="-34" frameY="-2" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0001" x="3503" y="1145" width="197" height="253" frameX="-34" frameY="0" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0002" x="3705" y="1145" width="201" height="251" frameX="-35" frameY="-2" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0003" x="5" y="1405" width="198" height="253" frameX="-34" frameY="0" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0004" x="208" y="1405" width="206" height="251" frameX="-35" frameY="-2" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0005" x="419" y="1405" width="268" height="252" frameX="0" frameY="-1" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0006" x="692" y="1405" width="200" height="251" frameX="-32" frameY="-2" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0007" x="897" y="1405" width="205" height="253" frameX="-28" frameY="0" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0008" x="1107" y="1405" width="199" height="251" frameX="-35" frameY="-2" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0009" x="1311" y="1405" width="199" height="253" frameX="-35" frameY="0" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0010" x="1515" y="1405" width="198" height="251" frameX="-35" frameY="-2" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0011" x="1718" y="1405" width="210" height="251" frameX="-28" frameY="-2" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0012" x="1933" y="1405" width="195" height="253" frameX="-34" frameY="0" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0013" x="2133" y="1405" width="199" height="251" frameX="-35" frameY="-2" frameWidth="268" frameHeight="253"/>
-	<SubTexture name="STARE idle 0014" x="5" y="1405" width="198" height="253" frameX="-34" frameY="0" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0000" x="3294" y="1145" width="204" height="251" frameX="-34" frameY="-2" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0001" x="3503" y="1145" width="197" height="253" frameX="-34" frameY="0" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0002" x="3705" y="1145" width="201" height="251" frameX="-35" frameY="-2" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0003" x="5" y="1405" width="198" height="253" frameX="-34" frameY="0" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0004" x="208" y="1405" width="206" height="251" frameX="-35" frameY="-2" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0005" x="419" y="1405" width="268" height="252" frameX="0" frameY="-1" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0006" x="692" y="1405" width="200" height="251" frameX="-32" frameY="-2" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0007" x="897" y="1405" width="205" height="253" frameX="-28" frameY="0" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0008" x="1107" y="1405" width="199" height="251" frameX="-35" frameY="-2" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0009" x="1311" y="1405" width="199" height="253" frameX="-35" frameY="0" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0010" x="1515" y="1405" width="198" height="251" frameX="-35" frameY="-2" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0011" x="1718" y="1405" width="210" height="251" frameX="-28" frameY="-2" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0012" x="1933" y="1405" width="195" height="253" frameX="-34" frameY="0" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0013" x="2133" y="1405" width="199" height="251" frameX="-35" frameY="-2" frameWidth="268" frameHeight="253"/>
+	<SubTexture name="STARE idle0014" x="5" y="1405" width="198" height="253" frameX="-34" frameY="0" frameWidth="268" frameHeight="253"/>
 	<SubTexture name="wigglytuff right0000" x="2337" y="1405" width="284" height="345" frameX="0" frameY="-4" frameWidth="284" frameHeight="349"/>
 	<SubTexture name="wigglytuff right0001" x="2337" y="1405" width="284" height="345" frameX="0" frameY="-4" frameWidth="284" frameHeight="349"/>
 	<SubTexture name="wigglytuff right0002" x="2626" y="1405" width="284" height="349"/>

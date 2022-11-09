@@ -1043,7 +1043,7 @@ class Character extends FNFSprite
 					i[1] *= scale.y;
 				}
 
-				playAnim('$phaseString idle');
+				playAnim('idle');
 
 				characterData.facingDirection = RIGHT;
 
