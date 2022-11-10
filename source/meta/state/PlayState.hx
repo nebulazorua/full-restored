@@ -434,6 +434,10 @@ class PlayState extends MusicBeatState
 	override public function create()
 	{
 		super.create();
+
+		//fuck off my autism brain cant do one thing at a time :middle_finger:
+		FlxG.autoPause = false;
+
 		gameplayMode = gameplayModeFromString(Init.trueSettings.get("Mechanics"));
 		instance = this;
 
@@ -1750,6 +1754,8 @@ class PlayState extends MusicBeatState
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 
+		FlxG.autoPause = false;
+
 		super.destroy();
 	}
 
@@ -1786,6 +1792,7 @@ class PlayState extends MusicBeatState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
 		gengarNoteTimer += elapsed;
 		if(gengarNoteTimer > 3 && gengarNoteInvis>0){
 			gengarNoteInvis -= 0.001 * (elapsed/(1/60));
