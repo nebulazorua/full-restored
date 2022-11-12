@@ -182,6 +182,7 @@ class OptionsMenuState extends MusicBeatSubState
 				["Centered Notefield", confirmOption, generateExtra, updateOption],
 				["Counter", confirmOption, generateExtra, updateOption],
 				["Display Accuracy", confirmOption, generateExtra, updateOption],
+				["Unfocus Pause", confirmOption, generateExtra, updateOption],
 
 				["Meta Settings"],
 				["Framerate Cap", confirmOption, generateExtra, updateOption],
