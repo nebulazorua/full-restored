@@ -436,7 +436,8 @@ class PlayState extends MusicBeatState
 		super.create();
 
 		//fuck off my autism brain cant do one thing at a time :middle_finger:
-		FlxG.autoPause = false;
+		// ok well i made it a TOGGLE in SETTINGS
+
 
 		gameplayMode = gameplayModeFromString(Init.trueSettings.get("Mechanics"));
 		instance = this;
@@ -1364,6 +1365,9 @@ class PlayState extends MusicBeatState
 			unownState.win = wonUnown;
 			unownState.lose = die;
 			unownState.cameras = [dialogueHUD];
+			if(gameplayMode == HELL_MODE)
+				FlxG.autoPause=false;
+
 			// FlxG.autoPause = false;
 			openSubState(unownState);
 		}
@@ -1372,6 +1376,8 @@ class PlayState extends MusicBeatState
 	public function wonUnown():Void {
 		canPause = true;
 		unowning = false;
+		if (gameplayMode == HELL_MODE)
+			FlxG.autoPause = Init.trueSettings.get("Unfocus Pause");
 	}
 
 	public var backgroundGroup:FlxTypedGroup<FlxSprite>;
@@ -1754,7 +1760,7 @@ class PlayState extends MusicBeatState
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 
-		FlxG.autoPause = false;
+		FlxG.autoPause = Init.trueSettings.get("Unfocus Pause");
 
 		super.destroy();
 	}

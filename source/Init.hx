@@ -428,6 +428,11 @@ class Init extends FlxState
 			true,
 			"Whether to load shaders or not",
 		],
+		"Unfocus Pause" => [
+			Checkmark,
+			true,
+			"Whether the game should pause when you unfocus"
+		],
 		'Snow Enabled' => [
 			Checkmark, 
 			true, 
@@ -688,6 +693,8 @@ class Init extends FlxState
 	{
 		InfoHud.updateDisplayInfo(trueSettings.get('FPS Counter'), trueSettings.get('Debug Info'), trueSettings.get('Memory Counter'));
 		Main.updateFramerate(trueSettings.get("Framerate Cap"));
+		
+		FlxG.autoPause = Init.trueSettings.get("Unfocus Pause");
 
 		///*
 		filters = [];
