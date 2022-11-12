@@ -43,7 +43,7 @@ class ChartLoader
 						switch (songNotes[1]) {
 							default:
 								@:bypassAccessor
-								if (songNotes[1] == 8 && PlayState.bronzongMechanic) { // bypassAccessor and checking bronzongMechanic for pasta night
+								if (songNotes[1] == 8 && PlayState.bronzongMechanic) { // bypassAccessor and checking bronzongMechanic cus pasta night
 									if (!PlayState.bronzongMechanic)
 										continue;
 									
