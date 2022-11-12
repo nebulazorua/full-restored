@@ -1012,6 +1012,7 @@ class Character extends FNFSprite
 						addOffset("singRIGHT", idleOffset.x + 1, idleOffset.y + 11);
 						addOffset("singLEFT", idleOffset.x + 1, idleOffset.y + -4);
 						addOffset("singDOWN", -35, -14);
+						idleOffset.putWeak();
 					case 'decay 1':
 						var idleOffset:FlxPoint = FlxPoint.weak(-47, -73);
 						addOffset('idle', idleOffset.x, idleOffset.y);
@@ -1019,6 +1020,7 @@ class Character extends FNFSprite
 						addOffset("singLEFT", idleOffset.x + 10, idleOffset.y + -5);
 						addOffset("singRIGHT", idleOffset.x + 1, idleOffset.y + 3);
 						addOffset("singDOWN", idleOffset.x + 3, idleOffset.y + -6);
+						idleOffset.putWeak();
 					case 'decay 2':
 						var idleOffset:FlxPoint = FlxPoint.weak(-46, -80);
 						addOffset('idle', idleOffset.x, idleOffset.y);
@@ -1026,6 +1028,7 @@ class Character extends FNFSprite
 						addOffset("singLEFT", idleOffset.x + 3, idleOffset.y + 2);
 						addOffset("singRIGHT", idleOffset.x + 1, idleOffset.y + 5);
 						addOffset("singDOWN", idleOffset.x + 1, idleOffset.y + -1);
+						idleOffset.putWeak();
 					case 'stare':
 						var idleOffset:FlxPoint = FlxPoint.weak(-10, -76);
 						addOffset('idle', idleOffset.x, idleOffset.y);
@@ -1033,6 +1036,7 @@ class Character extends FNFSprite
 						addOffset("singLEFT", idleOffset.x + 118, idleOffset.y + 4);
 						addOffset("singRIGHT", idleOffset.x + -8, idleOffset.y + 15);
 						addOffset("singDOWN", idleOffset.x + 35, idleOffset.y + -33);
+						idleOffset.putWeak();
 				}
 
 				setGraphicSize(Std.int(width * 1.25));
