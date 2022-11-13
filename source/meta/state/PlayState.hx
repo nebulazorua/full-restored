@@ -368,7 +368,6 @@ class PlayState extends MusicBeatState
 
 	//Brimstone Gengar Notes
 	var gengarNoteInvis:Float = 0.0;
-	var gengarNoteTimer:Float = 0;
 	public var updateableScript:Array<ForeverModule> = [];
 	public static var staticValues:Map<String, Dynamic> = [];
 	public var camPos:FlxPoint;
@@ -1799,9 +1798,8 @@ class PlayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		gengarNoteTimer += elapsed;
-		if(gengarNoteTimer > 3 && gengarNoteInvis>0){
-			gengarNoteInvis -= 0.001 * (elapsed/(1/60));
+		if(gengarNoteInvis>0){
+			gengarNoteInvis -= 0.0005 * (elapsed/(1/60));
 			if(gengarNoteInvis<0)gengarNoteInvis=0;
 		}
 		
@@ -2858,14 +2856,18 @@ class PlayState extends MusicBeatState
 								daNote.tooLate = true;
 								for (note in daNote.childrenNotes)
 									note.tooLate = true;
-								if(daNote.noteType!=1){
-									canSpeak = false;
-									
-									missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData,
-										strumLines.members[playerLane].singingCharacters, true);
-									// ambiguous name
-									Timings.updateAccuracy(0);
-								}
+
+								canSpeak = false;
+
+								if(daNote.noteType == 1)
+									health -= 0.2;
+								
+								
+								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData,
+									strumLines.members[playerLane].singingCharacters, true);
+								// ambiguous name
+								Timings.updateAccuracy(0);
+								
 							}
 							else if (daNote.isSustainNote)
 							{
@@ -3097,13 +3099,7 @@ class PlayState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('GengarNoteSFX'));
 				if (flashingEnabled) dialogueHUD.flash(0x528E16FF, 0.5);
 				gengarNoteInvis += gameplayMode==HELL_MODE?0.3:0.15;
-				if (gengarNoteInvis > (gameplayMode==HELL_MODE?1:0.7)) gengarNoteInvis = (gameplayMode==HELL_MODE?1:0.7);		
-				gengarNoteTimer=0;	
-				health -= (gameplayMode == HELL_MODE)?0.5:0.1;
-				songScore -= 100;
-				missNoteCheck(false, coolNote.noteData, character, false, false);
-				destroyNote(characterStrums, coolNote);
-				return;
+				if (gengarNoteInvis > 0.7) gengarNoteInvis = 0.7;		
 			}
 
 			// special thanks to sam, they gave me the original system which kinda inspired my idea for this new one
@@ -3210,8 +3206,6 @@ class PlayState extends MusicBeatState
 					hpDrain++;
 				else
 					hpDrain+=0.5; // multiplier for the drain
-
-				
 			}
 
 			blurAmount = 1.0;
@@ -3283,7 +3277,7 @@ class PlayState extends MusicBeatState
 		if (autoplay)
 		{
 			// check if the note was a good hit
-			if (daNote.strumTime <= Conductor.songPosition && daNote.noteType!=1) // do not hit gengar notes dumbass
+			if (daNote.strumTime <= Conductor.songPosition)
 			{
 				// use a switch thing cus it feels right idk lol
 				// make sure the strum is played for the autoplay stuffs
@@ -3595,7 +3589,7 @@ class PlayState extends MusicBeatState
 		// health += 0.012;
 		var healthBase:Float = 0.06;
 		var val = (healthBase * (ratingMultiplier / 100));
-		if(val<0 && gameplayMode == HELL_MODE)val*=2;// more miss damage
+		if(val<0 && gameplayMode == HELL_MODE)val*=3;// more miss damage
 		health += val;
 	}
 

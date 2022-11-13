@@ -419,7 +419,11 @@ function mukSplatter() {
 
     //
     var mukSplatSprite:FlxSprite = new FlxSprite();
-    mukSplatSprite.frames = Paths.getSparrowAtlas('characters/buried/muksludge');
+    if(PlayState.gameplayMode == 'HELL_MODE')
+        mukSplatSprite.frames = Paths.getSparrowAtlas('characters/buried/muksludge2');
+    else
+        mukSplatSprite.frames = Paths.getSparrowAtlas('characters/buried/muksludge');
+
     mukSplatSprite.animation.addByPrefix('0', 'Sludge_01', 24, false);
     mukSplatSprite.animation.addByPrefix('1', 'Sludge_02', 24, false);
     mukSplatSprite.animation.addByPrefix('2', 'Sludge_03', 24, false);
