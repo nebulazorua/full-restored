@@ -337,8 +337,8 @@ function onEvent(eventName) {
             };
         case 'Missingno Glitch':
             if(PlayState.gameplayMode == 'HELL_MODE'){
-                glitch.data.prob.value[0] += 0.08;
-                if(glitch.data.prob.value[0] >= 0.4){
+                glitch.data.prob.value[0] += 0.06;
+                if(glitch.data.prob.value[0] >= 0.3){
                     changeGlitches = true;
                 }
                 glitch.data.time.value = [Conductor.songPosition / 1000];             
