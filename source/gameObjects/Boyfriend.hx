@@ -30,11 +30,6 @@ class Boyfriend extends Character
 				}
 			}
 
-			if (nameOfAnimation.startsWith('sing'))
-				holdTimer += elapsed;
-			else
-				holdTimer = 0;
-
 			if (nameOfAnimation.endsWith('miss') && animationFinished)
 				dance();
 			if (nameOfAnimation == 'firstDeath' && animationFinished)

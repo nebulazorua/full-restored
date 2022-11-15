@@ -153,16 +153,18 @@ function onCreate() {
 }
 
 function onCreatePost() {
+    importClass("flixel.addons.text.FlxTypeText");
+    trace("on create post");
     PlayState.instance.staticCamera = true;
     PlayState.instance.manualCameraPosition.set(FlxG.width / 2, FlxG.height / 2);
     PlayState.instance.camPos.set(PlayState.instance.manualCameraPosition.x, PlayState.instance.manualCameraPosition.y);
 
-    PlayState.boyfriend.x -= FlxG.width;
-    PlayState.dadOpponent.x += FlxG.width;
+    boyfriend.x -= FlxG.width;
+    dadOpponent.x += FlxG.width;
 
     var whitecolor = FlxColor.fromRGB(0,0,0);
-    PlayState.dadOpponent.color = whitecolor;
-    PlayState.boyfriend.color = whitecolor;
+    dadOpponent.color = whitecolor;
+    boyfriend.color = whitecolor;
 
     // temp characters
     var char:Character = new Character().setCharacter(0, 0, 'ponyta-perspective');
@@ -183,21 +185,44 @@ function onCreatePost() {
     staticOverlay.alpha = 0.6;
     staticOverlay.blend = 9;
 
+    PlayState.vignetteCam.alpha = 0;
+    add(staticSprite);
+    add(staticOverlay);
+    trace(staticSprite, staticOverlay);
+
+    if(PlayState.gameplayMode == 'HELL_MODE'){
+        PlayState.instance.boyfriendStrums.singingCharacters = [dadOpponent];
+        PlayState.instance.dadStrums.singingCharacters = [boyfriend];
+        PlayState.instance.boyfriendStrums.character = [dadOpponent];
+        PlayState.instance.dadStrums.character = [boyfriend];
+        dadOpponent.forceNoMiss=true;
+        dadOpponent.isPlayer=true;
+        boyfriend.isPlayer=false;
+        for(note in PlayState.instance.unspawnNotes)
+            note.lane = note.lane == 0?1:0;
+
+        flipStrumImm(-(FlxG.width / 4), PlayState.instance.boyfriendStrums);
+        flipStrumImm((FlxG.width / 4), PlayState.instance.dadStrums);
+    }
+
     questionareTextBox = new FlxSprite(188, 530).loadGraphic(Paths.image('UI/base/amusia/questionareTextBox'));
     questionareTextBox.antialiasing = false;
     add(questionareTextBox);
+    trace(questionareTextBox);
     questionareTextBox.cameras = [PlayState.dialogueHUD];
     questionareTextBox.visible = false;
 
     questionareOptions = new FlxSprite(926, 530).loadGraphic(Paths.image('UI/base/amusia/questionareAnswerBox'));
     questionareOptions.antialiasing = false;
     add(questionareOptions);
+    trace(questionareOptions);
     questionareOptions.cameras = [PlayState.dialogueHUD];
     questionareOptions.visible = false;
     questionareText = new FlxTypeText(227, 580, 630, 'Can you sing?', 24, true);
     questionareText.setFormat(Paths.font("poketext.ttf"), 24, FlxColor.fromRGB(0, 0, 0, 255), "left");
     questionareText.antialiasing = false;
     add(questionareText);
+    trace(questionareText);
     questionareText.cameras = [PlayState.dialogueHUD];
     questionareText.visible = false;
     
@@ -211,11 +236,7 @@ function onCreatePost() {
     questionareArrow.visible = false;
     trace(questionareArrow);
 
-    PlayState.vignetteCam.alpha = 0;
-
-    add(staticSprite);
-    add(staticOverlay);
-    trace(staticSprite, staticOverlay);
+    
 }
 
 function amusiaChangeSelection()
@@ -311,6 +332,7 @@ function amusiaProgress(forced:Bool=false){
     }
 }
 
+var hellAutoSelectTimer:Float = 0;
 function onUpdate(elapsed) {
     plateL.setPosition(PlayState.dadOpponent.x + (PlayState.dadOpponent.width / 2) - (plateL.width / 2), PlayState.dadOpponent.y + PlayState.dadOpponent.height - (plateL.height / 2));
     if (!runningAway)
@@ -346,26 +368,74 @@ function onUpdate(elapsed) {
             }
         }
         //
+
+    }
+
+    if(PlayState.gameplayMode == 'HELL_MODE'){
+        PlayState.instance.fuckYouShubs = true; // overriding the hp bar logic
+        // more like ILLOGIC because IT BARELY FUNCTIONS
+        
+        var iconOffset = 26;
+        var healthBar = PlayState.uiHUD.healthBar;
+        healthBar.percent = (1-((PlayState.health)/2)) * 100;
+        if (PlayState.instance.barFlipped)
+			healthBar.percent = (PlayState.health/2) * 100;
+                    
+        var iconP1 = PlayState.instance.iconP1;
+        var iconP2 = PlayState.instance.iconP2;
+        iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.initialWidth, iconP1.width, 0.5)));
+		iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.initialWidth, iconP2.width, 0.5)));
+        iconP1.updateHitbox();
+        iconP2.updateHitbox();		
+        iconP1.x = healthBar.x
+            + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))
+            - ((PlayState.instance.barFlipped ? iconP1.width - iconOffset : iconOffset))
+            - iconP1.offsetX;
+        iconP2.x = healthBar.x
+            + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))
+            - ((PlayState.instance.barFlipped ? iconOffset : iconP2.width - iconOffset))
+            - iconP2.offsetX;
+
+        // /*
+        if (!iconP2.animatedIcon) {
+            if (iconP2.char == 'wigglytuff') {
+                iconP2.animation.curAnim.curFrame = PlayState.dadOpponent.wigglyState;
+            } else {
+                if (healthBar.percent > 80)
+                    iconP2.animation.curAnim.curFrame = 1;
+                else
+                    iconP2.animation.curAnim.curFrame = 0;
+            }
+        }
     }
 
     if (amusiaQuestioningPresent)
     {
-        var controls = PlayState.instance.controls;
-        if (controls.ACCEPT)
-            {
-                if (!amusiaNoSelected)
-                {
-                    FlxG.sound.play(Paths.sound('confirmMenu'), 0.6);
-                    amusiaProgress(false);
-                }
-                else
-                {
-                    FlxG.sound.play(Paths.sound('errorMenu'), 0.6);
-                }
+        if(PlayState.gameplayMode == 'HELL_MODE'){
+            hellAutoSelectTimer += elapsed;
+            if(hellAutoSelectTimer >= 3){
+                hellAutoSelectTimer -= 3;
+                FlxG.sound.play(Paths.sound('confirmMenu'), 0.6);
+                amusiaProgress(false);
             }
-        else if (controls.UI_UP_P || controls.UI_DOWN_P)
-        {
-            amusiaChangeSelection();
+        }else{
+            var controls = PlayState.instance.controls;
+            if (controls.ACCEPT)
+                {
+                    if (!amusiaNoSelected)
+                    {
+                        FlxG.sound.play(Paths.sound('confirmMenu'), 0.6);
+                        amusiaProgress(false);
+                    }
+                    else
+                    {
+                        FlxG.sound.play(Paths.sound('errorMenu'), 0.6);
+                    }
+                }
+            else if (controls.UI_UP_P || controls.UI_DOWN_P)
+            {
+                amusiaChangeSelection();
+            }
         }
     }
 }
@@ -445,8 +515,13 @@ function onEvent(eventName) {
                 hoverNotes = true;
 
                 if (!Init.trueSettings.get('Centered Notefield')) {
-                    flipStrum(-(FlxG.width / 4), PlayState.instance.boyfriendStrums);
-                    flipStrum((FlxG.width / 4), PlayState.instance.dadStrums);
+                    if(PlayState.gameplayMode == 'HELL_MODE'){
+                        flipStrum((FlxG.width / 4), PlayState.instance.boyfriendStrums);
+                        flipStrum(-(FlxG.width / 4), PlayState.instance.dadStrums);
+                    }else{
+                        flipStrum(-(FlxG.width / 4), PlayState.instance.boyfriendStrums);
+                        flipStrum((FlxG.width / 4), PlayState.instance.dadStrums);
+                    }
                 }
 
                 for (i in PlayState.strumLines) {
@@ -459,6 +534,10 @@ function onEvent(eventName) {
                     FlxTween.tween(PlayState.camHUD, {alpha: 0}, (Conductor.stepCrochet / 1000) * 4, {onComplete:function(complete:FlxTween){
                         // do the characters now
                         PlayState.instance.flipCharacters();
+                        var bPlayer = PlayState.boyfriend.isPlayer;
+                        var dPlayer = PlayState.dadOpponent.isPlayer;
+                        PlayState.boyfriend.isPlayer=true;
+                        PlayState.dadOpponent.isPlayer = false;
                         PlayState.boyfriend.setCharacter(PlayState.boyfriend.x, PlayState.dadOpponent.y, 'ponyta-perspective');
                         PlayState.dadOpponent.setCharacter(PlayState.dadOpponent.x, PlayState.boyfriend.y, 'wiggles-death-stare');
                         PlayState.dadOpponent.scale.set(0.6, 0.6);
@@ -486,6 +565,9 @@ function onEvent(eventName) {
                         PlayState.dadOpponent.flipX = !PlayState.dadOpponent.flipX;
                         PlayState.boyfriend.flipLeftRight();
                         PlayState.boyfriend.flipX = !PlayState.boyfriend.flipX;
+
+                        PlayState.boyfriend.isPlayer = bPlayer;
+                        PlayState.dadOpponent.isPlayer = dPlayer;
                         //
                         FlxTween.tween(PlayState.boyfriend, {x: PlayState.boyfriend.x - FlxG.width}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.circOut});
                         FlxTween.tween(PlayState.dadOpponent, {x: PlayState.dadOpponent.x + FlxG.width + 150}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.circOut, onComplete:function(tween:FlxTween){
@@ -561,6 +643,7 @@ function flipStrum(separation:Float, strumline:Strumline) {
     var midPoint:Float = (FlxG.width / 2) + separation;
     for (i in 0...strumline.receptors.members.length) {
         originalNoteY = strumline.receptors.members[i].y;
+
         var realX:Float = midPoint - ((strumline.keyAmount / 2) * strumline.noteWidth) + (strumline.noteWidth * i);
         FlxTween.tween(strumline.receptors.members[i], {x: realX - 16}, (Conductor.stepCrochet / 1000) * 16, {ease: FlxEase.circInOut, onComplete: function(tweener:FlxTween){
             iTotal = 0;
@@ -571,6 +654,19 @@ function flipStrum(separation:Float, strumline:Strumline) {
                 }
             }
         }});
+        //
+    }
+}
+
+function flipStrumImm(separation:Float, strumline:Strumline) {
+    var midPoint:Float = (FlxG.width / 2) + separation;
+    strumline.alpha = 0.8;
+    for (i in 0...strumline.receptors.members.length) {
+        originalNoteY = strumline.receptors.members[i].y;
+
+        var realX:Float = midPoint - ((strumline.keyAmount / 2) * strumline.noteWidth) + (strumline.noteWidth * i);
+        strumline.receptors.members[i].x = realX - 16;
+        strumline.receptors.members[i].alpha *= 0.8;
         //
     }
 }

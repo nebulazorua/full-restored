@@ -73,7 +73,7 @@ function onCreatePost() {
         for (hud in PlayState.instance.allUIs)
             hud.setFilters([filterFilter, glitchFilter]);
 
-        PlayState.dialogueHUD.setFilters([filterFilter, glitchFilter]);
+        PlayState.dialogueHUD.setFilters([filterFilter]);
     }else{
         for (hud in PlayState.instance.allUIs)
             hud.setFilters([filterFilter]);

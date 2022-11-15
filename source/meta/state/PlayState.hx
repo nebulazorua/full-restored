@@ -1794,9 +1794,38 @@ class PlayState extends MusicBeatState
 	var earBleed:Float = 0;
 	var hpDrain:Float = 0;
 	var drainTimer:Float = 0;
+
+	var fuckYouShubs:Bool = false; // used to override healthbar behaviour
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		for (i in strumLines.members[playerLane].character)
+		{
+			if (i == null || i.animation == null)
+				continue;
+			var nameOfAnimation = '';
+			var animationFinished:Bool = false;
+			if (i.atlasCharacter != null)
+			{
+				nameOfAnimation = i.atlasAnimation;
+				animationFinished = i.atlasCharacter.anim.finished;
+			}
+			else
+			{
+				if (i.animation != null)
+				{
+					nameOfAnimation = i.animation.curAnim.name;
+					animationFinished = i.animation.curAnim.finished;
+				}
+			}
+
+			if (nameOfAnimation.startsWith('sing'))
+				i.holdTimer += FlxG.elapsed;
+			else
+				i.holdTimer = 0;
+
+		}
 
 		if(gengarNoteInvis>0){
 			gengarNoteInvis -= 0.0005 * (elapsed/(1/60));
@@ -1876,9 +1905,10 @@ class PlayState extends MusicBeatState
 		if (health > 2)
 			health = 2;
 
-		if (!buriedNotes && SONG.song.toLowerCase() != 'pasta-night')
+		if (!buriedNotes && SONG.song.toLowerCase() != 'pasta-night' && !fuckYouShubs)
 		{
 			// pain, this is like the 7th attempt
+			// shubs you fucking suck
 			var healthBar = uiHUD.healthBar;
 			healthBar.percent = (health * 50);
 			if (barFlipped)
@@ -2791,7 +2821,14 @@ class PlayState extends MusicBeatState
 
 					// shitty note hack I hate it so much
 					var center:Float = receptorPosY + Note.swagWidth / 2;
-					if (daNote.isSustainNote && (strumline != dadStrums || !dadOpponent.curCharacter.contains('wiggl'))) {
+					var shouldRemove = true;
+					for (c in strumline.singingCharacters)
+						if (c.curCharacter.contains('wiggl')){
+							shouldRemove=false;
+							break;
+						}
+
+					if (daNote.isSustainNote && shouldRemove) {
 						daNote.y -= ((daNote.height / 2) * downscrollMultiplier);
 
 						if ((daNote.animation.curAnim.name.endsWith('holdend')) && (daNote.prevNote != null)) {
@@ -3085,11 +3122,18 @@ class PlayState extends MusicBeatState
 			for (i in character)
 				characterPlayAnimation(coolNote, i);
 			
-			if (characterStrums.receptors.members[coolNote.noteData] != null) {
-				if (characterStrums == dadStrums && dadOpponent.curCharacter.contains('wiggl')) {
-					// characterStrums.receptors.members[coolNote.noteData].playAnim('pressed', true);
-					strumHUD[0].shake(0.00625, 0.05);
-				} else
+			var isDisabled:Bool = false;
+			if (characterStrums.receptors.members[coolNote.noteData] != null)
+			{
+				for (c in characterStrums.singingCharacters)
+					if (c.curCharacter.contains('wiggl')){
+						isDisabled = true;
+						break;
+					}
+
+				if(isDisabled)
+					strumHUD[coolNote.lane].shake(0.00625, 0.05);
+				else
 					characterStrums.receptors.members[coolNote.noteData].playAnim('confirm', true);
 			}
 
@@ -3128,10 +3172,11 @@ class PlayState extends MusicBeatState
 				if (!coolNote.isSustainNote) {
 					increaseCombo(foundRating, coolNote.noteData, character);
 					popUpScore(foundRating, ratingTiming, characterStrums, coolNote);
-					healthCall(Timings.judgementsMap.get(foundRating)[3]);
+					var health:Float = Timings.judgementsMap.get(foundRating)[3];
+					if (!isDisabled || health<0)healthCall(health);
 				} else if (coolNote.isSustainNote) {
 					// call updated accuracy stuffs
-					if (coolNote.parentNote != null)
+					if (coolNote.parentNote != null && !isDisabled)
 						healthCall(100 / coolNote.parentNote.childrenNotes.length);
 				}
 			}
@@ -3158,8 +3203,10 @@ class PlayState extends MusicBeatState
 			}
 
 			if (!coolNote.isSustainNote) {
-				if (characterStrums == dadStrums && dadOpponent.curCharacter.contains('wiggl'))
-					return;
+				for (c in characterStrums.singingCharacters)
+					if (c.curCharacter.contains('wiggl'))
+						return;
+				
 				destroyNote(characterStrums, coolNote);
 			}				
 		}
@@ -3414,8 +3461,13 @@ class PlayState extends MusicBeatState
 
 	public function createSplash(coolNote:Note, strumline:Strumline)
 	{
+		for (c in strumline.singingCharacters)
+			if (c.curCharacter.contains('wiggl'))
+				return;
+				
 		// play animation in existing notesplashes
 		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
+
 		if (strumline.splashNotes != null)
 			strumline.splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom, true);
 	}

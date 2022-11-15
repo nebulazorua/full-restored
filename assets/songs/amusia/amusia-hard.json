@@ -2371,13 +2371,6 @@
 						0
 					],
 					[
-						57666.6666666667,
-						-1,
-						"HUD Fade Mid Song",
-						"0",
-						"4"
-					],
-					[
 						58000,
 						-1,
 						"Wiggles Change",
@@ -2404,6 +2397,13 @@
 						"Wiggles Change",
 						"0",
 						""
+					],
+					[
+						57666.6666666667,
+						-1,
+						"Amusia HUD Fade Mid Song",
+						"0",
+						"4"
 					]
 				],
 				"mustHitSection": false
@@ -2478,8 +2478,8 @@
 					[
 						58666.6666666667,
 						-1,
-						"HUD Fade Mid Song",
-						"1",
+						"Amusia HUD Fade Mid Song",
+						"0",
 						"4"
 					]
 				],
@@ -7637,6 +7637,26 @@
 				"mustHitSection": true,
 				"changeBPM": false,
 				"bpm": 180
+			},
+			{
+				"sectionNotes": [],
+				"typeOfSection": 0,
+				"lengthInSteps": 16,
+				"sectionCamera": 1,
+				"altAnim": false,
+				"mustHitSection": true,
+				"changeBPM": false,
+				"bpm": 180
+			},
+			{
+				"lengthInSteps": 16,
+				"typeOfSection": 0,
+				"sectionNotes": [],
+				"altAnim": false,
+				"sectionCamera": 1,
+				"bpm": 180,
+				"changeBPM": false,
+				"mustHitSection": true
 			},
 			{
 				"sectionNotes": [],

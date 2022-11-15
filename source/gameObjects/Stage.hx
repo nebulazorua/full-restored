@@ -42,6 +42,7 @@ class Stage extends FlxTypedGroup<FlxSprite> {
 		stageBuild.set('boyfriend', PlayState.boyfriend);
 		stageBuild.set('dad', PlayState.dadOpponent);
 		stageBuild.set('dadOpponent', PlayState.dadOpponent);
+		trace(stageBuild.exists("onCreatePost"));
 		if (stageBuild.exists("onCreatePost"))
 			stageBuild.get("onCreatePost")();
 	}
