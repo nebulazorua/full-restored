@@ -19,7 +19,7 @@ var dawn:Boyfriend;
 var bf:Boyfriend;
 
 var lavamod:Float;
-var lavafloating:Float;
+var lavafloating:Bool;
 var lavabtmY:Float;
 var lavatopY:Float;
 var glowLY:Float;
@@ -140,7 +140,7 @@ function onCreatePost() {
 
 	contractStep = 0;
 	lavamod = 60;
-	lavafloating = 0;
+	lavafloating = false;
 	PlayState.instance.flipCharacters();	
 	PlayState.instance.camPos.set(2000, 900);		
 	boyfriend.x -= 20;
@@ -268,7 +268,7 @@ function onUpdate(elapsed) {
 	bf.atlasCharacter.alpha = percentage;
 	dawn.atlasCharacter.alpha = 1 - percentage;
 
-	if (lavafloating == 1) {
+	if (lavafloating) {
 		lavabottom.y = lavabtmY + Math.sin((180 / Math.PI) * ((Conductor.songPosition / 1000) / lavamod)) * 8;
 		lavatop.y = lavatopY + Math.sin((180 / Math.PI) * ((Conductor.songPosition / 1000) / lavamod)) * 8;
 		glowleft.y = glowLY + Math.sin((180 / Math.PI) * ((Conductor.songPosition / 1000) / lavamod)) * 8;
@@ -379,20 +379,10 @@ function onEvent(eventName) {
 
 		case 'Toggle Lava':	
 			lavamod = 60;	
-			if (lavafloating == 0) {
-				lavafloating = 1;
-			}
-			else {
-				lavafloating = 0;
-			}
+			lavafloating = !lavafloating;
 		case 'Toggle Lava Fast':
 			lavamod = 30;		
-			if (lavafloating == 0) {
-				lavafloating = 1;
-			}
-			else {
-				lavafloating = 0;
-			}
+			lavafloating = !lavafloating;
 		case 'HB Ending':	
 			PlayState.instance.hbEnding();	
 		case 'Bf Icon Change':
