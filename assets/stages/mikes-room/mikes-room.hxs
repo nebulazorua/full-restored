@@ -107,7 +107,6 @@ function onCreatePost() {
 	mikeBed.setCharacter(boyfriend.x + 310, boyfriend.y + 775, 'mike-bed');
 	mikeBed.atlasCharacter.visible = false;
 	add(mikeBed);
-	add(mikeBed.atlasCharacter);
 
 	PlayState.instance.boyfriendStrums.character.push(mikeBed);
 	PlayState.instance.boyfriendStrums.singingCharacters = [mikeBed];

@@ -79,8 +79,10 @@ class Character extends FNFSprite
 		};
 
 		// /*
-		if (atlasCharacter != null && atlasCharacter.exists)
+		if (atlasCharacter != null && atlasCharacter.exists){
 			atlasCharacter.destroy();
+			atlasCharacter=null;
+		}
 		// */
 
 		switch (curCharacter)
@@ -180,7 +182,7 @@ class Character extends FNFSprite
 				atlasCharacter.scale.set(0.75, 0.75);
 				atlasCharacter.antialiasing = true;
 
-				visible = false;
+				//visible = false;
 				playAnim('idle');
 			/*
 			case 'gf-stand':
@@ -403,6 +405,28 @@ class Character extends FNFSprite
 				}
 
 				characterData.facingDirection = LEFT;
+			
+			case 'hellbellplayer': // this is for performance reasons
+				// basically just a character which never gets drawn
+				// used for death toll to keep its camera etc
+				// since having it as dawn-bf makes lag for no reason
+				frames = Paths.getSparrowAtlas('characters/boyfreb');
+				animation.addByPrefix('idle', 'freb', 1, true);
+				for(shit in (["LEFT","RIGHT","UP","DOWN"]))
+					animation.addByPrefix('sing$shit', 'freb', 1, true);
+				
+				playAnim('idle');
+				forceNoMiss=true;
+
+				visible=false;
+				characterData.facingDirection = RIGHT;
+				characterData.healthbarColors = [200, 200, 200];
+				characterData.offsetX = 0;
+				characterData.offsetY = 0;
+				characterData.camOffsetX = -1550;
+				characterData.camOffsetY = -175;
+				characterData.zoomOffset = -0.08;
+
 
 			case 'dawn' | 'dawn-bf':
 				// /*
@@ -455,7 +479,7 @@ class Character extends FNFSprite
 				atlasCharacter.scale.set(1.25, 1.25);
 				atlasCharacter.antialiasing = true;
 
-				PlayState.instance.add(atlasCharacter);
+				//PlayState.instance.add(atlasCharacter);
 
 				characterData.facingDirection = RIGHT;
 				characterData.healthbarColors = [200, 200, 200];
@@ -467,7 +491,7 @@ class Character extends FNFSprite
 
 				setGraphicSize(Std.int(width * 1.2));
 
-				visible = false;
+				//visible = false;
 				playAnim('idle');
 				
 			case 'bf-pixel':
@@ -1723,7 +1747,7 @@ class Character extends FNFSprite
 
 				setGraphicSize(Std.int(width * 0.8));
 
-				visible = false;
+				//visible = false;
 				playAnim('idle');
 
 				characterData.offsetX = -450;
@@ -1879,7 +1903,7 @@ class Character extends FNFSprite
 		return this;
 	}
 
-	public static function generateIndicesAtPoint(point:Int, amount:Int):Array<Int> {
+	public inline static function generateIndicesAtPoint(point:Int, amount:Int):Array<Int> {
 		var returnArray:Array<Int> = [];
 		for (i in 0...amount) 
 			returnArray.push((point - 1) + i);
@@ -1887,7 +1911,7 @@ class Character extends FNFSprite
 	}
 
 	public var currentIndex:Int = 1;
-	public function indicesContinueAmount(amount:Int):Array<Int> {
+	public inline function indicesContinueAmount(amount:Int):Array<Int> {
 		var theArray:Array<Int> = generateIndicesAtPoint(currentIndex, amount);
 		currentIndex += amount;
 		return theArray;
@@ -1957,6 +1981,7 @@ class Character extends FNFSprite
 		if (!isPlayer)
 		{
 			// /*
+			
 			if (atlasCharacter != null) {
 				if (atlasAnimation.startsWith('sing'))
 					holdTimer += elapsed;
@@ -1982,6 +2007,9 @@ class Character extends FNFSprite
 				coverEars(false);
 		}
 		super.update(elapsed);
+		if(atlasCharacter!=null)
+			atlasCharacter.update(elapsed);
+		
 	}
 
 	private var danced:Bool = false;
@@ -2024,23 +2052,58 @@ class Character extends FNFSprite
 	public var atlasAnimation:String = ''; //  fuck you flxanimate
 	public var isPressing:Bool = false;
 	public var uncoverCooldown:Float;
+	public var intendedAnim:String = '';
+	public var intendedRev:Bool = false;
+	public var intendedFrame:Int = 0;
+
+	var earTimer:FlxTimer;
 
 	public function coverEars(?yaCover:Bool = false) {
+		if(!yaCover && !intendedAnim.contains("idle")){
+			canAnimate = true;
+			isCovering = false;
+
+			return;
+		}
 		if (isCovering != yaCover && !hasTransformed) {
 			canAnimate = false;
 			var modifier = '';
 			if (curCharacter == 'dawn-bf')
 				modifier += '-boyfriend';
+
+
 			atlasCharacter.anim.play('transition' + modifier, true, !yaCover, (yaCover ? 0 : 4));
 			atlasAnimation = 'transition' + modifier;
+			intendedAnim = 'transition';
+			intendedRev = !yaCover;
+			intendedFrame = yaCover?0:4;
 			isCovering = yaCover;
-			atlasCharacter.anim.onComplete = function()
-			{
-				if (atlasAnimation.contains('transition') && !canAnimate) {
-					canAnimate = true;
-					dance();
+			if (earTimer!=null)earTimer.cancel();
+			if (!yaCover){
+				earTimer=null;
+				atlasCharacter.anim.onComplete = function()
+				{
+					if (atlasAnimation.contains('transition') && !canAnimate)
+					{
+						canAnimate = true;
+						dance();
+					}
 				}
-			};
+			}else{
+				earTimer = new FlxTimer().start((4 * (Conductor.stepCrochet / 1000)), function(tmr:FlxTimer)
+				{
+					earTimer = null;
+					if (atlasAnimation.contains('transition') && !canAnimate) {
+						canAnimate = true;
+						//dance();
+						if (!intendedAnim.contains('transition') && intendedAnim!='transform' && !intendedAnim.contains('idle') && intendedAnim.trim()!=''){
+							trace("goin back to " + intendedAnim);
+							playAnim(intendedAnim, true, intendedRev, intendedFrame);
+						}else
+							dance();
+					}
+				});
+			}
 		}
 	}
 
@@ -2049,6 +2112,10 @@ class Character extends FNFSprite
 		if (!hasTransformed)
 		{
 			canAnimate = false;
+
+			intendedAnim = 'transform';
+			intendedRev = false;
+			intendedFrame = 0;
 			atlasCharacter.anim.play('transform');
 			atlasAnimation = 'transform';
 			hasTransformed = true;
@@ -2056,7 +2123,13 @@ class Character extends FNFSprite
 			{
 				if (atlasAnimation.contains('transform') && !canAnimate) {
 					canAnimate = true;
-					dance();
+					atlasCharacter.anim.onComplete = null;
+					// dance();
+					if (!intendedAnim.contains('transition') && intendedAnim!='transform' && !intendedAnim.contains('idle') && intendedAnim.trim() != ''){
+						trace("goin back to " + intendedAnim);
+						playAnim(intendedAnim, true, intendedRev, intendedFrame);
+					}else
+						dance();
 				}
 			};
 		}
@@ -2064,6 +2137,9 @@ class Character extends FNFSprite
 
 	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
+		intendedAnim = AnimName;
+		intendedRev = Reversed;
+		intendedFrame = Frame;
 		if (!canAnimate || (atlasAnimation.contains('transition')
 			&& ((!atlasCharacter.anim.reversed && atlasCharacter.anim.curFrame < 3)
 			|| (atlasCharacter.anim.reversed && atlasCharacter.anim.curFrame > 2)))) {
@@ -2098,5 +2174,16 @@ class Character extends FNFSprite
 		if (base.contains('-'))
 			base = base.substring(0, base.indexOf('-'));
 		return base;
+	}
+
+	override function draw(){
+		if(curCharacter=='hellbellplayer')return;
+		if(atlasCharacter!=null && atlasCharacter.exists)
+			return atlasCharacter.draw();
+		else
+			return super.draw();
+		
+
+		
 	}
 }

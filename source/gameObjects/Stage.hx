@@ -23,6 +23,7 @@ class Stage extends FlxTypedGroup<FlxSprite> {
 
 		var exposure:StringMap<Dynamic> = new StringMap<Dynamic>();
 		exposure.set('add', add);
+		exposure.set('remove', remove);
 		exposure.set('foreground', foreground);
 		exposure.set('stage', this);
         exposure.set('curStage', this.curStage);

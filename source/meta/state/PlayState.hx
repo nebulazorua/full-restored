@@ -421,7 +421,7 @@ class PlayState extends MusicBeatState
 			case 'Hell':
 				return HELL_MODE;
 			case 'Fuck You':
-				return FUCK_YOU;
+				return FUCK_YOU; // idk if this'll be implemented tbh but
 			case 'Custom':
 				return CUSTOM;
 			default:
@@ -558,11 +558,12 @@ class PlayState extends MusicBeatState
 		add(dadOpponent);
 		add(boyfriend);		
 
-		if (dadOpponent.atlasCharacter != null)
+		/*if (dadOpponent.atlasCharacter != null)
 			add(dadOpponent.atlasCharacter);
 
 		if (boyfriend.atlasCharacter != null)
 			add(boyfriend.atlasCharacter);
+		*/
 
 		if (curStage == "bygone") {
 			bygoneAlexis = new Boyfriend();
@@ -2622,11 +2623,11 @@ class PlayState extends MusicBeatState
 					add(backShadow);
 
 					//
-					var newCharacterGroup:FlxTypedGroup<FlxAnimate> = new FlxTypedGroup<FlxAnimate>();
+					var newCharacterGroup:FlxTypedGroup<Character> = new FlxTypedGroup<Character>();
 					add(newCharacterGroup);
 					//
-					remove(boyfriend.atlasCharacter);
-					newCharacterGroup.add(boyfriend.atlasCharacter);
+					remove(boyfriend);
+					newCharacterGroup.add(boyfriend);
 
 					FlxTween.tween(backShadow, {alpha: 1}, (Conductor.crochet * 4) / 1000);
 					new FlxTimer().start((Conductor.crochet * 4) / 1000, function(timer:FlxTimer){

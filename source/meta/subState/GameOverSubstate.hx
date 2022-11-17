@@ -106,7 +106,7 @@ class GameOverSubstate extends MusicBeatSubState
 				loopSoundName = 'BurymanDeath';
 				precacheSoundFile(Paths.sound('buryman-death/buriedThud'));
 				precacheSoundFile(Paths.sound('buryman-death/buriedDeath'));
-			case 'dawn' | 'dawn-bf':
+			case 'dawn' | 'dawn-bf' | 'hellbellplayer':
 				daBf = 'dawn';
 				loopSoundName = 'DeathTollDeathAmbience';
 			case 'mike-bed' | 'mike-fp':
@@ -241,8 +241,8 @@ class GameOverSubstate extends MusicBeatSubState
 				deathThingy.y = y - deathThingy.height / 2 - deathThingy.height / 6 + 128;
 				add(deathThingy);
 
-				if (bf.atlasCharacter != null)
-					add(bf.atlasCharacter);
+				//if (bf.atlasCharacter != null)
+				//	add(bf.atlasCharacter);
 
 				updateFunction = function() {
 					camFollow.setPosition(x, y);

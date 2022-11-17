@@ -24,6 +24,9 @@ var lavabtmY:Float;
 var lavatopY:Float;
 var glowLY:Float;
 var glowRY:Float;
+var shake:Float = 0;
+var shakeMax:Float = 0;
+var shakePower:Float = 0;
 
 var gaussian:ShaderFilter;
 var blurAmount:Float = 0;
@@ -127,17 +130,31 @@ function onCreate() {
 	PlayState.ratingPosition.set(600, 800);
 	PlayState.bronzongMechanic = true;
 
-	//gaussian = new ShaderFilter(new GraphicsShader("", Paths.shader('death-toll/gaussian')));
-	//PlayState.camGame.setFilters([gaussian]);
-	//PlayState.camHUD.setFilters([gaussian]);
+	gaussian = new ShaderFilter(new FlxGraphicsShader("", Paths.shader('death-toll/gaussian')));
+	gaussian.shader.data.Size.value = [8.0];
+	gaussian.shader.data.Directions.value = [8.0];
+	gaussian.shader.data.Quality.value = [8.0];
+	PlayState.camGame.width *= 2;
+	PlayState.camGame.height *= 2;
+	PlayState.camGame.x -= (PlayState.camGame.width - FlxG.width) / 2;
+	PlayState.camGame.y -= (PlayState.camGame.height - FlxG.height) / 2;
+	PlayState.camGame.setFilters([gaussian]);
+	PlayState.camHUD.setFilters([gaussian]);
+
 }
 
 var missContractAnims:Array<String> = ["idle","B","O","Y","F","R","I","E","N","D"];
 var lastMisses:Int = 0;
-
+var cameras:Array<FlxCamera> = [];
 function onCreatePost() {
 	//PlayState.strumHUD[1].setFilters([gaussian]);
-
+	for(cam in PlayState.strumHUD){
+		cam.setFilters([gaussian]);
+		cameras.push(cam);
+	}
+	cameras.push(PlayState.camGame);
+	cameras.push(PlayState.camHUD);
+	
 	contractStep = 0;
 	lavamod = 60;
 	lavafloating = false;
@@ -224,18 +241,28 @@ function onCreatePost() {
 	// dawn.screenCenter();
 	
 	add(dawn);	
-	PlayState.instance.boyfriendStrums.character.push(dawn);
-	if (PlayState.instance.boyfriendStrums.singingCharacters.contains(PlayState.boyfriend))
-		PlayState.instance.boyfriendStrums.singingCharacters = [dawn];
+
+	PlayState.instance.boyfriendStrums.character = [dawn];
+	PlayState.instance.boyfriendStrums.singingCharacters = [dawn];
+
 	PlayState.instance.dadStrums.visible = false;
 
 	bf = new Boyfriend();
 	bf.setCharacter(boyfriend.x + 1350, boyfriend.y, PlayState.SONG.player1);
 	bf.flipLeftRight();
-	add(bf);
+	//add(bf);
 
 	PlayState.instance.boyfriendStrums.character.push(bf);
 	PlayState.instance.boyfriendStrums.singingCharacters.push(bf);
+
+		
+	if(boyfriend!=null){ // TRYING to fix performance issues but like idfk whats causing them
+		// death toll just lags for no reason, atleast on my pc
+		if(boyfriend.atlasCharacter!=null)
+			PlayState.instance.remove(boyfriend.atlasCharacter);
+		boyfriend.setCharacter(boyfriend.x, boyfriend.y, "hellbellplayer");
+		PlayState.instance.remove(boyfriend);
+	}
 
 }
 
@@ -262,11 +289,23 @@ function onUpdate(elapsed) {
 
 	var percentage = ((contractStep * contractStep) / 100);
 	if (contractStep > 4) 
-		percentage += (Math.sin(((Conductor.songPosition) / (Conductor.stepCrochet * 16)) * Math.PI) * (contractStep / 10) * 0.25);
+		percentage += (Math.sin(((Conductor.songPosition) / (Conductor.stepCrochet * 16)) * Math.PI) * ((contractStep-4) / 6) * 0.25);
 	if (contractStep > 9)
 		percentage = 1;
-	bf.atlasCharacter.alpha = percentage;
-	dawn.atlasCharacter.alpha = 1 - percentage;
+	var bfPerc = percentage;
+	var dawnPerc = 1 - percentage;
+
+	dawn.atlasCharacter.visible = dawnPerc>0;
+	dawn.atlasCharacter.active=dawnPerc>0;
+	dawn.active=dawnPerc>0;
+	
+	bf.atlasCharacter.visible = bfPerc>0;
+	bf.atlasCharacter.active=bfPerc>0;
+	bf.active=bfPerc>0;
+
+
+	bf.atlasCharacter.alpha = bfPerc;
+	dawn.atlasCharacter.alpha = dawnPerc;
 
 	if (lavafloating) {
 		lavabottom.y = lavabtmY + Math.sin((180 / Math.PI) * ((Conductor.songPosition / 1000) / lavamod)) * 8;
@@ -274,31 +313,72 @@ function onUpdate(elapsed) {
 		glowleft.y = glowLY + Math.sin((180 / Math.PI) * ((Conductor.songPosition / 1000) / lavamod)) * 8;
 		glowright.y = glowRY + Math.sin((180 / Math.PI) * ((Conductor.songPosition / 1000) / lavamod)) * 8;
 	}
+	if(blurAmount>2)blurAmount=2;
+	if(PlayState.instance.blurAmount>1)PlayState.instance.blurAmount=1;
+	PlayState.instance.blurAmount = FlxMath.lerp(PlayState.instance.blurAmount, 0.0, (elapsed / (1 / 120)) * 0.003);
+	blurAmount = FlxMath.lerp(blurAmount, 0.0, (elapsed / (1 / 120)) * 0.015);
 
-	//gaussian.shader.data.amount.value = [blurAmount + PlayState.instance.blurAmount];
-	PlayState.instance.blurAmount = FlxMath.lerp(PlayState.instance.blurAmount, 0.0, (elapsed / (1 / 120)) * 0.01);
-	blurAmount = FlxMath.lerp(blurAmount, 0.0, (elapsed / (1 / 120)) * 0.01);
+	if(Init.trueSettings.get("Flashing Lights") && !Init.trueSettings.get('Reduced Movements')){
+		if(shake>0){
+			shake -= elapsed;
+			if(shake<=0){
+				for(cam in cameras){
+					cam.x = (FlxG.width - cam.width) / 2;
+					cam.y = (FlxG.height - cam.height) / 2;
+				}
+			}else{
+				for(cam in cameras){
+					var shakeFactor = ((shake / shakeMax) * shakePower) * cam.zoom;
+					cam.x = ((FlxG.width - cam.width) / 2) + FlxG.random.float(-shakeFactor, shakeFactor) * cam.width;
+					cam.y = ((FlxG.height - cam.height) / 2) + FlxG.random.float(-shakeFactor, shakeFactor) * cam.height;
+				}
+			}
+		}
+	}
+
+
+	var size = (blurAmount*6) + (PlayState.instance.blurAmount*8);
+	if(size > 16)size=16;
+
+	gaussian.shader.data.Size.value[0] = size;
 }
+
+var timer:FlxTimer = new FlxTimer();
 
 function onEvent(eventName) {
     switch (eventName) {
         default:
             trace('an event was called in death toll. woohoo');
         case 'Bong':
-            hellbell.playAnim('bong', true);			
+			hellbell.canAnimate = true;
+			hellbell.playAnim('bong', true);			
+			hellbell.canAnimate = false;
             hellbell.animation.finishCallback = function(name:String){
-			if (name == 'bong') {
+				if (name == 'bong') {
+					hellbell.canAnimate = true;
 					hellbell.dance();
+					hellbell.animation.finishCallback = null;
 				}
 			}
-			blurAmount += 0.25;
-			FlxG.camera.shake(0.015, 0.075);
-			new FlxTimer().start(0.075, function(tmr:FlxTimer){
-					FlxG.camera.shake(0.009, 0.15);
-					new FlxTimer().start(0.15, function(tmr:FlxTimer){
-						FlxG.camera.shake(0.005, 0.3);
-					});
-				});
+			blurAmount += 0.35;
+			shakePower = 0.0125;
+			shakeMax = 0.525;
+			shake = 0.525;
+		case 'Big Bong':
+			hellbell.canAnimate = true;
+			hellbell.playAnim('bong', true);		
+			hellbell.canAnimate = false;
+			timer.cancel();
+			
+			timer.start((Conductor.stepCrochet * 16) / 1000, function(tmr:FlxTimer){
+				hellbell.canAnimate = true;
+				hellbell.dance();
+			});
+			
+			blurAmount += 0.85;
+			shakePower = 0.0125;
+			shakeMax = (Conductor.stepCrochet * 16) / 1000;
+			shake = (Conductor.stepCrochet * 16) / 1000;
 		case 'Beelze Walk':
 			PlayState.dadOpponent.visible = false;
 			beelzewalk.visible = true;
@@ -323,6 +403,11 @@ function onEvent(eventName) {
 			dawn.transformDawn();
 
 		case 'Contract Advance':
+
+			if(contractStep > 3){// this is when bf starts to appear
+				if(!PlayState.instance.members.contains(bf)) 
+						PlayState.instance.insert(PlayState.instance.members.indexOf(dawn)+1, bf);
+			}
 			contractStep = contractStep + 1;
 			switch (contractStep)
 				{
@@ -345,11 +430,16 @@ function onEvent(eventName) {
 					case 9:
 						contract.animation.play('D');
 					case 10:
+						if(!PlayState.instance.members.contains(bf))
+							PlayState.instance.insert(PlayState.instance.members.indexOf(dawn)+1, bf); // just to make sure he is there before we remove dawn
+						PlayState.instance.remove(dawn);
 						contract.color = 0xFF3131;
 						FlxTween.tween(contract.scale, {x: 0.3, y: 0.3}, 1.3, {ease: FlxEase.backIn});	
 						FlxTween.tween(contract, {alpha: 0}, 1.3, {ease: FlxEase.backIn});
 				}					
 		case 'HB Camera Flash':		
+			if(!Init.trueSettings.get("Flashing Lights"))return;
+
 			var camflash = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.WHITE);
 			camflash.scrollFactor.set();
 			camflash.screenCenter();
@@ -357,13 +447,13 @@ function onEvent(eventName) {
 			
 			camflash.alpha = 0.6;
 			PlayState.defaultCamZoom += 0.08;
-			FlxTween.tween(camflash, {alpha: 0}, 0.5, {
+			FlxTween.tween(camflash, {alpha: 0}, (Conductor.stepCrochet/1000)*8, {
 				ease: FlxEase.linear,		
 				onComplete: function(tween:FlxTween)
 					{
 						PlayState.defaultCamZoom += 0.08;
 						camflash.alpha = 0.7;							
-						FlxTween.tween(camflash, {alpha: 0}, 0.7, {
+						FlxTween.tween(camflash, {alpha: 0}, (Conductor.stepCrochet/1000)*8, {
 							ease: FlxEase.linear,		
 							onComplete: function(tween:FlxTween)
 								{
