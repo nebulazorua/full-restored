@@ -81,7 +81,12 @@ class Note extends FNFSprite
 		this.noteType = noteType;
 		switch(noteType){
 			case 2:
-				hitbox *= 0.5;
+				if(PlayState.gameplayMode == HELL_MODE){
+					if(isSustainNote)
+						hitbox *= 0.75;
+					else
+						hitbox *= 0.5;
+				}
 			default:
 		}
 

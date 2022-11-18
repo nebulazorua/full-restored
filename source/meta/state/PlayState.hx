@@ -2964,8 +2964,12 @@ class PlayState extends MusicBeatState
 				else
 					nameOfAnimation = i.animation.curAnim.name;
 
-				if (nameOfAnimation.startsWith('sing') && !nameOfAnimation.endsWith('miss'))
-					i.dance();
+				if (nameOfAnimation.startsWith('sing') && !nameOfAnimation.endsWith('miss')){
+					if(i.animCovering)
+						i.coverEars(false, true);
+					else
+						i.dance();
+				}
 			}
 		}
 

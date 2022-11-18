@@ -2058,13 +2058,18 @@ class Character extends FNFSprite
 
 	var earTimer:FlxTimer;
 
-	public function coverEars(?yaCover:Bool = false) {
-		if(isCovering==yaCover)return;
+	public function coverEars(yaCover:Bool = false, force:Bool=false) {
+		if(force)isCovering=!yaCover;
 
-		if(!yaCover && !intendedAnim.contains("idle")){
+		if(isCovering==yaCover)return;
+		if(!yaCover && !intendedAnim.contains("idle") && !force){
 			canAnimate = true;
 			isCovering = false;
-
+			var frame = atlasCharacter==null?animation.curAnim.curFrame:atlasCharacter.anim.curFrame;
+			var nameOfAnimation = (atlasCharacter==null?animation.curAnim.name:atlasAnimation);
+			playAnim(nameOfAnimation, true);
+			var anim:Dynamic = atlasCharacter == null ? animation.curAnim : atlasCharacter.anim.curSymbol;
+			anim.curFrame = frame;
 			return;
 		}
 		if (!hasTransformed) {
@@ -2076,6 +2081,7 @@ class Character extends FNFSprite
 
 			atlasCharacter.anim.play('transition' + modifier, true, !yaCover, yaCover ? 0 : 4);
 			atlasAnimation = 'transition' + modifier;
+			animCovering = yaCover;
 			intendedAnim = 'transition';
 			intendedRev = !yaCover;
 			intendedFrame = yaCover?0:4;
@@ -2097,11 +2103,9 @@ class Character extends FNFSprite
 					earTimer = null;
 					if (atlasAnimation.contains('transition') && !canAnimate) {
 						canAnimate = true;
-						//dance();
-						if (!intendedAnim.contains('transition') && intendedAnim!='transform' && !intendedAnim.contains('idle') && intendedAnim.trim()!=''){
-							trace("goin back to " + intendedAnim);
+						if (!intendedAnim.contains('transition') && intendedAnim!='transform' && !intendedAnim.contains('idle') && intendedAnim.trim()!='')
 							playAnim(intendedAnim, true, intendedRev, intendedFrame);
-						}else
+						else
 							dance();
 					}
 				});
@@ -2117,6 +2121,7 @@ class Character extends FNFSprite
 
 			intendedAnim = 'transform';
 			intendedRev = false;
+			animCovering = false;
 			intendedFrame = 0;
 			atlasCharacter.anim.play('transform');
 			atlasAnimation = 'transform';
@@ -2127,16 +2132,16 @@ class Character extends FNFSprite
 					canAnimate = true;
 					atlasCharacter.anim.onComplete = null;
 					// dance();
-					if (!intendedAnim.contains('transition') && intendedAnim!='transform' && !intendedAnim.contains('idle') && intendedAnim.trim() != ''){
-						trace("goin back to " + intendedAnim);
+					if (!intendedAnim.contains('transition') && intendedAnim!='transform' && !intendedAnim.contains('idle') && intendedAnim.trim() != '')
 						playAnim(intendedAnim, true, intendedRev, intendedFrame);
-					}else
+					else
 						dance();
 				}
 			};
 		}
 	}
 
+	public var animCovering:Bool = false;
 	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
 		intendedAnim = AnimName;
@@ -2153,6 +2158,11 @@ class Character extends FNFSprite
 			modifier += '-transformed';
 		if (curCharacter == 'dawn-bf')
 			modifier += '-boyfriend';
+
+		if(modifier.contains("-cover"))
+			animCovering =true;
+		else
+			animCovering=false;
 
 		if (atlasCharacter != null) {
 			atlasCharacter.anim.play(AnimName + modifier, Force, Reversed, Frame);
@@ -2178,9 +2188,12 @@ class Character extends FNFSprite
 
 	override function draw(){
 		if(curCharacter=='hellbellplayer')return;
-		if(atlasCharacter!=null && atlasCharacter.exists)
+		if(!visible)return;
+		
+		if(atlasCharacter!=null && atlasCharacter.exists){
+			if(!atlasCharacter.visible)return;
 			return atlasCharacter.draw();
-		else
+		}else
 			return super.draw();
 		
 

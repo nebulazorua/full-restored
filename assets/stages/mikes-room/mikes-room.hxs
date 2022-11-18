@@ -76,7 +76,7 @@ function onCreate() {
 function onCreatePost() {
 	//SET UP
 	PlayState.camGame.alpha = 0.0;
-	PlayState.boyfriend.atlasCharacter.visible = false;
+	PlayState.boyfriend.visible = false;
 	PlayState.boyfriend.atlasCharacter.x -= 255;
 
 	PlayState.instance.camPos.set(530, 520);
@@ -105,7 +105,7 @@ function onCreatePost() {
 
 	mikeBed = new Boyfriend(); //reminding myself to fix mike for tomorrow
 	mikeBed.setCharacter(boyfriend.x + 310, boyfriend.y + 775, 'mike-bed');
-	mikeBed.atlasCharacter.visible = false;
+	mikeBed.visible = false;
 	add(mikeBed);
 
 	PlayState.instance.boyfriendStrums.character.push(mikeBed);
@@ -173,7 +173,7 @@ function onEvent(eventName) {
 			lacama.visible = true;
 			laalmuada.visible = true;
 			stevenfp.visible = false;
-			mikeBed.atlasCharacter.visible = true;
+			mikeBed.visible = true;
 			PlayState.instance.iconP1.visible = true;
 			for (i in 0...PlayState.instance.boyfriendStrums.receptors.members.length)
 				{
@@ -196,7 +196,7 @@ function onEvent(eventName) {
 			laalmuada.visible = false;
 			stevenbed.visible = false;
 			stevenfp.visible = true;
-			mikeBed.atlasCharacter.visible = false;
+			mikeBed.visible = false;
 			PlayState.instance.dadStrums.character.push(stevenfp);
 			PlayState.instance.dadStrums.singingCharacters = [stevenfp];
 			PlayState.cameraCentered = true;
