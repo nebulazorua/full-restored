@@ -2059,20 +2059,22 @@ class Character extends FNFSprite
 	var earTimer:FlxTimer;
 
 	public function coverEars(?yaCover:Bool = false) {
+		if(isCovering==yaCover)return;
+
 		if(!yaCover && !intendedAnim.contains("idle")){
 			canAnimate = true;
 			isCovering = false;
 
 			return;
 		}
-		if (isCovering != yaCover && !hasTransformed) {
+		if (!hasTransformed) {
 			canAnimate = false;
 			var modifier = '';
 			if (curCharacter == 'dawn-bf')
 				modifier += '-boyfriend';
 
 
-			atlasCharacter.anim.play('transition' + modifier, true, !yaCover, (yaCover ? 0 : 4));
+			atlasCharacter.anim.play('transition' + modifier, true, !yaCover, yaCover ? 0 : 4);
 			atlasAnimation = 'transition' + modifier;
 			intendedAnim = 'transition';
 			intendedRev = !yaCover;
@@ -2140,9 +2142,7 @@ class Character extends FNFSprite
 		intendedAnim = AnimName;
 		intendedRev = Reversed;
 		intendedFrame = Frame;
-		if (!canAnimate || (atlasAnimation.contains('transition')
-			&& ((!atlasCharacter.anim.reversed && atlasCharacter.anim.curFrame < 3)
-			|| (atlasCharacter.anim.reversed && atlasCharacter.anim.curFrame > 2)))) {
+		if (!canAnimate) {
 			return;
 		} else canAnimate = true;
 

@@ -80,7 +80,7 @@ class Note extends FNFSprite
 		this.noteAlt = noteAlt;
 		this.noteType = noteType;
 		switch(noteType){
-			case 1:
+			case 2:
 				hitbox *= 0.5;
 			default:
 		}

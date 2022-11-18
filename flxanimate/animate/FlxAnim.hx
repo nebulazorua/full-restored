@@ -154,12 +154,13 @@ class FlxAnim implements IFlxDestroyable
 			loopType = curThing.looped ? loop : playonce;
 			framerate = curThing.frameRate;
 		}
-		if (Force || finished || [nth, ""].indexOf(Name) == -1 || curThing != null && curThing.symbol != curSymbol)
-		{
-			curFrame = (Reverse) ? Frame - length : Frame;
-		}
 		if ([nth, ""].indexOf(Name) == -1)
 			curSymbol = curThing.symbol;
+		
+		if (Force || finished || [nth, ""].indexOf(Name) == -1 || curThing != null && curThing.symbol != curSymbol)
+		{
+			curFrame = (Reverse) ? (length - 1) - Frame : Frame;
+		}
 		reversed = Reverse;
 		finished = false;
 		isPlaying = true;
@@ -199,7 +200,7 @@ class FlxAnim implements IFlxDestroyable
 		curSymbol.update(framerate, reversed, loopType);
 		if (FlxG.keys.pressed.F)
 			trace(loopType, curFrame > length - 1);
-		finished = [playonce, "playonce"].indexOf(loopType) != -1 && (reversed && curFrame == 0 || curFrame >= length - 1);
+		finished = [playonce, "playonce"].contains(loopType) && (reversed && curFrame == 0 || !reversed && curFrame >= length - 1);
 
 		if (finished)
 		{
