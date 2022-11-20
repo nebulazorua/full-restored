@@ -6,6 +6,9 @@ function returnDelay()
 
 function eventFunction(params) {
 	var newMin:Float = Std.parseFloat(params[0]);
+	if(PlayState.gameplayMode == 'HELL_MODE')
+		newMin /= 0.75;
+
 	PlayState.instance.minHealth = newMin;
 	var celebi:FlxSprite = new FlxSprite();
 	//

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Charmander.png">
+	<!-- Created with Adobe Animate version 21.0.5.40714 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="CHarmander frompokehell0000" x="0" y="0" width="227" height="311" frameX="-3" frameY="0" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0001" x="0" y="0" width="227" height="311" frameX="-3" frameY="0" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0002" x="227" y="0" width="228" height="311" frameX="-2" frameY="0" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0003" x="227" y="0" width="228" height="311" frameX="-2" frameY="0" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0004" x="455" y="0" width="229" height="309" frameX="-1" frameY="-2" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0005" x="455" y="0" width="229" height="309" frameX="-1" frameY="-2" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0006" x="684" y="0" width="229" height="311" frameX="-1" frameY="0" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0007" x="684" y="0" width="229" height="311" frameX="-1" frameY="0" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0008" x="0" y="311" width="229" height="311" frameX="-1" frameY="0" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0009" x="0" y="311" width="229" height="311" frameX="-1" frameY="0" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0010" x="229" y="311" width="230" height="310" frameX="0" frameY="-1" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0011" x="229" y="311" width="230" height="310" frameX="-1" frameY="-1" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0012" x="459" y="311" width="229" height="310" frameX="-1" frameY="-1" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="CHarmander frompokehell0013" x="459" y="311" width="229" height="310" frameX="-1" frameY="-1" frameWidth="230" frameHeight="311"/>
+	<SubTexture name="SHdowmanderone0000" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0001" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0002" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0003" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0004" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0005" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0006" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0007" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0008" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0009" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0010" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0011" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0012" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0013" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0014" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0015" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0016" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0017" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0018" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0019" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0020" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0021" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0022" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0023" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="SHdowmanderone0024" x="688" y="311" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0000" x="0" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0001" x="227" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0002" x="0" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0003" x="0" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0004" x="0" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0005" x="454" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0006" x="454" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0007" x="454" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0008" x="454" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0009" x="454" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0010" x="454" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0011" x="454" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0012" x="454" y="623" width="227" height="312"/>
+	<SubTexture name="THEIDLECHARMANDER TWO0013" x="454" y="623" width="227" height="312"/>
+</TextureAtlas>

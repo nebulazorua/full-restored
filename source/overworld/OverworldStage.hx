@@ -4,6 +4,7 @@
 
 package overworld;
 
+import flixel.graphics.tile.FlxGraphicsShader;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.addons.transition.FlxTransitionableState;
@@ -119,7 +120,7 @@ class OverworldStage extends FlxState {
         glitchSprite.shader.data.prob.value = [0.0];
         glitchSprite.shader.data.time.value = [0.0];
 
-        var gameboyShader:GraphicsShader = new GraphicsShader("", Paths.shader('brimstone/brimstoneCamEffects'));
+        var gameboyShader:FlxGraphicsShader = new FlxGraphicsShader("", Paths.shader('brimstone/brimstoneCamEffects'));
         var gameboyFilter:ShaderFilter = new ShaderFilter(gameboyShader);
         gameCam.setFilters([gameboyFilter, glitchSprite]);
         // uiCam.setFilters([gameboyFilter]);

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Chansey.png">
+	<!-- Created with Adobe Animate version 21.0.5.40714 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Chansey0000" x="0" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0001" x="344" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0002" x="344" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0003" x="688" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0004" x="0" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0005" x="1032" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0006" x="1032" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0007" x="1032" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0008" x="1032" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0009" x="1032" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0010" x="1032" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0011" x="1032" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0012" x="1032" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey0013" x="1032" y="0" width="344" height="434"/>
+	<SubTexture name="Chansey Normal shake0000" x="1376" y="0" width="344" height="434" frameX="0" frameY="0" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0001" x="1376" y="0" width="344" height="434" frameX="0" frameY="0" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0002" x="0" y="434" width="343" height="433" frameX="0" frameY="-1" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0003" x="0" y="434" width="343" height="433" frameX="0" frameY="-1" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0004" x="343" y="434" width="344" height="434" frameX="0" frameY="0" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0005" x="343" y="434" width="344" height="434" frameX="0" frameY="0" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0006" x="687" y="434" width="344" height="433" frameX="0" frameY="-1" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0007" x="687" y="434" width="344" height="433" frameX="0" frameY="-1" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0008" x="1031" y="434" width="344" height="434" frameX="0" frameY="0" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0009" x="1031" y="434" width="344" height="434" frameX="0" frameY="0" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0010" x="1375" y="434" width="344" height="433" frameX="0" frameY="-1" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0011" x="1375" y="434" width="344" height="433" frameX="0" frameY="-1" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0012" x="0" y="868" width="347" height="427" frameX="-2" frameY="-7" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey Normal shake0013" x="0" y="868" width="347" height="427" frameX="-2" frameY="-7" frameWidth="349" frameHeight="434"/>
+	<SubTexture name="Chansey numero uno0000" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0001" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0002" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0003" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0004" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0005" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0006" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0007" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0008" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0009" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0010" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0011" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0012" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0013" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0014" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0015" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0016" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0017" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0018" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0019" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0020" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0021" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0022" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0023" x="347" y="868" width="344" height="435"/>
+	<SubTexture name="Chansey numero uno0024" x="347" y="868" width="344" height="435"/>
+</TextureAtlas>

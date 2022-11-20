@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Purinsoulstare.png">
+	<!-- Created with Adobe Animate version 21.0.5.40714 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Jigglypuff bg0000" x="0" y="0" width="100" height="78"/>
+	<SubTexture name="Jigglypuff bg0001" x="100" y="0" width="100" height="78"/>
+	<SubTexture name="Jigglypuff bg0002" x="0" y="78" width="99" height="78" frameX="0" frameY="0" frameWidth="100" frameHeight="78"/>
+	<SubTexture name="Jigglypuff bg0003" x="99" y="78" width="100" height="78"/>
+	<SubTexture name="Jigglypuff bg0004" x="0" y="0" width="100" height="78"/>
+	<SubTexture name="Jigglypuff bg0005" x="0" y="156" width="100" height="78"/>
+	<SubTexture name="Jigglypuff bg0006" x="100" y="0" width="100" height="78"/>
+	<SubTexture name="Jigglypuff bg0007" x="0" y="78" width="99" height="78" frameX="0" frameY="0" frameWidth="100" frameHeight="78"/>
+	<SubTexture name="Jigglypuff bg0008" x="99" y="78" width="100" height="78"/>
+	<SubTexture name="Jigglypuff bg0009" x="0" y="0" width="100" height="78"/>
+	<SubTexture name="Jigglypuff bg0010" x="0" y="0" width="100" height="78"/>
+	<SubTexture name="Jigglypuff bg0011" x="100" y="0" width="100" height="78"/>
+	<SubTexture name="Jigglypuff bg0012" x="0" y="78" width="99" height="78" frameX="0" frameY="0" frameWidth="100" frameHeight="78"/>
+	<SubTexture name="Jigglypuff bg0013" x="99" y="78" width="100" height="78"/>
+</TextureAtlas>

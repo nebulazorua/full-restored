@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Misdreavous.png">
+	<!-- Created with Adobe Animate version 21.0.5.40714 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="MISDREAVEOUS REA SHADOW0000" x="0" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0001" x="255" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0002" x="255" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0003" x="510" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0004" x="0" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0005" x="765" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0006" x="765" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0007" x="765" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0008" x="765" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0009" x="765" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0010" x="765" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0011" x="765" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0012" x="765" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHADOW0013" x="765" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0000" x="1020" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0001" x="1020" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0002" x="1275" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0003" x="1275" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0004" x="1530" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0005" x="1530" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0006" x="1785" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0007" x="1785" y="0" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0008" x="0" y="391" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0009" x="0" y="391" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0010" x="255" y="391" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0011" x="255" y="391" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0012" x="510" y="391" width="255" height="391"/>
+	<SubTexture name="MISDREAVEOUS REA SHAKE0013" x="510" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0000" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0001" x="1020" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0002" x="1020" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0003" x="1275" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0004" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0005" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0006" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0007" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0008" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0009" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0010" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0011" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0012" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0013" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0014" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0015" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0016" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0017" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0018" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0019" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0020" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0021" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0022" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0023" x="765" y="391" width="255" height="391"/>
+	<SubTexture name="Shadow for misdreaveous one0024" x="765" y="391" width="255" height="391"/>
+</TextureAtlas>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="DustskullBackground.png">
+	<!-- Created with Adobe Animate version 21.0.5.40714 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="DUSTSKULLHELL0000" x="0" y="0" width="266" height="315" frameX="-1" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0001" x="0" y="0" width="266" height="315" frameX="-1" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0002" x="266" y="0" width="266" height="315" frameX="-2" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0003" x="266" y="0" width="266" height="315" frameX="-2" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0004" x="532" y="0" width="266" height="315" frameX="0" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0005" x="532" y="0" width="266" height="315" frameX="0" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0006" x="798" y="0" width="266" height="315" frameX="-1" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0007" x="798" y="0" width="266" height="315" frameX="-1" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0008" x="1064" y="0" width="266" height="315" frameX="-1" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0009" x="1064" y="0" width="266" height="315" frameX="-1" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0010" x="1330" y="0" width="266" height="315" frameX="-2" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0011" x="1330" y="0" width="266" height="315" frameX="-2" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0012" x="1596" y="0" width="267" height="315" frameX="-2" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="DUSTSKULLHELL0013" x="1596" y="0" width="267" height="315" frameX="-2" frameY="0" frameWidth="269" frameHeight="315"/>
+	<SubTexture name="Dustskull Ease in show two0000" x="0" y="315" width="288" height="340"/>
+	<SubTexture name="Dustskull Ease in show two0001" x="288" y="315" width="288" height="340"/>
+	<SubTexture name="Dustskull Ease in show two0002" x="288" y="315" width="288" height="340"/>
+	<SubTexture name="Dustskull Ease in show two0003" x="0" y="315" width="288" height="340"/>
+	<SubTexture name="Dustskull Ease in show two0004" x="0" y="315" width="288" height="340"/>
+	<SubTexture name="Dustskull Ease in show two0005" x="576" y="315" width="287" height="340" frameX="0" frameY="0" frameWidth="288" frameHeight="340"/>
+	<SubTexture name="Dustskull Ease in show two0006" x="576" y="315" width="287" height="340" frameX="0" frameY="0" frameWidth="288" frameHeight="340"/>
+	<SubTexture name="Dustskull Ease in show two0007" x="863" y="315" width="287" height="340" frameX="0" frameY="0" frameWidth="288" frameHeight="340"/>
+	<SubTexture name="Dustskull Ease in show two0008" x="576" y="315" width="287" height="340" frameX="0" frameY="0" frameWidth="288" frameHeight="340"/>
+	<SubTexture name="Dustskull Ease in show two0009" x="863" y="315" width="287" height="340" frameX="0" frameY="0" frameWidth="288" frameHeight="340"/>
+	<SubTexture name="Dustskull Ease in show two0010" x="576" y="315" width="287" height="340" frameX="0" frameY="0" frameWidth="288" frameHeight="340"/>
+	<SubTexture name="Dustskull Ease in show two0011" x="576" y="315" width="287" height="340" frameX="0" frameY="0" frameWidth="288" frameHeight="340"/>
+	<SubTexture name="Dustskull Ease in show two0012" x="576" y="315" width="287" height="340" frameX="0" frameY="0" frameWidth="288" frameHeight="340"/>
+	<SubTexture name="Dustskull Ease in show two0013" x="863" y="315" width="287" height="340" frameX="0" frameY="0" frameWidth="288" frameHeight="340"/>
+	<SubTexture name="Hidden dustskull shadow One0000" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0001" x="1437" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0002" x="1437" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0003" x="1724" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0004" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0005" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0006" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0007" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0008" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0009" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0010" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0011" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0012" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0013" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0014" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0015" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0016" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0017" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0018" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0019" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0020" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0021" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0022" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0023" x="1150" y="315" width="287" height="340"/>
+	<SubTexture name="Hidden dustskull shadow One0024" x="1150" y="315" width="287" height="340"/>
+</TextureAtlas>

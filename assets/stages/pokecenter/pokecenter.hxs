@@ -1,11 +1,26 @@
 var nursejoy;
 var nurseangle:Float;
 var darkoverlay:Character;
+
+var farPurin; // for the very beginning
+
+var smallStatic:FlxSprite;
+var bigStatic:FlxSprite;
+var bgstatic:FlxSprite;
+var obscure:FlxSprite;
+var fgObscure:FlxSprite;
+var farChars:Array<Array<FlxSprite>> = [];
+
+var smallStaticShader;
+var bigStaticShader;
+var bgStaticShader;
 var jigf:Character;
 var hpTween:FlxTween;
 function onCreate() {
-    PlayState.defaultCamZoom = 0.75;
+    PlayState.defaultCamZoom = 0.9;
 	var consistentPosition:Array<Float> = [-735, -500];
+	PlayState.boyfriend.x += 25;
+	PlayState.boyfriend.y -= 15;
     
 	var floor:FlxSprite = new FlxSprite(0, 0);
 	floor.loadGraphic(Paths.image('8floor'));
@@ -23,9 +38,9 @@ function onCreate() {
 	nursejoy = new FlxSprite(0, 0);
 	nursejoy.loadGraphic(Paths.image('6nursejoy'));
 	nursejoy.setPosition(consistentPosition[0] + 1260, consistentPosition[1] + 674);
-	nursejoy.scrollFactor.set(0.98, 0.98);
+	nursejoy.scrollFactor.set(0.97, 0.97);
 	nursejoy.antialiasing = true;
-	add(nursejoy);				
+	add(nursejoy);			
 
 	var table:FlxSprite = new FlxSprite(0, 0);
 	table.loadGraphic(Paths.image('5table'));
@@ -33,6 +48,253 @@ function onCreate() {
 	table.scrollFactor.set(0.98, 0.98);
 	table.antialiasing = true;
 	add(table);
+
+	obscure = new FlxSprite(0, 0);
+	obscure.loadGraphic(Paths.image('obscure'));
+	obscure.setPosition(consistentPosition[0], consistentPosition[1]);
+	obscure.scrollFactor.set(0.98, 0.98);
+	obscure.antialiasing = true;
+	add(obscure);
+
+	farPurin = new FlxSprite(0, 0);
+	farPurin.frames = Paths.getSparrowAtlas('Purinsoulstare');
+	farPurin.animation.addByPrefix("idle", "Jigglypuff bg", 24, true);
+	farPurin.animation.play("idle");
+	farPurin.scrollFactor.set(0.98, 0.98);
+	farPurin.setPosition(consistentPosition[0] + 1275, consistentPosition[1] + 1100);
+	farPurin.antialiasing = true;
+	farPurin.visible = false;
+	add(farPurin);
+
+
+	var farCub = new FlxSprite(0, 0);
+	farCub.frames = Paths.getSparrowAtlas('CUBONE ALT');
+	farCub.animation.addByPrefix("idle", "CUBONE SHAKE TREE", 24, false);
+	farCub.animation.addByPrefix("wait", "CUBONE SHAKE TREE", 0, false);
+	farCub.alpha = 0;
+	farCub.animation.play("wait");
+	farCub.scrollFactor.set(0.98, 0.98);
+	farCub.scale.set(.6, .6);
+	farCub.updateHitbox();
+	farCub.setPosition(consistentPosition[0] + 1100, consistentPosition[1] + 1025);
+	farCub.antialiasing = true;
+	add(farCub);
+
+	var farCubEyes = new FlxSprite(0, 0);
+	farCubEyes.frames = Paths.getSparrowAtlas('CUBONE ALT');
+	farCubEyes.animation.addByPrefix("idle", "CUBONE ONE SHADOW", 0, true);
+	farCubEyes.alpha = 0;
+	farCubEyes.animation.play("idle");
+	farCubEyes.animation.curAnim.curFrame = farCubEyes.animation.curAnim.numFrames-1;
+	farCubEyes.scrollFactor.set(0.98, 0.98);
+	farCubEyes.scale.set(.6, .6);
+	farCubEyes.updateHitbox();
+	farCubEyes.setPosition(consistentPosition[0] + 1100, consistentPosition[1] + 1025);
+	farCubEyes.antialiasing = true;
+	add(farCubEyes);
+	
+	var farCubSil = new FlxSprite(0, 0);
+	farCubSil.frames = Paths.getSparrowAtlas('CUBONE ALT');
+	farCubSil.animation.addByPrefix("idle", "CUBONE TWO", 0, true);
+	farCubSil.alpha = 0;
+	farCubSil.animation.play("idle");
+	farCubSil.scrollFactor.set(0.98, 0.98);
+	farCubSil.scale.set(.6, .6);
+	farCubSil.updateHitbox();
+	farCubSil.setPosition(consistentPosition[0] + 1100, consistentPosition[1] + 1025);
+	farCubSil.antialiasing = true;
+	add(farCubSil);
+
+	var farAud = new FlxSprite(0, 0);
+	farAud.frames = Paths.getSparrowAtlas('Audinos ALT');
+	farAud.animation.addByPrefix("idle", "Audini shake Four", 24, false);
+	farAud.animation.addByPrefix("wait", "Audini shake Four", 0, false);
+	farAud.alpha = 0;
+	farAud.animation.play("wait");
+	farAud.scrollFactor.set(0.98, 0.98);
+	farAud.scale.set(.7, .7);
+	farAud.updateHitbox();
+	farAud.setPosition(consistentPosition[0] + 875, consistentPosition[1] + 930);
+	farAud.antialiasing = true;
+	add(farAud);
+
+	var farAudEyes = new FlxSprite(0, 0);
+	farAudEyes.frames = Paths.getSparrowAtlas('Audinos ALT');
+	farAudEyes.animation.addByPrefix("idle", "Audino shadow one", 0, true);
+	farAudEyes.alpha = 0;
+	farAudEyes.animation.play("idle");
+	farAudEyes.animation.curAnim.curFrame = farAudEyes.animation.curAnim.numFrames-1;
+	farAudEyes.scrollFactor.set(0.98, 0.98);
+	farAudEyes.scale.set(.7, .7);
+	farAudEyes.updateHitbox();
+	farAudEyes.setPosition(consistentPosition[0] + 875, consistentPosition[1] + 930);
+	farAudEyes.antialiasing = true;
+	add(farAudEyes);
+	
+	var farAudSil = new FlxSprite(0, 0);
+	farAudSil.frames = Paths.getSparrowAtlas('Audinos ALT');
+	farAudSil.animation.addByPrefix("idle", "Audino shadow one", 0, true);
+	farAudSil.alpha = 0;
+	farAudSil.animation.play("idle");
+	farAudSil.scrollFactor.set(0.98, 0.98);
+	farAudSil.scale.set(.7, .7);
+	farAudSil.updateHitbox();
+	farAudSil.setPosition(consistentPosition[0] + 875, consistentPosition[1] + 930);
+	farAudSil.antialiasing = true;
+	add(farAudSil);
+
+	var farSkull = new FlxSprite(0, 0);
+	farSkull.frames = Paths.getSparrowAtlas('DustskullBackground');
+	farSkull.animation.addByPrefix("idle", "DUSTSKULLHELL", 24, false);
+	farSkull.animation.addByPrefix("wait", "DUSTSKULLHELL", 0, false);
+	farSkull.alpha = 0;
+	farSkull.animation.play("wait");
+	farSkull.scrollFactor.set(0.98, 0.98);
+	farSkull.setPosition(consistentPosition[0] + 1500, consistentPosition[1] + 675);
+	farSkull.antialiasing = true;
+	add(farSkull);
+
+	var farSkullEyes = new FlxSprite(0, 0);
+	farSkullEyes.loadGraphic(Paths.image("duskullEye"));
+	farSkullEyes.alpha = 0;
+	farSkullEyes.scrollFactor.set(0.98, 0.98);
+	farSkullEyes.setPosition(consistentPosition[0] + 1500, consistentPosition[1] + 675);
+	farSkullEyes.antialiasing = true;
+	add(farSkullEyes);
+	
+	var farSkullSil = new FlxSprite(0, 0);
+	farSkullSil.loadGraphic(Paths.image("duskullSillhouette"));
+	farSkullSil.alpha = 0;
+	farSkullSil.scrollFactor.set(0.98, 0.98);
+	farSkullSil.setPosition(consistentPosition[0] + 1500, consistentPosition[1] + 675);
+	farSkullSil.antialiasing = true;
+	add(farSkullSil);
+
+	var farChar = new FlxSprite(0, 0);
+	farChar.frames = Paths.getSparrowAtlas('Charmander');
+	farChar.animation.addByPrefix("idle", "CHarmander frompokehell", 24, false);
+	farChar.animation.addByPrefix("wait", "CHarmander frompokehell", 0, false);
+	farChar.alpha = 0;
+	farChar.animation.play("wait");
+	farChar.scrollFactor.set(0.98, 0.98);
+	farChar.scale.set(.7, .7);
+	farChar.updateHitbox();
+	farChar.setPosition(consistentPosition[0] + 1350, consistentPosition[1] + 980);
+	farChar.antialiasing = true;
+	add(farChar);
+
+	var farCharEyes = new FlxSprite(0, 0);
+	farCharEyes.loadGraphic(Paths.image("charmanderEyes"));
+	farCharEyes.alpha = 0;
+	farCharEyes.scrollFactor.set(0.98, 0.98);
+	farCharEyes.scale.set(.7, .7);
+	farCharEyes.updateHitbox();
+	farCharEyes.setPosition(consistentPosition[0] + 1350, consistentPosition[1] + 980);
+	farCharEyes.antialiasing = true;
+	add(farCharEyes);
+	
+	var farCharSil = new FlxSprite(0, 0);
+	farCharSil.loadGraphic(Paths.image("charmanderSil"));
+	farCharSil.alpha = 0;
+	farCharSil.scrollFactor.set(0.98, 0.98);
+	farCharSil.scale.set(.7, .7);
+	farCharSil.updateHitbox();
+	farCharSil.setPosition(consistentPosition[0] + 1350, consistentPosition[1] + 980);
+	farCharSil.antialiasing = true;
+	add(farCharSil);
+
+	var farChan = new FlxSprite(0, 0);
+	farChan.frames = Paths.getSparrowAtlas('Chansey');
+	farChan.animation.addByPrefix("idle", "Chansey Normal shake", 24, false);
+	farChan.animation.addByPrefix("wait", "Chansey Normal shake", 0, false);
+	farChan.alpha = 0;
+	farChan.animation.play("wait");
+	farChan.scrollFactor.set(0.98, 0.98);
+	farChan.scale.set(.9, .9);
+	farChan.updateHitbox();
+	farChan.setPosition(consistentPosition[0] + 1450, consistentPosition[1] + 810);
+	farChan.antialiasing = true;
+	add(farChan);
+
+	var farChanEyes = new FlxSprite(0, 0);
+	farChanEyes.loadGraphic(Paths.image("chanseyEyes"));
+	farChanEyes.alpha = 0;
+	farChanEyes.scrollFactor.set(0.98, 0.98);
+	farChanEyes.scale.set(.9, .9);
+	farChanEyes.updateHitbox();
+	farChanEyes.setPosition(consistentPosition[0] + 1450, consistentPosition[1] + 810);
+	farChanEyes.antialiasing = true;
+	add(farChanEyes);
+	
+	var farChanSil = new FlxSprite(0, 0);
+	farChanSil.loadGraphic(Paths.image("chanseySilhouette"));
+	farChanSil.alpha = 0;
+	farChanSil.scrollFactor.set(0.98, 0.98);
+	farChanSil.scale.set(.9, .9);
+	farChanSil.updateHitbox();
+	farChanSil.setPosition(consistentPosition[0] + 1450, consistentPosition[1] + 810);
+	farChanSil.antialiasing = true;
+	add(farChanSil);
+
+	var farMisd = new FlxSprite(0, 0);
+	farMisd.frames = Paths.getSparrowAtlas('Misdreavous');
+	farMisd.animation.addByPrefix("idle", "MISDREAVEOUS REA SHAKE", 24, false);
+	farMisd.animation.addByPrefix("wait", "MISDREAVEOUS REA SHAKE", 0, false);
+	farMisd.alpha = 0;
+	farMisd.animation.play("wait");
+	farMisd.scrollFactor.set(0.98, 0.98);
+	farMisd.setPosition(consistentPosition[0] + 985, consistentPosition[1] + 665);
+	farMisd.antialiasing = true;
+	add(farMisd);
+
+	var farMisdEyes = new FlxSprite(0, 0);
+	farMisdEyes.loadGraphic(Paths.image("misdreavousEye"));
+	farMisdEyes.alpha = 0;
+	farMisdEyes.scrollFactor.set(0.98, 0.98);
+	farMisdEyes.setPosition(consistentPosition[0] + 985, consistentPosition[1] + 665);
+	farMisdEyes.antialiasing = true;
+	add(farMisdEyes);
+	
+	var farMisdSil = new FlxSprite(0, 0);
+	farMisdSil.loadGraphic(Paths.image("misdreavousSilhouette"));
+	farMisdSil.alpha = 0;
+	farMisdSil.scrollFactor.set(0.98, 0.98);
+	farMisdSil.setPosition(consistentPosition[0] + 985, consistentPosition[1] + 665);
+	farMisdSil.antialiasing = true;
+	add(farMisdSil);
+
+	farChars = [
+		[farCubSil, farCubEyes, farCub],
+		[farAudSil, farAudEyes, farAud],
+		[farCharSil, farCharEyes, farChar],
+		[farSkullSil, farSkullEyes, farSkull],
+		[farChanSil, farChanEyes, farChan],
+		[farMisdSil, farMisdEyes, farMisd],
+	];
+
+	/*obscure.visible=false;
+	farPurin.visible=true;
+	for(char in farChars){
+		char[2].alpha=1;
+	}*/
+
+	fgObscure = new FlxSprite(0, 0);
+	fgObscure.loadGraphic(Paths.image('fgObscure'));
+	fgObscure.setPosition(consistentPosition[0], consistentPosition[1]);
+	fgObscure.scrollFactor.set(0.98, 0.98);
+	fgObscure.antialiasing = true;
+	fgObscure.alpha=0;
+	add(fgObscure);
+
+	smallStatic = new FlxSprite(0, 0);
+	smallStatic.makeGraphic(614, 532, FlxColor.fromRGB(255, 255, 255));
+	smallStaticShader = new FlxGraphicsShader("", Paths.shader('purin/static'));
+	smallStaticShader.data.iTime.value = [0];
+	smallStatic.shader = smallStaticShader;
+	smallStatic.alpha = 0;
+	smallStatic.setPosition(consistentPosition[0] + 1019, consistentPosition[1] + 673);
+	smallStatic.scrollFactor.set(1, 1);
+	add(smallStatic);
 
 	var toplayer:FlxSprite = new FlxSprite(0, 0);
 	toplayer.loadGraphic(Paths.image('4toplayer'));
@@ -57,25 +319,82 @@ function onCreate() {
 	darkoverlay.setPosition(consistentPosition[0], consistentPosition[1]);
 	darkoverlay.antialiasing = true;
 	darkoverlay.updateHitbox();
+	PlayState.camGame.zoom = 0.9;
+	bigStatic = new FlxSprite(0, 0);
+	bigStatic.makeGraphic(2642, 1500, FlxColor.fromRGB(255, 255, 255));
+	bigStaticShader = new FlxGraphicsShader("", Paths.shader('purin/static'));
+	bigStaticShader.data.iTime.value = [0];
+	bigStatic.shader = smallStaticShader;
+	bigStatic.alpha = 0;
+	bigStatic.setPosition(consistentPosition[0], consistentPosition[1]);
+	bigStatic.scrollFactor.set(1, 1);
+
+	bgStatic = new FlxSprite(0, 0);
+	bgStatic.makeGraphic(2642, 1500, FlxColor.fromRGB(255, 255, 255));
+	bgStaticShader = new FlxGraphicsShader("", Paths.shader('purin/static'));
+	bgStaticShader.data.iTime.value = [0];
+	bgStatic.shader = smallStaticShader;
+	bgStatic.alpha = 0;
+	bgStatic.setPosition(consistentPosition[0], consistentPosition[1]);
+	bgStatic.scrollFactor.set(1, 1);
+	add(bgStatic);
+	
 }
 
 function onCreatePost() {
+	dadOpponent.visible = false;
+	boyfriend.playAnim("preidle", true);
+	boyfriend.canAnimate = false;
+	//PlayState.camHUD.visible = false;
+	for(cam in PlayState.instance.allUIs){
+		cam.alpha=0;
+	}
+
 	nurseangle = nursejoy.angle;
 	nursejoy.origin.set(75, 0);
 	PlayState.instance.camPos.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 150);	
 
 	jigf = new Character().setCharacter(0, 0, 'jigglyfront');
 	jigf.setPosition(dadOpponent.x, dadOpponent.y);
-	//jigf.flipLeftRight();
 	jigf.visible = false;
 	jigf.x -= 26;
 	jigf.y += 16;
 	PlayState.instance.dadStrums.character.push(jigf);
+	PlayState.instance.manualCameraPosition.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 150);
+	PlayState.instance.staticCamera = true;
 	add(jigf);
 	add(darkoverlay);
+	PlayState.instance.camZooming = false;
+
+	add(bigStatic);
+}
+
+function onBeat(beat){
+	if(beat%2==0){
+		for(data in farChars){
+			var silhouette = data[0];
+			var eyes = data[1];
+			var base = data[2];
+			if(silhouette.alpha==0 && eyes.alpha==0 && base.alpha==1){
+				base.animation.play("idle");
+			}
+		}
+		//if(farCubEyes.alpha==0 && farCub.alpha==1)farCub.animation.play("idle",true);
+	}
+}
+
+function onStep(step){
+	if(PlayState.boyfriend.animation.curAnim!=null && PlayState.boyfriend.animation.curAnim.name=='preidle'){
+		if(step%16==0)
+			PlayState.boyfriend.animation.play("preidle",true);
+		
+	}
 }
 
 function onUpdate(elapsed) {
+	smallStaticShader.data.iTime.value[0] = Conductor.songPosition/1000;
+	bigStaticShader.data.iTime.value[0] = (Conductor.songPosition + 5000)/1000.;
+	bgStaticShader.data.iTime.value[0] = (Conductor.songPosition + 2500)/1000.;
 	nursejoy.angle = nurseangle + Math.sin((180 / Math.PI) * ((Conductor.songPosition / 1000) / 36)) * 3;
 	PlayState.uiHUD.healthBar.alpha = PlayState.uiHUD.healthBarBG.alpha;
 	for (i in PlayState.uiHUD.iconGroup) {
@@ -85,15 +404,169 @@ function onUpdate(elapsed) {
 	
 }
 
+var revealed:Int = 0;
+var fRevealed:Int = 0;
+var obscured:Bool = false;
 function onEvent(eventName) {
     switch (eventName) {
         default:
-            trace('an event was called in death toll. woohoo');
-		case 'purinunturn':
+            trace('an event was called in purin. woohoo');
+		case 'Purin Obscure':
+			obscured=!obscured;
+			
+			FlxTween.cancelTweensOf(fgObscure);
+			FlxTween.tween(fgObscure, {
+				alpha: obscured?1:0
+			}, (Conductor.stepCrochet * 16) / 1000, {ease: FlxEase.sineOut});
+
+		case 'Purin Start':
+			FlxTween.tween(smallStatic, {
+				alpha: 1
+			}, (Conductor.stepCrochet * 64) / 1000, {ease: FlxEase.sineOut});
+		case 'Purin Full Reveal':
+			var charArray = farChars[fRevealed];
+			if(charArray!=null){
+				var silhouette = charArray[0];
+				var eyes = charArray[1];
+				var base = charArray[2];
+
+				FlxTween.cancelTweensOf(eyes);
+
+				FlxTween.tween(eyes, {
+					alpha: 0
+				}, (Conductor.stepCrochet * 8) / 1000, {ease: FlxEase.sineOut});
+			}
+			trace('full reveal ' + fRevealed);
+			fRevealed++;
+		case 'Purin Reveal':
+			
+			if(revealed==4){
+				PlayState.instance.manualCameraPosition.set(farPurin.getMidpoint().x, farPurin.getMidpoint().y - 120);
+				FlxTween.cancelTweensOf(PlayState.camGame);
+				FlxTween.tween(PlayState.camGame, {
+					zoom: 1
+				}, (Conductor.stepCrochet * 16) / 1000, {ease: FlxEase.sineOut});
+
+				FlxTween.cancelTweensOf(obscure);
+				FlxTween.tween(obscure, {
+					alpha: 0.5
+				}, (Conductor.stepCrochet * 64) / 1000, {ease: FlxEase.sineOut});
+			}
+			if(revealed==0){
+				smallStatic.alpha = 1;
+				FlxTween.cancelTweensOf(smallStatic);
+				FlxTween.tween(smallStatic, {
+					alpha: 0
+				}, (Conductor.stepCrochet * 8) / 1000, {ease: FlxEase.sineOut});
+				PlayState.instance.manualCameraPosition.set(farPurin.getMidpoint().x, farPurin.getMidpoint().y);
+				PlayState.instance.staticCamera = true;
+				
+				FlxTween.tween(PlayState.camGame, {
+					zoom: 1.5
+				}, (Conductor.stepCrochet * 32) / 1000, {ease: FlxEase.sineOut});
+
+				farPurin.visible = true;
+				for(data in farChars){
+					for(sprite in data)
+						sprite.alpha = 1; // silhouetted n shit
+					
+				}
+				PlayState.boyfriend.canAnimate = true;
+				PlayState.boyfriend.playAnim("turn", true);
+				PlayState.boyfriend.canAnimate = false;
+			}else if(revealed==7){
+				FlxTween.cancelTweensOf(smallStatic);
+				FlxTween.tween(smallStatic, {
+					alpha: 1
+				}, (Conductor.stepCrochet * 24) / 1000, {ease: FlxEase.sineOut});
+			
+			}else if(revealed == 8){
+				FlxTween.cancelTweensOf(bigStatic);
+				FlxTween.cancelTweensOf(smallStatic);
+
+				FlxTween.tween(smallStatic, {
+					alpha: 0
+				}, (Conductor.stepCrochet * 16) / 1000, {ease: FlxEase.sineOut});
+
+				bigStatic.alpha = 1;
+				FlxTween.tween(bigStatic, {
+					alpha: 0
+				}, (Conductor.stepCrochet * 12) / 1000, {ease: FlxEase.sineOut});
+				
+				PlayState.instance.camZooming = true;
+				obscure.alpha = 0;
+				farPurin.visible = false;
+				PlayState.dadOpponent.visible = true;
+				PlayState.defaultCamZoom = 0.75;
+				PlayState.instance.staticCamera = false;
+				PlayState.boyfriend.canAnimate = true;
+				PlayState.boyfriend.playAnim("turn", true, true);
+				PlayState.boyfriend.canAnimate = false;
+				PlayState.dadOpponent.animation.finishCallback = null;
+				PlayState.boyfriend.animation.callback = function(name:String, frameNo:Int, frameIdx:Int){
+					if(frameIdx==0 && name=='turn'){
+						PlayState.boyfriend.canAnimate=true;
+						PlayState.boyfriend.playAnim('preidle', true);
+						PlayState.boyfriend.canAnimate=false;
+						PlayState.boyfriend.animation.callback = null;
+					}
+				};
+				for(cam in PlayState.instance.allUIs){
+					FlxTween.tween(cam, {
+						alpha: 1
+					}, (Conductor.stepCrochet * 4) / 1000, {ease: FlxEase.sineOut});
+				}
+
+			}else{
+				var daRevealedOne = revealed-1; // it starts at 1 cus 0 is purin revealing itself
+				var charArray = farChars[daRevealedOne];
+				if(charArray!=null){
+					var silhouette = charArray[0];
+					var eyes = charArray[1];
+					var base = charArray[2];
+
+					FlxTween.cancelTweensOf(silhouette);
+
+					FlxTween.tween(silhouette, {
+						alpha: 0
+					}, (Conductor.stepCrochet * 8) / 1000, {ease: FlxEase.sineOut});
+				}
+				trace('reveal ' + daRevealedOne);
+			}
+
+			revealed++;
+		case 'Purin Pico Knife':
+				PlayState.boyfriend.canAnimate = true;
+				PlayState.boyfriend.playAnim("knife", true);
+				PlayState.boyfriend.animation.finishCallback = function(name:String){
+					PlayState.boyfriend.animation.finishCallback = null;
+					if (name == 'knife') {
+						PlayState.boyfriend.canAnimate = true;
+						PlayState.boyfriend.dance();
+					}
+				}
+
+				PlayState.boyfriend.canAnimate = false;
+		case 'Purin Unturn':
 			if(hpTween!=null){
 				hpTween.cancel();
 				hpTween = null;
 			}
+			FlxTween.cancelTweensOf(smallStatic);
+			FlxTween.cancelTweensOf(bgStatic);
+			smallStatic.alpha = 1;
+
+			FlxTween.tween(bgStatic, {
+				alpha: 0
+			}, (Conductor.stepCrochet * 8) / 1000, {ease: FlxEase.sineOut});
+
+			FlxTween.tween(smallStatic, {
+				alpha: 0
+			}, (Conductor.stepCrochet * 16) / 1000, {ease: FlxEase.sineOut});
+
+			nursejoy.visible=false;
+
+			FlxTween.tween(PlayState.camHUD, {alpha: 1}, .5);
 			hpTween = FlxTween.tween(PlayState.uiHUD.healthBarBG, {alpha: 1}, .5);
 			PlayState.dadOpponent.visible = true;		
 			PlayState.defaultCamZoom -= 0.55;
@@ -109,12 +582,18 @@ function onEvent(eventName) {
 					PlayState.dadOpponent.animation.callback = null;
 				}
 			};
-		case 'purinturn':
+		case 'Purin Turn':
 			if(hpTween!=null){
 				hpTween.cancel();
 				hpTween = null;
 			}
+			FlxTween.cancelTweensOf(bgStatic);
+			FlxTween.tween(bgStatic, {
+				alpha: 1
+			}, (Conductor.stepCrochet * 16) / 1000, {ease: FlxEase.sineOut});
+
 			hpTween = FlxTween.tween(PlayState.uiHUD.healthBarBG, {alpha: 0}, .5);
+			FlxTween.tween(PlayState.camHUD, {alpha: 0}, .5);
 			PlayState.dadOpponent.playAnim('turn');
 			PlayState.dadOpponent.animation.callback = null;
 			PlayState.defaultCamZoom += 0.55;		

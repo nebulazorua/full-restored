@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="CUBONE ALT.png">
+	<!-- Created with Adobe Animate version 21.0.5.40714 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="CUBONE ONE SHADOW0000" x="0" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0001" x="220" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0002" x="660" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0003" x="440" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0004" x="0" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0005" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0006" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0007" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0008" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0009" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0010" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0011" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0012" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0013" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0014" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0015" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0016" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0017" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0018" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0019" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0020" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0021" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0022" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0023" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE ONE SHADOW0024" x="660" y="0" width="220" height="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0000" x="880" y="0" width="220" height="279" frameX="0" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0001" x="880" y="0" width="220" height="279" frameX="0" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0002" x="1100" y="0" width="220" height="279" frameX="0" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0003" x="1100" y="0" width="220" height="279" frameX="0" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0004" x="1320" y="0" width="218" height="279" frameX="-2" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0005" x="1320" y="0" width="218" height="279" frameX="-2" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0006" x="1538" y="0" width="225" height="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0007" x="1538" y="0" width="225" height="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0008" x="1763" y="0" width="222" height="279" frameX="0" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0009" x="1763" y="0" width="222" height="279" frameX="0" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0010" x="1100" y="0" width="220" height="279" frameX="0" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0011" x="1100" y="0" width="220" height="279" frameX="0" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0012" x="0" y="279" width="220" height="279" frameX="0" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE SHAKE TREE0013" x="220" y="279" width="220" height="279" frameX="0" frameY="0" frameWidth="225" frameHeight="279"/>
+	<SubTexture name="CUBONE TWO0000" x="440" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0001" x="660" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0002" x="660" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0003" x="880" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0004" x="440" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0005" x="1100" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0006" x="1100" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0007" x="1100" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0008" x="1100" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0009" x="1100" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0010" x="1100" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0011" x="1100" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0012" x="1100" y="279" width="220" height="279"/>
+	<SubTexture name="CUBONE TWO0013" x="1100" y="279" width="220" height="279"/>
+</TextureAtlas>

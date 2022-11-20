@@ -1,0 +1,5 @@
+function returnDescription()
+    return "Obscures the guys in the background";
+
+function returnDelay()
+	return 0;

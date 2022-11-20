@@ -3,8 +3,31 @@ function onCreate() {
 }
 
 function onCreatePost() {
+	if(PlayState.gameplayMode == 'HELL_MODE'){
+		PlayState.instance.tranceActive = true;
+		PlayState.instance.tranceNotActiveYet = true;
+	}
 	PlayState.instance.camZooming = false;
 	dadOpponent.visible = false;
 	dadOpponent.setPosition(dadOpponent.width / 2, dadOpponent.height / 4);
-	PlayState.instance.fpSong();
+	PlayState.instance.fpSong();	
+}
+
+function onUpdate(elapsed) {
+    PlayState.instance.tranceInterval = 0;
+}
+
+function onEvent(eventName) {
+	switch (eventName) {
+		case 'HUD Fade Mid Song':
+			if(PlayState.gameplayMode == 'HELL_MODE')
+				PlayState.instance.tranceNotActiveYet = !PlayState.instance.tranceNotActiveYet;
+		case 'HUD Fade':
+			if(PlayState.gameplayMode == 'HELL_MODE'){
+				new FlxTimer().start(1, function(tmr:FlxTimer){
+					PlayState.instance.tranceNotActiveYet = false;
+				});
+				PlayState.instance.pendulum.alpha = 1;
+			}
+	}
 }

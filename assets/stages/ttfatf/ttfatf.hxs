@@ -197,7 +197,7 @@ function onCreatePost() {
 	// PlayState.instance.lcBar1();
 
 	if (PlayState.instance.gfStand.atlasCharacter != null) {
-		PlayState.instance.gfStand.atlasCharacter.visible = false;
+		PlayState.instance.gfStand.visible = false;
 		add(PlayState.instance.gfStand.atlasCharacter);
 		PlayState.instance.gfStand.atlasCharacter.x -= 1730;
 		PlayState.instance.gfStand.atlasCharacter.y -= 400;
@@ -270,10 +270,8 @@ function onEvent(eventName) {
 
             bgLC.visible = true;
 
-            if (PlayState.instance.gfStand.atlasCharacter != null)
-                PlayState.instance.gfStand.atlasCharacter.visible = true;
-            else
-                PlayState.instance.gfStand.visible = true;
+
+            PlayState.instance.gfStand.visible = true;
             PlayState.instance.gfStand.dance();
 
 

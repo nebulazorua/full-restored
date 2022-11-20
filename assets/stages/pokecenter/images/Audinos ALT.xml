@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Audinos ALT.png">
+	<!-- Created with Adobe Animate version 21.0.5.40714 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Audini shake Four0000" x="0" y="0" width="406" height="393" frameX="-4" frameY="-1" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0001" x="0" y="0" width="406" height="393" frameX="-4" frameY="-1" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0002" x="406" y="0" width="406" height="394" frameX="-4" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0003" x="406" y="0" width="406" height="394" frameX="-4" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0004" x="812" y="0" width="408" height="393" frameX="0" frameY="-1" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0005" x="812" y="0" width="408" height="393" frameX="0" frameY="-1" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0006" x="1220" y="0" width="406" height="394" frameX="-4" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0007" x="1220" y="0" width="406" height="394" frameX="-4" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0008" x="1626" y="0" width="407" height="392" frameX="-1" frameY="-2" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0009" x="1626" y="0" width="407" height="392" frameX="-1" frameY="-2" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0010" x="1220" y="0" width="406" height="394" frameX="-4" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0011" x="1220" y="0" width="406" height="394" frameX="-4" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0012" x="406" y="0" width="406" height="394" frameX="-4" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audini shake Four0013" x="0" y="394" width="405" height="393" frameX="-6" frameY="-1" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Audino shadow one0000" x="405" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0001" x="405" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0002" x="405" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0003" x="405" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0004" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0005" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0006" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0007" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0008" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0009" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0010" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0011" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0012" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0013" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0014" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0015" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0016" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0017" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0018" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0019" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0020" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0021" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0022" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0023" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Audino shadow one0024" x="812" y="394" width="407" height="394"/>
+	<SubTexture name="Idle body tree0000" x="1219" y="394" width="406" height="393"/>
+	<SubTexture name="Idle body tree0001" x="1625" y="394" width="406" height="393"/>
+	<SubTexture name="Idle body tree0002" x="0" y="788" width="406" height="393"/>
+	<SubTexture name="Idle body tree0003" x="406" y="788" width="406" height="393"/>
+	<SubTexture name="Idle body tree0004" x="0" y="0" width="406" height="393" frameX="0" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Idle body tree0005" x="0" y="0" width="406" height="393" frameX="0" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Idle body tree0006" x="0" y="0" width="406" height="393" frameX="0" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Idle body tree0007" x="0" y="0" width="406" height="393" frameX="0" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Idle body tree0008" x="0" y="0" width="406" height="393" frameX="0" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Idle body tree0009" x="0" y="0" width="406" height="393" frameX="0" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Idle body tree0010" x="0" y="0" width="406" height="393" frameX="0" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Idle body tree0011" x="0" y="0" width="406" height="393" frameX="0" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Idle body tree0012" x="0" y="0" width="406" height="393" frameX="0" frameY="0" frameWidth="411" frameHeight="394"/>
+	<SubTexture name="Idle body tree0013" x="0" y="0" width="406" height="393" frameX="0" frameY="0" frameWidth="411" frameHeight="394"/>
+</TextureAtlas>

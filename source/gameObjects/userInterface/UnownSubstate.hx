@@ -75,7 +75,7 @@ class UnownSubstate extends MusicBeatSubState
 
 			if (PlayState.dadOpponent.curCharacter == 'gold-headless')
 				level++;
-			if (PlayState.gameplayMode == HELL_MODE && PlayState.SONG.song.toLowerCase()=='monochrome')
+			if (PlayState.gameplayMode == HELL_MODE && PlayState.SONG.song.toLowerCase()=='monochrome' && FlxG.random.int(0,3)==0)
 				level++;
 
 
