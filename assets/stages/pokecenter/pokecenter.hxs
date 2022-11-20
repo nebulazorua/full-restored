@@ -15,6 +15,8 @@ var smallStaticShader;
 var bigStaticShader;
 var bgStaticShader;
 var jigf:Character;
+var ghost:Character;
+
 var hpTween:FlxTween;
 function onCreate() {
     PlayState.defaultCamZoom = 0.9;
@@ -343,8 +345,10 @@ function onCreate() {
 
 function onCreatePost() {
 	dadOpponent.visible = false;
+
 	boyfriend.playAnim("preidle", true);
 	boyfriend.canAnimate = false;
+
 	//PlayState.camHUD.visible = false;
 	for(cam in PlayState.instance.allUIs){
 		cam.alpha=0;
@@ -360,10 +364,22 @@ function onCreatePost() {
 	jigf.x -= 26;
 	jigf.y += 16;
 	PlayState.instance.dadStrums.character.push(jigf);
+	add(jigf);
+
+	ghost = new Boyfriend();
+	ghost.setCharacter(0, 0, 'ghost');
+	ghost.setPosition(boyfriend.x, boyfriend.y);
+	ghost.visible = true;
+	ghost.y -= 400;
+	ghost.x += 70;
+	PlayState.instance.boyfriendStrums.character.push(ghost);
+	ghost.visible = false;
+
 	PlayState.instance.manualCameraPosition.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 150);
 	PlayState.instance.staticCamera = true;
-	add(jigf);
+
 	add(darkoverlay);
+	add(ghost);
 	PlayState.instance.camZooming = false;
 
 	add(bigStatic);
@@ -547,6 +563,30 @@ function onEvent(eventName) {
 				}
 
 				PlayState.boyfriend.canAnimate = false;
+
+		case 'Purin Pico Ghost':
+			ghost.visible=true;
+			ghost.playAnim("appear", true);
+			ghost.canAnimate=false;
+			PlayState.instance.boyfriendStrums.singingCharacters = [ghost];
+			ghost.animation.finishCallback = function(name:String){
+				if (name == 'appear') {
+					ghost.animation.finishCallback = null;
+					ghost.canAnimate = true;
+					ghost.dance();
+				}
+			}
+		case 'Purin Pico Sleep':
+			PlayState.dadOpponent.canAnimate=true;
+			PlayState.dadOpponent.playAnim('sleep', true);
+			PlayState.dadOpponent.canAnimate=false;
+			PlayState.dadOpponent.animation.finishCallback = function(name:String){
+                if (name == 'sleep') {										
+					PlayState.dadOpponent.canAnimate=true;
+					PlayState.dadOpponent.dance();
+					PlayState.dadOpponent.animation.finishCallback = null;							
+                }
+       		}
 		case 'Purin Unturn':
 			if(hpTween!=null){
 				hpTween.cancel();

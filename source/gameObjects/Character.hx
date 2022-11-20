@@ -34,6 +34,7 @@ typedef CharacterData = {
 	var facingDirection:Direction;
 	var zoomOffset:Float;
 	var healthbarColors:Array<Int>;
+	var singDuration:Float;
 }
 class Character extends FNFSprite
 {
@@ -75,7 +76,8 @@ class Character extends FNFSprite
 			quickDancer: false,
 			facingDirection: LEFT,
 			zoomOffset: 0,
-			healthbarColors: [0, 0, 0]
+			healthbarColors: [0, 0, 0],
+			singDuration: 4
 		};
 
 		// /*
@@ -1335,8 +1337,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('singUPmiss', 'pico miss up', 24, false);
 				animation.addByPrefix('singDOWNmiss', 'pico miss down', 24, false);
 				animation.addByPrefix('preidle', 'Pico_idle_01', 24, false);
-				animation.addByPrefix('turn', 'Pico Turn', 24, false);
-				animation.addByPrefix('knife', 'Knife out', 24, false);
+				animation.addByPrefix('turn', 'Turned', 24, false);
+				animation.addByPrefix('knife', 'StabbyStabby', 24, false);
 
 				addOffset("idle");
 				addOffset("singUP", -21, 31);
@@ -1347,9 +1349,9 @@ class Character extends FNFSprite
 				addOffset("singLEFTmiss", -21, 42);
 				addOffset("singRIGHTmiss", -31, 3);
 				addOffset("singDOWNmiss", 102, -28);
-				addOffset("preidle", -30, 10);
-				addOffset("turn", -28, 29);
-				addOffset("knife", -3, 11);
+				addOffset("preidle", -42, 12);
+				addOffset("turn", -32, 29);
+				addOffset("knife", -11, 16);
 
 				playAnim('idle');
 
@@ -1360,6 +1362,34 @@ class Character extends FNFSprite
 
 				characterData.healthbarColors = [255, 140, 0];
 				characterData.camOffsetY = -60;
+				characterData.facingDirection = LEFT;
+			case 'ghost':
+				frames = Paths.getSparrowAtlas('characters/purin/ghostPico');
+
+				animation.addByPrefix('idle', 'Pico ghost0', 24, false);
+				animation.addByPrefix('singLEFT', 'Pico ghost l', 24, false);
+				animation.addByPrefix('singRIGHT', 'Pico ghost r', 24, false);
+				animation.addByPrefix('singUP', 'Pico ghost u', 24, false);
+				animation.addByPrefix('singDOWN', 'Pico ghost d', 24, false);
+				animation.addByPrefix('appear', 'Wild Pico ghost appears ', 24, false);
+
+				addOffset("idle");
+				addOffset("appear", 8, -52);
+				addOffset("singDOWN", -84, -114);
+				addOffset("singRIGHT", -76, -48);
+				addOffset("singLEFT", 245, -71);
+				addOffset("singUP", 31, 117);
+
+				playAnim('idle');
+
+				for (i in animOffsets)
+				{
+					i[0] *= scale.x;
+					i[1] *= scale.y;
+				}
+
+				characterData.healthbarColors = [255, 140, 0];
+				characterData.camOffsetY = -80;
 				characterData.facingDirection = LEFT;
 
 			case 'jigglypuff':
@@ -1381,6 +1411,7 @@ class Character extends FNFSprite
 				addOffset("turn", 50, 3);
 
 				characterData.healthbarColors = [150, 150, 150];
+				characterData.singDuration = 8;
 
 				setGraphicSize(Std.int(width * 0.5));
 				for (i in animOffsets) {
@@ -1990,7 +2021,7 @@ class Character extends FNFSprite
 					holdTimer += elapsed;
 			}
 			
-			var dadVar:Float = 4;
+			var dadVar:Float = characterData.singDuration;
 			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001) {
 				dance();
 				holdTimer = 0;

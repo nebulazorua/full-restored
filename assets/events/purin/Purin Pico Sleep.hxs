@@ -1,0 +1,5 @@
+function returnDescription()
+    return "Purin Do Da Singy Thing";
+
+function returnDelay()
+	return 0;
