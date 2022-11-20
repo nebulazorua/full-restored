@@ -90,9 +90,6 @@ class Note extends FNFSprite
 			default:
 		}
 
-		if (PlayState.defaultDownscroll)
-			downscrollNote = true;
-
 		// determine parent note
 		if (isSustainNote && prevNote != null) {
 			parentNote = prevNote;
