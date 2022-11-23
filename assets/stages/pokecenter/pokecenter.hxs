@@ -412,11 +412,19 @@ function onStep(step){
 }
 var daEnding:Bool = false;
 var staticAlpha:Float = 0;
+var floatTimer:Float = 0;
 function onUpdate(elapsed) {
 	if(daEnding){
 		staticAlpha = FlxMath.lerp(staticAlpha, 0.2 + Math.abs(0.3 * Math.sin((Conductor.songPosition/1000))), 0.04 * (elapsed/(1/60)));
 		smallStatic.alpha = staticAlpha;
 	}
+
+	if(ghost.visible && ghost.canAnimate){
+		floatTimer += elapsed;
+		ghost.y = (PlayState.boyfriend.y - 400) + (50 * Math.sin(floatTimer));
+	}
+
+	
 	
     PlayState.instance.beatInterval = 2;
 	smallStaticShader.data.iTime.value[0] = Conductor.songPosition/1000;
