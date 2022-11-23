@@ -2,6 +2,7 @@ var origDadY:Int;
 var explurson:FlxSprite;
 
 var pokeball:FlxSprite;
+var beatInterval = 2;
 
 function onCreate() {
 	PlayState.assetModifier = 'pixel';
@@ -53,11 +54,19 @@ function onCreatePost() {
 	pokeball.visible = false;
 	pokeball.setGraphicSize(Std.int(pokeball.width * 5));
 	add(pokeball);
+
+	if(PlayState.gameplayMode == 'HELL_MODE'){
+		PlayState.instance.tranceActive = true;
+		PlayState.instance.accuracyMod = true;
+	}
 }
 
 function onEvent(eventName) {
 	switch (eventName) {
+		case 'Shinto Hell Pendulum Speed':
+			beatInterval = beatInterval==2?1:2;
 		case 'Shinto End':
+			PlayState.instance.tranceNotActiveYet = true;
 			pokeball.visible = true;
 			pokeball.animation.play('drawpokeball', true);
 			PlayState.dadOpponent.playAnim('end');
@@ -76,4 +85,9 @@ function onEvent(eventName) {
 function EXPLODE() { // never used but its really funny
 	explurson.animation.play('BOOM', true);
 	FlxG.sound.play(Paths.sound('BOOM'));
+}
+
+function onUpdate(elapsed) {
+    PlayState.instance.beatInterval = beatInterval;
+    PlayState.instance.tranceInterval = 0;
 }

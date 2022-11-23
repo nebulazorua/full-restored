@@ -1,5 +1,6 @@
 package meta.data;
 
+import flixel.system.FlxSound;
 import gameObjects.userInterface.UnownSubstate;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -67,6 +68,7 @@ class ScriptHandler
 		exp.set("FlxRect", FlxRect);
 		exp.set("FlxTween", FlxTween);
 		exp.set("FlxTimer", FlxTimer);
+		exp.set("FlxSound", FlxSound);
 		exp.set("FlxEase", FlxEase);
 		exp.set("Shader", Shader);
 		exp.set("ShaderFilter", ShaderFilter);
@@ -95,46 +97,6 @@ class ScriptHandler
 		exp.set("getClass", function(className:String)
 		{
 			return Type.resolveClass(className);
-		});
-		exp.set("importClass", function(className:String)
-		{
-			// importClass("flixel.util.FlxSort") should give you FlxSort.byValues, etc
-			// i would LIKE to do like.. flixel.util.* but idk if I can get everything in a namespace
-			var classSplit:Array<String> = className.split(".");
-			var daClassName = classSplit[classSplit.length - 1]; // last one
-			if (daClassName == '*')
-			{
-				var daClass = Type.resolveClass(className);
-				while (classSplit.length > 0 && daClass == null)
-				{
-					daClassName = classSplit.pop();
-					daClass = Type.resolveClass(classSplit.join("."));
-					if (daClass != null)
-						break;
-				}
-				if (daClass != null)
-				{
-					for (field in Reflect.fields(daClass))
-					{
-						exp.set(field, Reflect.field(daClass, field));
-					}
-				}
-				else
-				{
-					FlxG.log.error('Could not import class ${daClass}');
-					trace('Could not import class ${daClass}');
-				}
-			}
-			else
-			{
-				var daClass = Type.resolveClass(className);
-				if(daClass==null){
-					FlxG.log.error('Could not import class ${daClass}');
-					trace('Could not import class ${daClass}');
-					return;
-				}
-				exp.set(daClassName, daClass);
-			}
 		});
         
         //
@@ -171,6 +133,50 @@ class ForeverModule
 			for (i in extraParams.keys())
 				interp.variables.set(i, extraParams.get(i));
 		}
+
+		// importing!!
+
+		interp.variables.set("importClass", function(className:String)
+		{
+			// importClass("flixel.util.FlxSort") should give you FlxSort.byValues, etc
+			// i would LIKE to do like.. flixel.util.* but idk if I can get everything in a namespace
+			var classSplit:Array<String> = className.split(".");
+			var daClassName = classSplit[classSplit.length - 1]; // last one
+			if (daClassName == '*')
+			{
+				var daClass = Type.resolveClass(className);
+				while (classSplit.length > 0 && daClass == null)
+				{
+					daClassName = classSplit.pop();
+					daClass = Type.resolveClass(classSplit.join("."));
+					if (daClass != null)
+						break;
+				}
+				if (daClass != null)
+				{
+					for (field in Reflect.fields(daClass))
+					{
+						interp.variables.set(field, Reflect.field(daClass, field));
+					}
+				}
+				else
+				{
+					FlxG.log.error('Could not import class ${daClass}');
+					trace('Could not import class ${daClass}');
+				}
+			}
+			else
+			{
+				var daClass = Type.resolveClass(className);
+				if (daClass == null)
+				{
+					FlxG.log.error('Could not import class ${daClass}');
+					trace('Could not import class ${daClass}');
+					return;
+				}
+				interp.variables.set(daClassName, daClass);
+			}
+		});
 		interp.variables.set('dispose', dispose);
 		interp.execute(contents);
 	}

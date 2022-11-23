@@ -208,7 +208,8 @@ class PlayState extends MusicBeatState
 	private var paused:Bool = false;
 	var startedCountdown:Bool = false;
 	public static var inCutscene:Bool = false;
-
+	public var ingameCutscene:Bool = false; // paired with inCutscene so the camera still moves
+	
 	public var pausePortraitPrefix:Array<String> = ['', ''];
 	public var pausePortraitRevealed:Array<Bool> = [true, true];
 
@@ -1021,10 +1022,10 @@ class PlayState extends MusicBeatState
 					add(psyshockParticle);
 					psyshockParticle.scale.set(0.85, 0.85);
 					psyshockParticle.animation.finishCallback = function(name:String)
-						{
-							psyshockParticle.visible = false;
-							// trace('IT SHOULD DO THE THING FUCK YOU');
-						};
+					{
+						psyshockParticle.visible = false;
+						// trace('IT SHOULD DO THE THING FUCK YOU');
+					};
 						
 					// pregen flash graphic
 					flashGraphic = FlxG.bitmap.create(10, 10, FlxColor.fromString('0xFFFFAFC1'), true, 'flash-DoNotDelete');
@@ -2020,38 +2021,41 @@ class PlayState extends MusicBeatState
 			}
 		}
 		
-		if (!inCutscene && generatedMusic) {
+		if ((!inCutscene || ingameCutscene) && generatedMusic) {
+			
 			// pause the game if the game is allowed to pause and enter is pressed
-			if (FlxG.keys.justPressed.ENTER && startedCountdown && (accuracySound == null || (accuracySound != null && !accuracySound.playing)) && canPause && !deadstone)
-			{
-				// update drawing stuffs
-				paused = true;
-				persistentUpdate = false;
-				persistentDraw = true;
-
-				if (tranceSound != null) tranceSound.pause();
-
-				// open pause substate
-				openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-				updateRPC(true);
-			}
-
-			// make sure you're not cheating lol
-			if (!isStoryMode || Main.hypnoDebug) {
-				if ((FlxG.keys.justPressed.SEVEN) && (!startingSong))
+			if(!inCutscene){
+				if (FlxG.keys.justPressed.ENTER && startedCountdown && (accuracySound == null || (accuracySound != null && !accuracySound.playing)) && canPause && !deadstone)
 				{
-					resetMusic();
-					Main.switchState(this, new OriginalChartingState());
+					// update drawing stuffs
+					paused = true;
+					persistentUpdate = false;
+					persistentDraw = true;
+
+					if (tranceSound != null) tranceSound.pause();
+
+					// open pause substate
+					openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+					updateRPC(true);
 				}
 
-				if (Main.hypnoDebug && (FlxG.keys.justPressed.EIGHT) && (!startingSong))
-				{
-					resetMusic();
-					Main.switchState(this, new CharacterOffsetState());
-				}
+				// make sure you're not cheating lol
+				if (!isStoryMode || Main.hypnoDebug) {
+					if ((FlxG.keys.justPressed.SEVEN) && (!startingSong))
+					{
+						resetMusic();
+						Main.switchState(this, new OriginalChartingState());
+					}
 
-				if ((FlxG.keys.justPressed.SIX))
-					strumLines.members[playerLane].autoplay = !strumLines.members[playerLane].autoplay;
+					if (Main.hypnoDebug && (FlxG.keys.justPressed.EIGHT) && (!startingSong))
+					{
+						resetMusic();
+						Main.switchState(this, new CharacterOffsetState());
+					}
+
+					if ((FlxG.keys.justPressed.SIX))
+						strumLines.members[playerLane].autoplay = !strumLines.members[playerLane].autoplay;
+				}
 			}
 
 			if (dadOpponent != null)
@@ -2075,7 +2079,8 @@ class PlayState extends MusicBeatState
 				{
 					var progress = earBleed / 15;
 					earBleed -= elapsed;
-					health -= (0.0075 * (elapsed / (1 / 60)) * hpDrain) * progress;
+					if (!inCutscene)
+						health -= (0.0075 * (elapsed / (1 / 60)) * hpDrain) * progress;
 
 					if(hpDrain>1){
 						hpDrain -= 0.0025 * (elapsed / (1 / 60));
@@ -2098,6 +2103,7 @@ class PlayState extends MusicBeatState
 						hpDrain = 0;
 				}
 			}
+			
 			
 			if (!deadstone) {
 				if (startingSong)
@@ -2146,7 +2152,7 @@ class PlayState extends MusicBeatState
 						Conductor.songPosition += elapsed * 1000;
 
 					// penduluuum
-					if (pendulum != null && tranceActive) {
+					if (pendulum != null && tranceActive && !inCutscene) {
 						var convertedTime:Float = ((Conductor.songPosition / (Conductor.crochet * beatInterval)) * Math.PI);
 						pendulum.angle = (Math.sin(convertedTime) * 32) + pendulumOffset;
 						// pendulum.screenCenter();
@@ -2213,10 +2219,11 @@ class PlayState extends MusicBeatState
 					}	
 				}
 
-				if ((useFrostbiteMechanic && typhlosionUses >= 1 && typhlosion.animation.curAnim.name != 'fire' && gameplayMode != PUSSY_MODE) && (strumLines.members[playerLane].autoplay && coldness >= 0.5 || (controls.SPACE_P && !strumLines.members[playerLane].autoplay)))
-					{
-						useTyphlosion();
-					}
+				if ((useFrostbiteMechanic
+				&& !inCutscene && typhlosionUses >= 1 && typhlosion.animation.curAnim.name != 'fire' && gameplayMode != PUSSY_MODE) && (strumLines.members[playerLane].autoplay && coldness >= 0.5 || (controls.SPACE_P && !strumLines.members[playerLane].autoplay)))
+				{
+					useTyphlosion();
+				}
 
 				coldnessDisplay = FlxMath.lerp(coldnessDisplay, coldness, (elapsed / (1 / 120)) * 0.03);
 			}
@@ -3671,7 +3678,7 @@ class PlayState extends MusicBeatState
 		{
 			songMusic.play();
 			#if !html5
-			songMusic.onComplete = doMoneyBag;
+			songMusic.onComplete = doSongEnd;
 			vocals.play();
 
 			resyncVocals();
@@ -3683,6 +3690,13 @@ class PlayState extends MusicBeatState
 			updateRPC(false);
 			#end
 		}
+	}
+
+	function doSongEnd(){
+		if (stageOverridesSongEnd)
+			stageBuild.stageEndSong();
+		else
+			doMoneyBag();
 	}
 
 	function doMoneyBag():Void
@@ -4068,6 +4082,7 @@ class PlayState extends MusicBeatState
 			generateSong(SONG.song);
 	}
 
+	public var stageOverridesSongEnd:Bool = false;
 	private function songEndSpecificActions()
 	{
 		var videoName:String = '';

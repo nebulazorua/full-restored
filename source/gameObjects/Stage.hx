@@ -53,6 +53,11 @@ class Stage extends FlxTypedGroup<FlxSprite> {
 			stageBuild.get("onBeat")(curBeat);
     }
 
+	public function stageEndSong(){
+		if (stageBuild.exists("onSongEnd"))
+			stageBuild.get("onSongEnd")();
+	}
+
 	public function stageUpdateStep(curStep:Int) {
 		if (stageBuild.exists("onStep"))
 			stageBuild.get("onStep")(curStep);

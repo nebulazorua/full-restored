@@ -1323,7 +1323,6 @@ class Character extends FNFSprite
 				characterData.camOffsetY = 120;
 				characterData.camOffsetX = 64;
 				characterData.healthbarColors = [255, 192, 0];
-
 			case 'pico':
 				frames = Paths.getSparrowAtlas('characters/purin/Full_pico_purin');
 

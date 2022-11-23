@@ -340,6 +340,10 @@ function onCreate() {
 	bgStatic.setPosition(consistentPosition[0], consistentPosition[1]);
 	bgStatic.scrollFactor.set(1, 1);
 	add(bgStatic);
+
+	PlayState.instance.tranceNotActiveYet = true;
+	if(PlayState.gameplayMode == 'HELL_MODE')
+		PlayState.instance.tranceActive = true;
 	
 }
 
@@ -406,8 +410,15 @@ function onStep(step){
 		
 	}
 }
-
+var daEnding:Bool = false;
+var staticAlpha:Float = 0;
 function onUpdate(elapsed) {
+	if(daEnding){
+		staticAlpha = FlxMath.lerp(staticAlpha, 0.2 + Math.abs(0.3 * Math.sin((Conductor.songPosition/1000))), 0.04 * (elapsed/(1/60)));
+		smallStatic.alpha = staticAlpha;
+	}
+	
+    PlayState.instance.beatInterval = 2;
 	smallStaticShader.data.iTime.value[0] = Conductor.songPosition/1000;
 	bigStaticShader.data.iTime.value[0] = (Conductor.songPosition + 5000)/1000.;
 	bgStaticShader.data.iTime.value[0] = (Conductor.songPosition + 2500)/1000.;
@@ -423,6 +434,8 @@ function onUpdate(elapsed) {
 var revealed:Int = 0;
 var fRevealed:Int = 0;
 var obscured:Bool = false;
+
+
 function onEvent(eventName) {
     switch (eventName) {
         default:
@@ -436,8 +449,21 @@ function onEvent(eventName) {
 			}, (Conductor.stepCrochet * 16) / 1000, {ease: FlxEase.sineOut});
 
 		case 'Purin Start':
+			FlxTween.cancelTweensOf(smallStatic);
 			FlxTween.tween(smallStatic, {
 				alpha: 1
+			}, (Conductor.stepCrochet * 64) / 1000, {ease: FlxEase.sineOut});
+		case 'Purin Hide Jiggly':
+			daEnding = true;
+			PlayState.dadOpponent.visible = false;
+			FlxTween.cancelTweensOf(obscure);
+			FlxTween.cancelTweensOf(bigStatic);
+			bigStatic.alpha = 1;
+			FlxTween.tween(bigStatic, {
+				alpha: 0
+			}, (Conductor.stepCrochet * 12) / 1000, {ease: FlxEase.sineOut});
+			FlxTween.tween(obscure, {
+				alpha: 0.5
 			}, (Conductor.stepCrochet * 64) / 1000, {ease: FlxEase.sineOut});
 		case 'Purin Full Reveal':
 			var charArray = farChars[fRevealed];
@@ -454,6 +480,23 @@ function onEvent(eventName) {
 			}
 			trace('full reveal ' + fRevealed);
 			fRevealed++;
+		case 'Purin Hide':
+			fRevealed--;
+			var charArray = farChars[fRevealed];
+			if(charArray!=null){
+				var silhouette = charArray[0];
+				var eyes = charArray[1];
+				var base = charArray[2];
+				base.animation.play("wait", true);
+				FlxTween.cancelTweensOf(silhouette);
+
+				FlxTween.tween(silhouette, {
+					alpha: 1
+				}, (Conductor.stepCrochet * 8) / 1000, {ease: FlxEase.sineOut});
+				
+			}
+			trace('hide ' + fRevealed);
+			
 		case 'Purin Reveal':
 			
 			if(revealed==4){
@@ -513,6 +556,10 @@ function onEvent(eventName) {
 				obscure.alpha = 0;
 				farPurin.visible = false;
 				PlayState.dadOpponent.visible = true;
+				FlxTween.tween(PlayState.instance.pendulum, {
+					alpha: 1
+				}, (Conductor.stepCrochet * 4) / 1000, {ease: FlxEase.sineOut});
+				PlayState.instance.tranceNotActiveYet = false;
 				PlayState.defaultCamZoom = 0.75;
 				PlayState.instance.staticCamera = false;
 				PlayState.boyfriend.canAnimate = true;
@@ -605,6 +652,7 @@ function onEvent(eventName) {
 			}, (Conductor.stepCrochet * 16) / 1000, {ease: FlxEase.sineOut});
 
 			nursejoy.visible=false;
+			PlayState.instance.tranceNotActiveYet = false;
 
 			FlxTween.tween(PlayState.camHUD, {alpha: 1}, .5);
 			hpTween = FlxTween.tween(PlayState.uiHUD.healthBarBG, {alpha: 1}, .5);
@@ -631,6 +679,7 @@ function onEvent(eventName) {
 			FlxTween.tween(bgStatic, {
 				alpha: 1
 			}, (Conductor.stepCrochet * 16) / 1000, {ease: FlxEase.sineOut});
+			PlayState.instance.tranceNotActiveYet = true;
 
 			hpTween = FlxTween.tween(PlayState.uiHUD.healthBarBG, {alpha: 0}, .5);
 			FlxTween.tween(PlayState.camHUD, {alpha: 0}, .5);

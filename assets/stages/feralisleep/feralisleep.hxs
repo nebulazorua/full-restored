@@ -2,6 +2,10 @@
 var fogCount:Int = 6;
 var insomniaFog:Array<FlxSprite> = [];
 var startingPosition:Array<FlxPoint> = [];
+var feraligatrEnding:FlxSprite;
+var silverEnding:FlxSprite;
+var endSound:FlxSound;
+var black:FlxSprite;
 
 function onCreate() {
     PlayState.defaultCamZoom = 0.8;
@@ -66,22 +70,100 @@ function onCreatePost() {
 	PlayState.instance.remove(PlayState.dadOpponent);
 	PlayState.instance.add(PlayState.dadOpponent);
 
+	silverEnding = new FlxSprite();
+	silverEnding.visible=false;
+	silverEnding.frames = Paths.getSparrowAtlas('characters/silver/silverEnding');
+	silverEnding.animation.addByPrefix('end', 'Silver instance 1', 24, false);
+	silverEnding.animation.addByPrefix('idle', 'Silver instance 1', 0, true);
+	silverEnding.setPosition(PlayState.dadOpponent.x-97, PlayState.dadOpponent.y-16);
+	silverEnding.antialiasing = true;
+	PlayState.instance.add(silverEnding);
+	silverEnding.animation.play("idle", true);
+
+	feraligatrEnding = new FlxSprite();
+	feraligatrEnding.frames = Paths.getSparrowAtlas('characters/silver/feraligatrEnding');
+	feraligatrEnding.animation.addByPrefix('end', 'Feraligatr instance 1', 24, false);
+	feraligatrEnding.animation.addByPrefix('idle', 'Feraligatr instance 1', 0, false);
+	feraligatrEnding.setPosition(PlayState.instance.feraligatr.x-715, PlayState.instance.feraligatr.y-360);
+	feraligatrEnding.antialiasing = true;
+	feraligatrEnding.visible=false;
+	PlayState.instance.add(feraligatrEnding);
+	feraligatrEnding.animation.play("idle", true);
+
 	PlayState.instance.accuracyMod = true;
+
+	endSound = new FlxSound().loadEmbedded(Paths.sound('death'), false, false);
+	FlxG.sound.list.add(endSound);
+
+	black = new FlxSprite().makeGraphic(1, 1, FlxColor.fromRGB(0, 0, 0));
+    black.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
+    black.screenCenter();
+	black.visible=false;
+    black.scrollFactor.set();
+	black.cameras = [PlayState.dialogueHUD];
+	add(black);
+
+	PlayState.instance.stageOverridesSongEnd = true;
 }
 
+var daTimer:Float = 0;
+
+
+function onSongEnd(){		
+	PlayState.inCutscene = true;
+	PlayState.instance.canDie = false;
+	PlayState.instance.soundVolume = 0;
+	PlayState.instance.ingameCutscene = true;
+	
+	FlxTween.tween(PlayState.camHUD, {alpha: 0}, 0.25, {ease: FlxEase.linear}) ;
+	for (hud in PlayState.strumHUD)
+		FlxTween.tween(hud, {alpha: 0}, 0.25, {ease: FlxEase.linear});
+
+	PlayState.instance.canPause = false;
+	PlayState.instance.manualCameraPosition.x -= 125;
+	endSound.play();
+	silverEnding.visible = true;
+	PlayState.dadOpponent.visible = false;
+	silverEnding.animation.play("end", true);
+	new FlxTimer().start(178 * (1/24), function(tmr2:FlxTimer){
+		silverEnding.visible=false;
+	});
+	new FlxTimer().start(138 * (1/24), function(tmr2:FlxTimer){
+		PlayState.cameraSpeed = 1.5;
+		PlayState.instance.manualCameraPosition.x -= 300;
+		PlayState.instance.manualCameraPosition.y -= 100;
+		PlayState.instance.feraligatr.visible = false;
+		feraligatrEnding.visible=true;
+		feraligatrEnding.animation.play("end", true);
+		new FlxTimer().start(41 * (1/24), function(tmr3:FlxTimer){
+			black.visible=true;
+			new FlxTimer().start(2, function(tmr4:FlxTimer){
+				PlayState.instance.doMoneyBag();
+			});
+		});
+	});
+}
+
+var fogTimer:Float = 0;
+
 function onUpdate(elapsed) {
+	if(PlayState.inCutscene)
+		fogTimer += elapsed * 1000;
+	else if(Conductor.songPosition >= 0)
+		fogTimer = Conductor.songPosition;
+	
     for (i in 0...insomniaFog.length) {
 		// formula stuff
 		var speedDivider:Float = 128;
 		var swirlSize:Float = 32;
-		var formulaX:Float = Math.cos((180 / Math.PI) * ((Conductor.songPosition - (Conductor.songPosition * i)) / 1000) / speedDivider) * swirlSize;
-		var formulaY:Float = Math.sin((180 / Math.PI) * ((Conductor.songPosition - (Conductor.songPosition * i)) / 1000) / speedDivider) * swirlSize;
+		var formulaX:Float = Math.cos((180 / Math.PI) * ((fogTimer - (fogTimer * i)) / 1000) / speedDivider) * swirlSize;
+		var formulaY:Float = Math.sin((180 / Math.PI) * ((fogTimer - (fogTimer * i)) / 1000) / speedDivider) * swirlSize;
 		insomniaFog[i].setPosition(startingPosition[i].x + (i % 2 == 0 ? formulaX : formulaY),
 			startingPosition[i].y + (i % 2 == 0 ? formulaY : formulaX));
 		var speedDivider:Float = 128;
 		var swirlSize:Float = 2;
-		var formulaX:Float = Math.cos((180 / Math.PI) * ((Conductor.songPosition - (Conductor.songPosition * i)) / 1000) / speedDivider);
-		var formulaY:Float = Math.sin((180 / Math.PI) * ((Conductor.songPosition - (Conductor.songPosition * i)) / 1000) / speedDivider);
+		var formulaX:Float = Math.cos((180 / Math.PI) * ((fogTimer - (fogTimer * i)) / 1000) / speedDivider);
+		var formulaY:Float = Math.sin((180 / Math.PI) * ((fogTimer - (fogTimer * i)) / 1000) / speedDivider);
 		insomniaFog[i].alpha = ((i % 2 == 0 ? formulaY : formulaX) / swirlSize);
 		if (i < ((fogCount / 2) - 1))
 			insomniaFog[i].alpha = (1 - ((i % 2 == 0 ? formulaY : formulaX) / swirlSize));
