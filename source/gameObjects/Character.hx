@@ -1360,7 +1360,7 @@ class Character extends FNFSprite
 				}
 
 				characterData.healthbarColors = [255, 140, 0];
-				characterData.camOffsetY = -60;
+				characterData.camOffsetY = -40;
 				characterData.facingDirection = LEFT;
 			case 'ghost':
 				frames = Paths.getSparrowAtlas('characters/purin/ghostPico');
@@ -1388,7 +1388,7 @@ class Character extends FNFSprite
 				}
 
 				characterData.healthbarColors = [255, 140, 0];
-				characterData.camOffsetY = -80;
+				characterData.camOffsetY = 180;
 				characterData.facingDirection = LEFT;
 
 			case 'jigglypuff':
@@ -1906,6 +1906,10 @@ class Character extends FNFSprite
 			default:
 				frames = Paths.getSparrowAtlas('characters/boyfreb');
 				animation.addByPrefix('idle', 'freb', 1, true);
+				animation.addByPrefix('singLEFT', 'freb', 1, true);
+				animation.addByPrefix('singRIGHT', 'freb', 1, true);
+				animation.addByPrefix('singUP', 'freb', 1, true);
+				animation.addByPrefix('singDOWN', 'freb', 1, true);
 				playAnim('idle');
 				characterData.healthbarColors = [49, 176, 209];
 		}

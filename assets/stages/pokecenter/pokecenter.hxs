@@ -378,6 +378,7 @@ function onCreatePost() {
 	ghost.x += 70;
 	PlayState.instance.boyfriendStrums.character.push(ghost);
 	ghost.visible = false;
+	ghost.characterData.camOffsetY = 180;
 
 	PlayState.instance.manualCameraPosition.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 150);
 	PlayState.instance.staticCamera = true;
@@ -473,6 +474,21 @@ function onEvent(eventName) {
 			FlxTween.tween(obscure, {
 				alpha: 0.5
 			}, (Conductor.stepCrochet * 64) / 1000, {ease: FlxEase.sineOut});
+
+			PlayState.instance.staticCamera = true;
+			PlayState.instance.camZooming = false;
+			for(cam in PlayState.instance.allUIs)
+				FlxTween.tween(cam, {alpha: 0}, .5);
+	
+			
+			
+			PlayState.instance.manualCameraPosition.set(farPurin.getMidpoint().x, farPurin.getMidpoint().y - 120);
+			FlxTween.cancelTweensOf(PlayState.camGame);
+			FlxTween.tween(PlayState.camGame, {
+				zoom: 1
+			}, (Conductor.stepCrochet * 16) / 1000, {ease: FlxEase.sineOut});
+
+
 		case 'Purin Full Reveal':
 			var charArray = farChars[fRevealed];
 			if(charArray!=null){
@@ -623,6 +639,7 @@ function onEvent(eventName) {
 			ghost.visible=true;
 			ghost.playAnim("appear", true);
 			ghost.canAnimate=false;
+			PlayState.instance.boyfriendStrums.cameraFocus = ghost;
 			PlayState.instance.boyfriendStrums.singingCharacters = [ghost];
 			ghost.animation.finishCallback = function(name:String){
 				if (name == 'appear') {

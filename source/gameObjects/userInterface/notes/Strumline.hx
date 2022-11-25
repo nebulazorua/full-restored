@@ -53,7 +53,7 @@ class UIStaticArrow extends FlxSprite
 		super(x, y);
 		animOffsets = new Map<String, Array<Dynamic>>();
 
-		this.babyArrowType = babyArrowType;
+		this.babyArrowType = babyArrowType; // just CALL IT A FUCKING RECEPTOR
 
 		updateHitbox();
 		scrollFactor.set();
@@ -140,6 +140,9 @@ class Strumline extends FlxSpriteGroup {
 	public var downscroll:Bool;
 	public var xPos:Float = 0;
 	public var noteSplashes:Bool;
+
+	public var singDirection:String = '';
+	public var cameraFocus:Character;
 
 	public var noteWidth:Float = Note.swagWidth;
 	public function new(positionX:Float = 0, playState:PlayState, ?character:Array<Character>, ?displayJudgements:Bool = true, ?autoplay:Bool = true,

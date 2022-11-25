@@ -1715,8 +1715,10 @@ class PlayState extends MusicBeatState
 					//
 				}
 				else // else just call bad notes
-					if (!Init.trueSettings.get('Ghost Tapping'))
+					if (!Init.trueSettings.get('Ghost Tapping')){
+						strumLines.members[playerLane].singDirection = UIStaticArrow.getArrowFromNumber(key);
 						missNoteCheck(true, key, strumLines.members[playerLane].singingCharacters, true);
+					}
 				Conductor.songPosition = previousTime;
 			}
 
@@ -2229,7 +2231,10 @@ class PlayState extends MusicBeatState
 			}
 			// boyfriend.playAnim('singLEFT', true);
 			// */
-			var char = boyfriend;
+			var strum:Strumline = strumLines.members[playerLane];
+			var char = strum.character[0];
+			if (strum.cameraFocus != null)
+				char = strum.cameraFocus;
 			if (!deadstone && generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null) {
 				if (!staticCamera)
 				{
@@ -2248,9 +2253,12 @@ class PlayState extends MusicBeatState
 
 					if (!cameraCentered)
 					{
-						if (!PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection)
+						if (!SONG.notes[Std.int(curStep / 16)].mustHitSection)
 						{
-							var char = dadOpponent;
+							strum = dadStrums;
+							char = strum.character[0];
+							if (strum.cameraFocus != null)
+								char = strum.cameraFocus;
 							characterZoom = FlxMath.lerp(characterZoom, char.characterData.zoomOffset, elapsed * 2);
 
 							var getCenterX = char.getMidpoint().x + 100;
@@ -2907,8 +2915,8 @@ class PlayState extends MusicBeatState
 								if(daNote.noteType == 1)
 									health -= 0.2;
 								
-								
-								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData,
+								strumLines.members[playerLane].singDirection = UIStaticArrow.getArrowFromNumber(daNote.noteData);
+								missNoteCheck(true, daNote.noteData,
 									strumLines.members[playerLane].singingCharacters, true);
 								// ambiguous name
 								Timings.updateAccuracy(0);
@@ -2930,7 +2938,7 @@ class PlayState extends MusicBeatState
 										}
 										if (!breakFromLate)
 										{
-											missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData,
+											missNoteCheck(true, daNote.noteData,
 												strumLines.members[playerLane].singingCharacters, true);
 											Timings.updateAccuracy(0);
 											Timings.notesHit -= 0.5;
@@ -2951,9 +2959,15 @@ class PlayState extends MusicBeatState
 					&& (daNote.tooLate || daNote.wasGoodHit))
 						destroyNote(strumline, daNote);
 				});
+				if(PlayState.SONG.notes[Std.int(curStep / 16)]!=null && enableMovement){
+					var mustShit = PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection;
+					var isPlayerStrum = strumline == strumLines.members[playerLane];
+					if (firstPerson && isPlayerStrum || mustShit && isPlayerStrum || !mustShit && !isPlayerStrum)
+						strumlineCameraRoll(strumline);
+				}
 
 				// unoptimised asf camera control based on strums
-				strumCameraRoll(strumline.receptors, (strumline == strumLines.members[playerLane]));
+				//strumCameraRoll(strumline.receptors, (strumline == strumLines.members[playerLane]));
 			}
 			
 		}
@@ -2971,6 +2985,7 @@ class PlayState extends MusicBeatState
 				else
 					nameOfAnimation = i.animation.curAnim.name;
 
+				strumLines.members[playerLane].singDirection = '';
 				if (nameOfAnimation.startsWith('sing') && !nameOfAnimation.endsWith('miss')){
 					if(i.animCovering)
 						i.coverEars(false, true);
@@ -3131,6 +3146,7 @@ class PlayState extends MusicBeatState
 			coolNote.wasGoodHit = true;
 			canSpeak = true;
 
+			characterStrums.singDirection = UIStaticArrow.getArrowFromNumber(coolNote.noteData);
 			for (i in character)
 				characterPlayAnimation(coolNote, i);
 			
@@ -3228,6 +3244,24 @@ class PlayState extends MusicBeatState
 	{
 		if (usedTimeTravel)
 			return;
+
+		if (bronzongMechanic && direction == 4)
+		{
+			trace('BELL NOTE MISSED');
+			health -= (gameplayMode == HELL_MODE)?0.5:0.25;
+			if((gameplayMode == HELL_MODE)){
+				earRinging.play();
+				earBleed = 15; // 5 seconds of drain after hitting it
+				if(hpDrain==0)
+					hpDrain++;
+				else
+					hpDrain+=0.5; // multiplier for the drain
+			}
+
+			blurAmount = 1.0;
+		}
+
+
 		
 		if (includeAnimation)
 		{
@@ -3252,22 +3286,6 @@ class PlayState extends MusicBeatState
 
 			for (i in character)
 				i.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
-		}
-
-		if (bronzongMechanic && direction == 4)
-		{
-			trace('BELL NOTE MISSED');
-			health -= (gameplayMode == HELL_MODE)?0.5:0.25;
-			if((gameplayMode == HELL_MODE)){
-				earRinging.play();
-				earBleed = 15; // 5 seconds of drain after hitting it
-				if(hpDrain==0)
-					hpDrain++;
-				else
-					hpDrain+=0.5; // multiplier for the drain
-			}
-
-			blurAmount = 1.0;
 		}
 
 		decreaseCombo(popMiss);
@@ -3389,6 +3407,57 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	private function strumlineCameraRoll(strumline:Strumline, ignoreEnableMovement:Bool=false){
+		if (Init.trueSettings.get('No Camera Note Movement') || (!enableMovement && !ignoreEnableMovement))return;
+		camDisplaceX = 0;
+		camDisplaceY = 0;
+		var character:Character = strumline.singingCharacters[0];
+		if (strumline.cameraFocus != null && strumline.singingCharacters.contains(strumline.cameraFocus))
+			character = strumline.cameraFocus;
+
+
+
+		//if (firstPerson && strumline!=strumLines.members[playerLane])return;
+		
+
+		
+
+		var anim:String = "";
+		if(character!=null){
+			anim = character.atlasCharacter!=null?character.atlasAnimation:'';
+			if((anim.trim()=='' ) && character.animation.curAnim!=null)anim = character.animation.name; // the current anim's name
+			if((anim.trim()=='' ) && character.intendedAnim.trim()!='')anim = character.intendedAnim; // this is what should PROBABLY be playing		
+		}
+		
+		if(anim.trim()=='' || character==null)anim = 'sing${strumline.singDirection}'; // last ditch effort
+		anim=anim.toLowerCase();
+
+		if(!anim.startsWith("sing"))return;
+		
+		// not a sing anim
+
+		var cleansed = anim.split("sing")[1].split("-")[0]; // removes the - for alt anims, etc
+		// probably a faster way to do this but this is the easiest lol!
+		if(cleansed.trim()=='')return; // just incase lol
+
+		if(cleansed.endsWith("miss"))cleansed = cleansed.split("miss")[0];
+		
+		var camDisplaceExtend:Float = 15;
+		switch(cleansed){
+			case 'left':
+				camDisplaceX -= camDisplaceExtend;
+			case 'up':
+				camDisplaceY -= camDisplaceExtend;
+			case 'down':
+				camDisplaceY += camDisplaceExtend;
+			case 'right':
+				camDisplaceX += camDisplaceExtend;
+			default:
+				// doesnt matter, it got reset above anyway
+		}
+		
+	}
+
 	private function strumCameraRoll(cStrum:FlxTypedSpriteGroup<UIStaticArrow>, mustHit:Bool)
 	{
 		if (!Init.trueSettings.get('No Camera Note Movement') && enableMovement)
@@ -3398,7 +3467,7 @@ class PlayState extends MusicBeatState
 			{
 				if ((!firstPerson && ((PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection && mustHit)
 					|| (!PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection && !mustHit)))
-					|| (firstPerson && mustHit)) 
+					|| (firstPerson && mustHit))
 				{
 					camDisplaceX = 0;
 					if (cStrum.members[0].animation.curAnim.name == 'confirm')
@@ -3912,6 +3981,8 @@ class PlayState extends MusicBeatState
 		if (!startingBrimstone) {
 			for (j in strumLines.members)
 			{
+				var checkedDancer:Bool=false;
+				var didDance:Bool = false;
 				for (i in j.character)
 				{
 					var nameOfAnimation = '';
@@ -3922,7 +3993,14 @@ class PlayState extends MusicBeatState
 					if ((nameOfAnimation.startsWith("idle") || nameOfAnimation.startsWith("dance"))
 						&& (curBeat % 2 == 0 || i.characterData.quickDancer))
 						i.dance();
+
+					if(!checkedDancer)
+						didDance = i.holdTimer <=0 && (i.intendedAnim.contains("idle") || i.intendedAnim.startsWith("dance"));
+					
+					checkedDancer=true;
 				}
+				if(didDance)
+					j.singDirection = '';
 			}
 
 		}

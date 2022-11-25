@@ -244,6 +244,7 @@ function onCreatePost() {
 
 	PlayState.instance.boyfriendStrums.character = [dawn];
 	PlayState.instance.boyfriendStrums.singingCharacters = [dawn];
+	PlayState.instance.boyfriendStrums.cameraFocus = boyfriend;
 
 	PlayState.instance.dadStrums.visible = false;
 

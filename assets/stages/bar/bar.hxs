@@ -254,6 +254,8 @@ function onCreate() {
 	//PlayState.camGame.setFilters([filmGrain]);
 	filmGrain = new ShaderFilter(new GraphicsShader("", Paths.shader('old')));
 	PlayState.camGame.setFilters([filmGrain]);
+	PlayState.staticValues.set("camFocus", 1);
+	PlayState.instance.enableMovement = false;
 }
 
 function onCreatePost() {
@@ -267,8 +269,9 @@ function onBeat(beat) {
 			i.playAnim('bop'); 
 	}
 
-	if (beat >= 84)
-		ben.playAnim("look");
+	if (ben.animation.name != 'look' && FlxG.random.bool(1)){
+		ben.playAnim("look", true);
+	}
 }
 
 function onUpdate(elapsed) {
@@ -276,5 +279,9 @@ function onUpdate(elapsed) {
 	
 	var swagRect = FlxRect.weak(0, 0, saled.width, saled.height - 16);
 	saled.clipRect = swagRect;
-	
+	var who = PlayState.staticValues.get("camFocus");
+	if(who!=null){
+		var strumline = PlayState.strumLines.members[who];
+		PlayState.instance.strumlineCameraRoll(strumline, true);
+	}
 }
