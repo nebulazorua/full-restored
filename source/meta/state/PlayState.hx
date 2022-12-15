@@ -110,7 +110,7 @@ class PlayState extends MusicBeatState
 	public var botplayText:FlxText;
 	public var botplaySubtext:FlxText;
 	public static var botplayQuotes:Map<String, Array<String>> = [
-		'safety-lullaby' => ['you took the safety part too seriously'],
+		'safety-lullaby' => ['you took the safety part too seriously', 'honkk mimimimi'],
 		'left-unchecked' => ['its not that hard anymore i fixed it', 'the pendulums not tweened anymore please'],
 		'lost-cause' => ['youre the lost cause', 'i know youre in botplay to stare at her ass'],
 		'frostbite' => [
@@ -132,23 +132,25 @@ class PlayState extends MusicBeatState
 			"Buryman has more life than your will to fucking play",
 			'ge ge ge-get your hands back on your keyboard'
 		],
-		'amusia' => ['i am unamused', 'do you even have a sing?'],
+		'amusia' => ['i am unamused', 'do YOU even have a sing?'],
 		'bygone-purpose' => ['scrimblini', 'you should jump off like alexis'],
 		'dissension' => [
 			'why should I play fair?',
-			// 'you seriously gonna cheat him again??' i dont think this one works sector
+			"he's gonna strangle you next"
+			// 'you seriously gonna cheat him again??' i dont think this one works sector 
 		],
 		'death-toll' => [
 			'go to hell', 
 			"take a bath in the magma", 
 			"lmao are you scared of an old dude?",
-			"i have the high ground anakin"
+			"i have the high ground anakin",
+			"put your volume on max on hell mode and miss"
 		],
 		'isotope' => ['we forgot to scrap it', 'Am I a joke to you?'],
 		'purin' => ['hyperrealistic?!', 'purin', "Hang out a bit with Nurse Joy", 'do NOT put your dick in those holes'],
 		'pasta-night' => ['guess you got counterpicked', 'maybe the kiddie table is for you'],
 		'shinto' => ['peak 10/10 expreiuenc', "It's a her you fucking idiot"],
-		'shitno' => ['why is it so cold', 'you got cold feet'],
+		'shitno' => ['why is it so cold', 'you got cold feet', "you're only here for saster"],
 		'missingcraft' => ["dig straight down :|", "how you this bad on a kids game song"]
 	];
 	public var botplaySine:Float = 0;
@@ -413,7 +415,7 @@ class PlayState extends MusicBeatState
 		Main.switchState(this, new PlayState());
 	}
 
-	function gameplayModeFromString(s:String){
+	static function gameplayModeFromString(s:String){
 		switch(s){
 			case 'Normal':
 				return NORMAL;
@@ -3029,15 +3031,14 @@ class PlayState extends MusicBeatState
 		hypnoRating.cameras = [PlayState.camHUD];
 		hypnoRating.alpha = 1.0;
 		hypnoRating.animation.finishCallback = function(name:String)
-			{
-				hypnoRating.destroy();
-			}
+		{
+			hypnoRating.destroy();
+		}
 	}
 
 	function losePendulum(forced:Bool = false) {
 		if (!strumLines.members[playerLane].autoplay)
 		{
-			trace("FUCk");
 			trance += 0.115;
 
 			var hypnoRating:FlxSprite = new FlxSprite(500, 350); //idk
@@ -3056,73 +3057,78 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	var customCurve = Init.trueSettings.get("Typhlosion Return Curve");
+	var curveType = gameplayMode == CUSTOM?gameplayModeFromString(Init.trueSettings.get("Typhlosion Return Curve")):gameplayMode;
+
+
 	function useTyphlosion()
-		{
-			FlxG.sound.play(Paths.sound('TyphlosionUse'));
+	{
+		FlxG.sound.play(Paths.sound('TyphlosionUse'));
 
-			typhlosion.playAnim('fire');
-			typhlosion.animation.finishCallback = function(name:String)
-				typhlosion.playAnim('idle');
-			typhlosionUses -= 1;
-			/*
-			switch (typhlosionUses)
-			{
-				case (maxTyphlosion/(10/8)): frostbiteTheromometerTyphlosion.animation.play('stage2');
-				case (maxTyphlosion/(10/6)): frostbiteTheromometerTyphlosion.animation.play('stage3');
-				case (maxTyphlosion/(10/4)): frostbiteTheromometerTyphlosion.animation.play('stage4');
-				case (maxTyphlosion/(10/2)): frostbiteTheromometerTyphlosion.animation.play('stage5');
-			}*/
-			var stages:Array<Float> = [10/8, 10/6, 10/4, 10/2];
-			var stage:String = 'stage1';
-			for(i in 0...stages.length){
-				var n = stages[i];
-				if(typhlosionUses <= Math.floor(maxTyphlosion/n)){
-					stage = 'stage${Std.string(i + 2)}';
-				}
+		typhlosion.playAnim('fire');
+		typhlosion.animation.finishCallback = function(name:String)
+			typhlosion.playAnim('idle');
+
+		typhlosionUses -= 1;
+
+		var stages:Array<Float> = [10/8, 10/6, 10/4, 10/2];
+		var stage:String = 'stage1';
+		for(i in 0...stages.length){
+			var n = stages[i];
+			if(typhlosionUses <= Math.floor(maxTyphlosion/n)){
+				stage = 'stage${Std.string(i + 2)}';
 			}
-			frostbiteTheromometerTyphlosion.animation.play(stage);
+		}
+		frostbiteTheromometerTyphlosion.animation.play(stage);
 
-			var shouldDiminish:Bool=true;
-			var warmthAdd:Float = 0.2;
-			var fuck:Float = (typhlosionUses / maxTyphlosion);
+		var warmthAdd:Float = 0.2;
+		var fuck:Float = (typhlosionUses / maxTyphlosion);
 
-			var diminished = fuck * 0.2625;
+		var baseReturn = 0.2625;
 
-			// TODO: let custom set the curve type between normal, hell and fuck you
-			if(gameplayMode == CUSTOM){
-				if (Init.trueSettings.get("Typhlosion Diminishing Returns")){
-					diminished = 0.2625;
-					//logInput = 11;
-				}
+		var diminished = fuck * baseReturn;
+		var warmth = (diminished + warmthAdd);
 
-				warmthAdd *= Init.trueSettings.get("Typhlosion Warmth Percent")/100;	
-			}else if(gameplayMode == HELL_MODE){
+		var diminshReturns = gameplayMode != CUSTOM || customCurve.toLowerCase()!='Off';
+		var warmthMult = gameplayMode != CUSTOM ? 1 : Init.trueSettings.get("Typhlosion Warmth Percent") / 100;
+		// TODO: let custom set the curve type between normal and hell
+	
+
+		switch (curveType){
+			case HELL_MODE:
 				var sc = 0.64; // the magic number...
 				// made from just fucking around on desmos til i found a curve i liked
-				// this takes you from 0.4 to 0, so it starts off strong but quickly drops off
+				// this takes you from 0.4 to 0, it starts off strong but quickly drops off
 				var factor = (Math.pow(fuck, 3)) / sc;
 				var pos = Math.sqrt(1 * factor - 0) - 0;
-				diminished = pos * sc;
+				if (diminshReturns)
+					diminished = pos * sc;
 				warmthAdd = 0.3;
-			}
-			
-			if(diminished<0)diminished=0;
-			coldness -= ((diminished) + warmthAdd);
-
-			if (typhlosionUses == 0)
-				{
-					new FlxTimer().start(0.85, function(tmr:FlxTimer)
-						{
-							FlxG.sound.play(Paths.sound('TyphlosionDeath'));
-							typhlosion.playAnim('fire', true);
-							typhlosion.animation.finishCallback = function(name:String)
-							{
-								typhlosion.animation.curAnim.pause();
-							}
-							FlxTween.tween(typhlosion, {y: typhlosion.y + 500}, 1.5, {ease: FlxEase.quadInOut});
-						});
-				}
+				warmth = (diminished + warmthAdd);
+			default:
+				if (!diminshReturns)
+					diminished = baseReturn;
 		}
+		
+		if(diminished<0)diminished=0;
+		coldness -= warmth * warmthMult;
+
+		if (typhlosionUses == 0)
+		{
+			new FlxTimer().start(0.85, function(tmr:FlxTimer)
+			{
+				FlxG.sound.play(Paths.sound('TyphlosionDeath'));
+				typhlosion.playAnim('fire', true);
+				typhlosion.animation.finishCallback = function(name:String)
+				{
+					typhlosion.animation.curAnim.pause();
+				}
+				FlxTween.tween(typhlosion, {y: typhlosion.y + 500}, 1.5, {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween){
+					typhlosion.visible=false;
+				}});
+			});
+		}
+	}
 
 	function destroyNote(strumline:Strumline, daNote:Note)
 	{
@@ -3412,20 +3418,14 @@ class PlayState extends MusicBeatState
 		camDisplaceX = 0;
 		camDisplaceY = 0;
 		var character:Character = strumline.singingCharacters[0];
+		if(character==null || inCutscene)return;
 		if (strumline.cameraFocus != null && strumline.singingCharacters.contains(strumline.cameraFocus))
 			character = strumline.cameraFocus;
-
-
-
-		//if (firstPerson && strumline!=strumLines.members[playerLane])return;
-		
-
-		
 
 		var anim:String = "";
 		if(character!=null){
 			anim = character.atlasCharacter!=null?character.atlasAnimation:'';
-			if((anim.trim()=='' ) && character.animation.curAnim!=null)anim = character.animation.name; // the current anim's name
+			if((anim.trim()=='' ) && character.animation!=null && character.animation.curAnim!=null)anim = character.animation.name; // the current anim's name
 			if((anim.trim()=='' ) && character.intendedAnim.trim()!='')anim = character.intendedAnim; // this is what should PROBABLY be playing		
 		}
 		

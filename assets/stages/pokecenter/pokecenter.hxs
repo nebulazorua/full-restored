@@ -505,6 +505,7 @@ function onEvent(eventName) {
 			trace('full reveal ' + fRevealed);
 			fRevealed++;
 		case 'Purin Hide':
+			PlayState.instance.canPause = false;
 			fRevealed--;
 			var charArray = farChars[fRevealed];
 			if(charArray!=null){
@@ -648,7 +649,15 @@ function onEvent(eventName) {
 					ghost.dance();
 				}
 			}
+			PlayState.instance.pausePortraitPrefix[1] = '-ghost';
 		case 'Purin Pico Sleep':
+
+			new FlxTimer().start(0.1, function(tmr:FlxTimer){
+				PlayState.boyfriend.canAnimate=true;
+				PlayState.boyfriend.playAnim("fallasleep", true);
+				PlayState.boyfriend.canAnimate=false;
+			});
+
 			PlayState.dadOpponent.canAnimate=true;
 			PlayState.dadOpponent.playAnim('sleep', true);
 			PlayState.dadOpponent.canAnimate=false;
@@ -664,6 +673,10 @@ function onEvent(eventName) {
 				hpTween.cancel();
 				hpTween = null;
 			}
+			PlayState.boyfriend.canAnimate=true;
+			PlayState.boyfriend.playAnim("eepy", true);
+			PlayState.boyfriend.canAnimate=false;
+			PlayState.instance.canPause = true;
 			FlxTween.cancelTweensOf(smallStatic);
 			FlxTween.cancelTweensOf(bgStatic);
 			smallStatic.alpha = 1;
@@ -700,6 +713,7 @@ function onEvent(eventName) {
 				hpTween.cancel();
 				hpTween = null;
 			}
+			PlayState.instance.canPause = false;
 			FlxTween.cancelTweensOf(bgStatic);
 			FlxTween.tween(bgStatic, {
 				alpha: 1

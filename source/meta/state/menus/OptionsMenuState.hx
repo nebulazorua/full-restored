@@ -1,5 +1,6 @@
 package meta.state.menus;
 
+import gameObjects.userInterface.menu.NumPixelSelector;
 import flixel.FlxObject;
 import flixel.math.FlxMath;
 import flixel.group.FlxSpriteGroup;
@@ -221,7 +222,7 @@ class OptionsMenuState extends MusicBeatSubState
 				["Freezing Rate Percent", confirmOption, generateExtra, updateOption],
 				["Typhlosion Uses", confirmOption, generateExtra, updateOption],
 				["Typhlosion Warmth Percent", confirmOption, generateExtra, updateOption],
-				["Typhlosion Diminishing Returns", confirmOption, generateExtra, updateOption],
+				["Typhlosion Return Curve", confirmOption, generateExtra, updateOption],
 
 				["Feraligatr"],
 				["Forced Accuracy", confirmOption, generateExtra, updateOption],
@@ -291,7 +292,7 @@ class OptionsMenuState extends MusicBeatSubState
 				var left = controls.UI_LEFT;
 				var right = controls.UI_RIGHT;
 				
-				var selector:PixelSelector = cast currentExtras.get(currentDisplayed.members[curSelected]);
+				var selector:Dynamic = currentExtras.get(currentDisplayed.members[curSelected]);
 				if (pressTimers.get(selector) == null)
 					pressTimers.set(selector, 0);
 
@@ -316,8 +317,6 @@ class OptionsMenuState extends MusicBeatSubState
 					pressRight = right;
 				}
 				
-
-
 				if (!left)
 					selector.selectorPlay('left');
 					
@@ -337,14 +336,30 @@ class OptionsMenuState extends MusicBeatSubState
 		}
 	}
 
-	function updateSelector(selector:PixelSelector, inc:Int=0){
-		var curIdx = selector.options.indexOf(selector.chosenOptionString);
-		var newIdx = curIdx+inc;
+	function updateSelector(selector:Dynamic, inc:Int=0){
 		var settingDat = Init.gameSettings.get(selector.setting);
-		if (newIdx < 0)
-			newIdx = selector.options.length - 1;
-		else if (newIdx >= selector.options.length)
-			newIdx = 0;
+		trace(settingDat[0]);
+		if (settingDat[0] == NumberSelector){
+			var sel:NumPixelSelector = cast selector;
+			sel.value += inc * sel.step;
+			if(selector.value < sel.min)sel.value = sel.max;
+			if(selector.value > sel.max)sel.value = sel.min;
+			sel.chosenOptionString = Std.string(sel.value);
+			sel.optionChosen.text = sel.chosenOptionString + (settingDat[6] == null ? "" : settingDat[6]);
+			trace(sel.optionChosen.text);
+		}else{
+			var sel:PixelSelector = cast selector;
+			var curIdx:Int = sel.options.indexOf(selector.chosenOptionString);
+			var newIdx:Int = curIdx + inc;
+			var len:Int = sel.options.length;
+			if (newIdx < 0)
+				newIdx = len - 1;
+			else if (newIdx >= len)
+				newIdx = 0;
+
+			sel.chosenOptionString = sel.options[newIdx];
+			sel.optionChosen.text = sel.chosenOptionString.toUpperCase() + (settingDat[6] == null ? "" : settingDat[6]);
+		}
 
 		if(inc<0)
 			selector.selectorPlay('left', 'press');
@@ -353,15 +368,16 @@ class OptionsMenuState extends MusicBeatSubState
 
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 
-		selector.chosenOptionString = selector.options[newIdx];
-		selector.optionChosen.text = selector.chosenOptionString.toUpperCase() + (settingDat[6] == null ? "" : settingDat[6]);
+
 
 		var type = settingDat[0];
 		switch(type){
 			case NumberSelector:
-				Init.trueSettings.set(selector.setting, Std.parseFloat(selector.chosenOptionString));
+				var sel:NumPixelSelector = cast selector;
+				Init.trueSettings.set(sel.setting, sel.value);
 			case StringSelector:
-				Init.trueSettings.set(selector.setting, selector.chosenOptionString);
+				var sel:PixelSelector = cast selector;
+				Init.trueSettings.set(sel.setting, sel.chosenOptionString);
 			default:
 
 		}
@@ -451,7 +467,7 @@ class OptionsMenuState extends MusicBeatSubState
 					selector.updateHitbox();
 					return selector;
 				case NumberSelector:
-					var options:Array<String> = [];
+					/*var options:Array<String> = [];
 					var gameSettings = Init.gameSettings.get(data[0]);
 					var idx:Float = gameSettings[4];
 					var step:Float = gameSettings[3];
@@ -463,6 +479,14 @@ class OptionsMenuState extends MusicBeatSubState
 					selector.scale.set(3, 3);
 					selector.updateHitbox();
 					
+					return selector;*/
+					var gameSettings = Init.gameSettings.get(data[0]);
+					// Step, Min, Max, Suffix (optional)
+					// 3, 4, 5, 6
+
+					var selector:NumPixelSelector = new NumPixelSelector(10, 0, data[0], gameSettings[4], gameSettings[5], gameSettings[3]);
+					selector.scale.set(3, 3);
+					selector.updateHitbox();
 					return selector;
 				case Checkmark:
 					var checkbox = new FlxSprite().loadGraphic(Paths.image("UI/pixel/checkbox"), true, 11, 11);

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="stev.png">
+	<!-- Created with Adobe Animate version 22.0.4.185 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="stev down0000" x="0" y="0" width="180" height="202" frameX="-6" frameY="-45" frameWidth="186" frameHeight="247"/>
+	<SubTexture name="stev down0001" x="0" y="0" width="180" height="202" frameX="-6" frameY="-45" frameWidth="186" frameHeight="247"/>
+	<SubTexture name="stev down0002" x="180" y="0" width="182" height="227" frameX="-3" frameY="-20" frameWidth="186" frameHeight="247"/>
+	<SubTexture name="stev down0003" x="180" y="0" width="182" height="227" frameX="-3" frameY="-20" frameWidth="186" frameHeight="247"/>
+	<SubTexture name="stev down0004" x="362" y="0" width="181" height="241" frameX="0" frameY="-6" frameWidth="186" frameHeight="247"/>
+	<SubTexture name="stev down0005" x="362" y="0" width="181" height="241" frameX="0" frameY="-6" frameWidth="186" frameHeight="247"/>
+	<SubTexture name="stev down0006" x="543" y="0" width="179" height="247" frameX="-2" frameY="0" frameWidth="186" frameHeight="247"/>
+	<SubTexture name="stev down0007" x="543" y="0" width="179" height="247" frameX="-2" frameY="0" frameWidth="186" frameHeight="247"/>
+	<SubTexture name="stev down0008" x="722" y="0" width="178" height="243" frameX="-3" frameY="-4" frameWidth="186" frameHeight="247"/>
+	<SubTexture name="stev down0009" x="722" y="0" width="178" height="243" frameX="-3" frameY="-4" frameWidth="186" frameHeight="247"/>
+	<SubTexture name="stev idle0000" x="900" y="0" width="201" height="276" frameX="0" frameY="-12" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0001" x="900" y="0" width="201" height="276" frameX="0" frameY="-12" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0002" x="1101" y="0" width="193" height="284" frameX="-3" frameY="-4" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0003" x="1101" y="0" width="193" height="284" frameX="-3" frameY="-4" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0004" x="1294" y="0" width="192" height="288" frameX="-3" frameY="0" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0005" x="1294" y="0" width="192" height="288" frameX="-3" frameY="0" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0006" x="1294" y="0" width="192" height="288" frameX="-3" frameY="0" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0007" x="1294" y="0" width="192" height="288" frameX="-3" frameY="0" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0008" x="1294" y="0" width="192" height="288" frameX="-3" frameY="0" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0009" x="1294" y="0" width="192" height="288" frameX="-3" frameY="0" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0010" x="1294" y="0" width="192" height="288" frameX="-3" frameY="0" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0011" x="1294" y="0" width="192" height="288" frameX="-3" frameY="0" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0012" x="1294" y="0" width="192" height="288" frameX="-3" frameY="0" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev idle0013" x="1294" y="0" width="192" height="288" frameX="-3" frameY="0" frameWidth="201" frameHeight="288"/>
+	<SubTexture name="stev left0000" x="1486" y="0" width="225" height="268" frameX="0" frameY="-3" frameWidth="229" frameHeight="271"/>
+	<SubTexture name="stev left0001" x="1486" y="0" width="225" height="268" frameX="0" frameY="-3" frameWidth="229" frameHeight="271"/>
+	<SubTexture name="stev left0002" x="1711" y="0" width="217" height="271" frameX="-10" frameY="0" frameWidth="229" frameHeight="271"/>
+	<SubTexture name="stev left0003" x="1711" y="0" width="217" height="271" frameX="-10" frameY="0" frameWidth="229" frameHeight="271"/>
+	<SubTexture name="stev left0004" x="0" y="288" width="206" height="265" frameX="-22" frameY="-6" frameWidth="229" frameHeight="271"/>
+	<SubTexture name="stev left0005" x="0" y="288" width="206" height="265" frameX="-22" frameY="-6" frameWidth="229" frameHeight="271"/>
+	<SubTexture name="stev left0006" x="206" y="288" width="203" height="263" frameX="-26" frameY="-8" frameWidth="229" frameHeight="271"/>
+	<SubTexture name="stev left0007" x="206" y="288" width="203" height="263" frameX="-26" frameY="-8" frameWidth="229" frameHeight="271"/>
+	<SubTexture name="stev left0008" x="409" y="288" width="201" height="262" frameX="-28" frameY="-9" frameWidth="229" frameHeight="271"/>
+	<SubTexture name="stev left0009" x="409" y="288" width="201" height="262" frameX="-28" frameY="-9" frameWidth="229" frameHeight="271"/>
+	<SubTexture name="stev miss0000" x="610" y="288" width="192" height="288"/>
+	<SubTexture name="stev right0000" x="802" y="288" width="222" height="286" frameX="-2" frameY="-2" frameWidth="224" frameHeight="288"/>
+	<SubTexture name="stev right0001" x="802" y="288" width="222" height="286" frameX="-2" frameY="-2" frameWidth="224" frameHeight="288"/>
+	<SubTexture name="stev right0002" x="1024" y="288" width="215" height="285" frameX="-1" frameY="-3" frameWidth="224" frameHeight="288"/>
+	<SubTexture name="stev right0003" x="1024" y="288" width="215" height="285" frameX="-1" frameY="-3" frameWidth="224" frameHeight="288"/>
+	<SubTexture name="stev right0004" x="1239" y="288" width="213" height="288" frameX="0" frameY="0" frameWidth="224" frameHeight="288"/>
+	<SubTexture name="stev right0005" x="1239" y="288" width="213" height="288" frameX="0" frameY="0" frameWidth="224" frameHeight="288"/>
+	<SubTexture name="stev right0006" x="1452" y="288" width="213" height="288" frameX="0" frameY="0" frameWidth="224" frameHeight="288"/>
+	<SubTexture name="stev right0007" x="1452" y="288" width="213" height="288" frameX="0" frameY="0" frameWidth="224" frameHeight="288"/>
+	<SubTexture name="stev right0008" x="1665" y="288" width="212" height="288" frameX="0" frameY="0" frameWidth="224" frameHeight="288"/>
+	<SubTexture name="stev right0009" x="1665" y="288" width="212" height="288" frameX="0" frameY="0" frameWidth="224" frameHeight="288"/>
+	<SubTexture name="stev up0000" x="0" y="576" width="196" height="265" frameX="0" frameY="0" frameWidth="209" frameHeight="265"/>
+	<SubTexture name="stev up0001" x="0" y="576" width="196" height="265" frameX="0" frameY="0" frameWidth="209" frameHeight="265"/>
+	<SubTexture name="stev up0002" x="196" y="576" width="192" height="258" frameX="-5" frameY="-7" frameWidth="209" frameHeight="265"/>
+	<SubTexture name="stev up0003" x="196" y="576" width="192" height="258" frameX="-5" frameY="-7" frameWidth="209" frameHeight="265"/>
+	<SubTexture name="stev up0004" x="388" y="576" width="186" height="245" frameX="-17" frameY="-19" frameWidth="209" frameHeight="265"/>
+	<SubTexture name="stev up0005" x="388" y="576" width="186" height="245" frameX="-17" frameY="-19" frameWidth="209" frameHeight="265"/>
+	<SubTexture name="stev up0006" x="574" y="576" width="187" height="246" frameX="-20" frameY="-19" frameWidth="209" frameHeight="265"/>
+	<SubTexture name="stev up0007" x="574" y="576" width="187" height="246" frameX="-20" frameY="-19" frameWidth="209" frameHeight="265"/>
+	<SubTexture name="stev up0008" x="761" y="576" width="187" height="246" frameX="-22" frameY="-19" frameWidth="209" frameHeight="265"/>
+	<SubTexture name="stev up0009" x="761" y="576" width="187" height="246" frameX="-22" frameY="-19" frameWidth="209" frameHeight="265"/>
+</TextureAtlas>

@@ -563,7 +563,11 @@ class GameOverSubstate extends MusicBeatSubState
 	
 						deathEnd = function()
 						{
-							if (video != null) video.finishVideo();
+							try{
+								if (video != null && !video.isDisposed) video.finishVideo();
+							}catch(e:Dynamic){
+								trace("caught because lazy " + e);
+							}
 							FlxTween.tween(bg, {alpha: 0}, timeBeforeEnd, {ease: FlxEase.linear});
 
 							onEnd = function()

@@ -1338,19 +1338,23 @@ class Character extends FNFSprite
 				animation.addByPrefix('preidle', 'Pico_idle_01', 24, false);
 				animation.addByPrefix('turn', 'Turned', 24, false);
 				animation.addByPrefix('knife', 'StabbyStabby', 24, false);
+				animation.addByPrefix('fallasleep', 'Pico fall asleep', 24, false);
+				animation.addByPrefix('eepy', 'Pico sleep', 24, true);
 
 				addOffset("idle");
 				addOffset("singUP", -21, 31);
-				addOffset("singLEFT", -18, -3);
-				addOffset("singRIGHT", -32, 5);
+				addOffset("singLEFT", -14, 0);
+				addOffset("singRIGHT", -32, 7);
 				addOffset("singDOWN", 108, -42);
-				addOffset("singUPmiss", -21, 31);
-				addOffset("singLEFTmiss", -21, 42);
-				addOffset("singRIGHTmiss", -31, 3);
-				addOffset("singDOWNmiss", 102, -28);
-				addOffset("preidle", -42, 12);
-				addOffset("turn", -32, 29);
-				addOffset("knife", -11, 16);
+				addOffset("singUPmiss", -21, 29);
+				addOffset("singLEFTmiss", -18, 44);
+				addOffset("singRIGHTmiss", -32, 7);
+				addOffset("singDOWNmiss", 109, -28);
+				addOffset("preidle", -29, 13);
+				addOffset("turn", -23, 30);
+				addOffset("knife", 1, 17);
+				addOffset("fallasleep", -14, 10);
+				addOffset("eepy", 52, -6);
 
 				playAnim('idle');
 

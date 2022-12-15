@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="reddead.png">
+	<!-- Created with Adobe Animate version 22.0.4.185 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="reddead down0000" x="0" y="0" width="339" height="150" frameX="0" frameY="-6" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead down0001" x="0" y="0" width="339" height="150" frameX="0" frameY="-6" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead down0002" x="339" y="0" width="333" height="159" frameX="-2" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead down0003" x="339" y="0" width="333" height="159" frameX="-2" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead down0004" x="339" y="0" width="333" height="159" frameX="-2" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead down0005" x="339" y="0" width="333" height="159" frameX="-2" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead down0006" x="339" y="0" width="333" height="159" frameX="-2" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead down0007" x="339" y="0" width="333" height="159" frameX="-2" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead down0008" x="339" y="0" width="333" height="159" frameX="-2" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead down0009" x="339" y="0" width="333" height="159" frameX="-2" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead idle0000" x="672" y="0" width="333" height="155" frameX="0" frameY="-3" frameWidth="333" frameHeight="159"/>
+	<SubTexture name="reddead idle0001" x="672" y="0" width="333" height="155" frameX="0" frameY="-3" frameWidth="333" frameHeight="159"/>
+	<SubTexture name="reddead idle0002" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead idle0003" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead idle0004" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead idle0005" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead idle0006" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead idle0007" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead idle0008" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead idle0009" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead left0000" x="0" y="159" width="332" height="159" frameX="0" frameY="0" frameWidth="334" frameHeight="159"/>
+	<SubTexture name="reddead left0001" x="0" y="159" width="332" height="159" frameX="0" frameY="0" frameWidth="334" frameHeight="159"/>
+	<SubTexture name="reddead left0002" x="332" y="159" width="333" height="158" frameX="-1" frameY="-1" frameWidth="334" frameHeight="159"/>
+	<SubTexture name="reddead left0003" x="332" y="159" width="333" height="158" frameX="-1" frameY="-1" frameWidth="334" frameHeight="159"/>
+	<SubTexture name="reddead left0004" x="332" y="159" width="333" height="158" frameX="-1" frameY="-1" frameWidth="334" frameHeight="159"/>
+	<SubTexture name="reddead left0005" x="332" y="159" width="333" height="158" frameX="-1" frameY="-1" frameWidth="334" frameHeight="159"/>
+	<SubTexture name="reddead left0006" x="332" y="159" width="333" height="158" frameX="-1" frameY="-1" frameWidth="334" frameHeight="159"/>
+	<SubTexture name="reddead left0007" x="332" y="159" width="333" height="158" frameX="-1" frameY="-1" frameWidth="334" frameHeight="159"/>
+	<SubTexture name="reddead left0008" x="332" y="159" width="333" height="158" frameX="-1" frameY="-1" frameWidth="334" frameHeight="159"/>
+	<SubTexture name="reddead left0009" x="332" y="159" width="333" height="158" frameX="-1" frameY="-1" frameWidth="334" frameHeight="159"/>
+	<SubTexture name="reddead miss0000" x="665" y="159" width="225" height="101"/>
+	<SubTexture name="reddead right0000" x="0" y="318" width="334" height="159" frameX="-2" frameY="0" frameWidth="336" frameHeight="159"/>
+	<SubTexture name="reddead right0001" x="0" y="318" width="334" height="159" frameX="-2" frameY="0" frameWidth="336" frameHeight="159"/>
+	<SubTexture name="reddead right0002" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead right0003" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead right0004" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead right0005" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead right0006" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead right0007" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead right0008" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead right0009" x="339" y="0" width="333" height="159" frameX="0" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead up0000" x="334" y="318" width="337" height="159"/>
+	<SubTexture name="reddead up0001" x="334" y="318" width="337" height="159"/>
+	<SubTexture name="reddead up0002" x="339" y="0" width="333" height="159" frameX="-4" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead up0003" x="339" y="0" width="333" height="159" frameX="-4" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead up0004" x="339" y="0" width="333" height="159" frameX="-4" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead up0005" x="339" y="0" width="333" height="159" frameX="-4" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead up0006" x="339" y="0" width="333" height="159" frameX="-4" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead up0007" x="339" y="0" width="333" height="159" frameX="-4" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead up0008" x="339" y="0" width="333" height="159" frameX="-4" frameY="0" frameWidth="339" frameHeight="159"/>
+	<SubTexture name="reddead up0009" x="339" y="0" width="333" height="159" frameX="-4" frameY="0" frameWidth="339" frameHeight="159"/>
+</TextureAtlas>

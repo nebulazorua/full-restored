@@ -181,7 +181,7 @@ class Init extends FlxState
 
 	// new settings shit kinda
 
-	/* Settings are defined like this:
+	/* Settings are defined like Rthis:
 		'Name' => [
 			Type,
 			DefaultValue,
@@ -258,7 +258,7 @@ class Init extends FlxState
 		],
 		'Stage Opacity' => [
 			NumberSelector,
-			0,
+			100,
 			'Darkens non-ui elements, useful if you find the characters and backgrounds distracting.',
 
 			5,
@@ -443,10 +443,11 @@ class Init extends FlxState
 			true,
 			"Whether the freezing mechanic should be used on songs which include it",
 		],
-		'Typhlosion Diminishing Returns' => [
-			Checkmark,
-			true,
-			"Whether the warmth provided by Typhlosion reduces for each use",
+		'Typhlosion Return Curve' => [
+			StringSelector,
+			'normal',
+			'Determines how the diminishing returns are calculated',
+			['Off', 'Normal', 'Hell']
 		],
 		'Typhlosion Uses' => [
 			NumberSelector,

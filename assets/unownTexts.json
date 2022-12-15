@@ -1,4 +1,43 @@
 {
+	"insomniaTexts": {
+		"words": [
+			"SCREAM",
+			"HELP",
+			"HURRY",
+			"LEAVE",
+			"MOUTHLESS",
+			"GRAVE",
+			"DEAD",
+			"SILENT",
+			"FREQUENCY",
+			"XXXXX",
+			"CELEBI DIED",
+			"SECRETS",
+			"NO MOUTH",
+			"MUST SCREAM",
+			"MUFFLED"
+		],
+		"rareWords": [
+			"I NEED TO SCREAM",
+			"UNENDING AGONY",
+			"FEAR OF THE UNOWN",
+			"ARCEUS BE DAMNED",
+			"DONT WAKE THE BEAST"
+		],
+		"impossibleWords": [
+			"JUST SLEEP IDIOT",
+			"LMAO DUMBASS CANT SLEEP!!",
+			"WHY IS THIS NAMED INSOMNIA WHEN IT IS ASLEEP",
+			"NINETY EIGHT PERCENT LOL",
+			"ZYXWVUTSRQPONMLKJIHGFEDCBA"
+		],
+		"harderWords": [
+			"FERALIGATR",
+			"SILENCED",
+			"UNOWN FREQUENCY",
+			"BOO!"
+		]
+	},
 	"brimstoneTexts": {
 		"words": [
 			"WHITE HAND",
@@ -94,7 +133,8 @@
 			"DRAGONAIR",
 			"VIRIDIAN",
 			"NIDORAN",
-			"COOLTRAINER"
+			"COOLTRAINER",
+			"SUPER GLITCH"
 		]
 	},
 	"monochromeTexts": {
@@ -129,7 +169,11 @@
 			"CELEBI DIED",
 			"IT FAILED",
 			"AGONY",
-			"I SEE YOU"
+			"I SEE YOU",
+			"FREQUENCY",
+			"UNOWN RADIO",
+			"LOST",
+			"FROSTBITTEN"
 		],
 		"rareWords": [
 			"NICE COCK",
@@ -169,7 +213,8 @@
 			"DEATH TO GLORY",
 			"LOST MEMORIES",
 			"WHO ARE YOU KID?",
-			"ASPHYXIATION"
+			"ASPHYXIATION",
+			"THE RUINS OF ALPH"
 		]
 	}
 }
