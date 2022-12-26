@@ -27,6 +27,7 @@ typedef WordList = {
 	var missingnoTexts:MonochromeWords;
 	var brimstoneTexts:MonochromeWords;
 	var insomniaTexts:MonochromeWords;
+	var ttfatfTexts:MonochromeWords;
 }
 typedef MonochromeWords = {
     var words:Array<String>;
@@ -180,6 +181,8 @@ class UnownSubstate extends MusicBeatSubState
 				wordsList = faggot.missingnoTexts;
 			case 'insomnia':
 				wordsList = faggot.insomniaTexts;
+			case 'through-the-fire-and-the-flames':
+				wordsList = faggot.ttfatfTexts;
 			default:
 				wordsList = faggot.monochromeTexts;
 		}
