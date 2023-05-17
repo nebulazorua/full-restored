@@ -195,6 +195,10 @@ function onCreatePost() {
         PlayState.instance.dadStrums.singingCharacters = [boyfriend];
         PlayState.instance.boyfriendStrums.character = [dadOpponent];
         PlayState.instance.dadStrums.character = [boyfriend];
+
+        PlayState.instance.boyfriendStrums.cameraFocus = boyfriend;
+        PlayState.instance.dadStrums.cameraFocus = dadOpponent;
+
         dadOpponent.forceNoMiss=true;
         dadOpponent.isPlayer=true;
         boyfriend.isPlayer=false;

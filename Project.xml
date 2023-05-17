@@ -34,10 +34,10 @@
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxelib name="flixel" />
+	<haxelib name="flixel" version="4.11.0" />
 	<haxedev set='webgl' />
 
-	<haxelib name="flixel-addons" />
+	<haxelib name="flixel-addons" version="2.10.0" />
 	<haxelib name="hscript" />
 	<haxelib name="flixel-ui"/>
 	<haxelib name="polymod"/>
