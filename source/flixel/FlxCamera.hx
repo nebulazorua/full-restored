@@ -1030,6 +1030,7 @@ class FlxCamera extends FlxBasic
 		deadzone = FlxDestroyUtil.put(deadzone);
 
 		target = null;
+		trace("destroyed camera", flashSprite==null);
 		flashSprite = null;
 		_scrollRect = null;
 		_flashRect = null;

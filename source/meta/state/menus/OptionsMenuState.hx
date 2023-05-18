@@ -170,7 +170,9 @@ class OptionsMenuState extends MusicBeatSubState
 		categoryMap = [
 			'main' => [
 				// main page
-				["Controls", exit],
+				["Controls", function(){
+						openSubState(new BindSubstate());
+				}],
 				["Preferences", loadSelectedGroup],
 				["Appearance", loadSelectedGroup],
 				["Mechanics", loadSelectedGroup],
@@ -184,6 +186,7 @@ class OptionsMenuState extends MusicBeatSubState
 				["Counter", confirmOption, generateExtra, updateOption],
 				["Display Accuracy", confirmOption, generateExtra, updateOption],
 				["Unfocus Pause", confirmOption, generateExtra, updateOption],
+				["Offset", confirmOption, generateExtra, updateOption],
 
 				["Meta Settings"],
 				["Framerate Cap", confirmOption, generateExtra, updateOption],
@@ -251,6 +254,8 @@ class OptionsMenuState extends MusicBeatSubState
 		centralTextbox = new Textbox(0, 0);
 		centralTextbox.screenCenter();
 		centralTextbox.scale.set(3, 3);
+		centralTextbox.boxHeight = 0;
+		centralTextbox.boxWidth = 0;
 		expanseHorizontal = 9;
 		expanseVertical = (1.5 * categoryMap.get("main").length) - 1;
 

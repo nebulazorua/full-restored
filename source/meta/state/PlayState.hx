@@ -1767,6 +1767,7 @@ class PlayState extends MusicBeatState
 
 		FlxG.autoPause = Init.trueSettings.get("Unfocus Pause");
 
+		trace("yea");
 		super.destroy();
 	}
 
@@ -1805,6 +1806,12 @@ class PlayState extends MusicBeatState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		var i:Int = allUIs.length - 1;
+		while(i > 0){
+			i--;
+			if (allUIs[i].flashSprite == null)
+				allUIs.splice(i, 1);
+		}
 
 		for (i in strumLines.members[playerLane].character)
 		{
@@ -2139,7 +2146,7 @@ class PlayState extends MusicBeatState
 						}
 					}*/
 					if (songMusic.playing)
-					{ // new resync stuff, should keep everything relatively in sync, better than how vanilla psych does it anyway
+					{ // new resync stuff, should keep everything relatively in sync, better than how vanilla psych/forever/etc does it anyway
 						// should have no stuttering etc
 						// this is based on how Stepmania keeps everything synced, actually
 						// -neb
@@ -3261,34 +3268,42 @@ class PlayState extends MusicBeatState
 				if(hpDrain==0)
 					hpDrain++;
 				else
-					hpDrain+=0.5; // multiplier for the drain
+					hpDrain+=0.5; // add to the drain
 			}
 
 			blurAmount = 1.0;
 		}
 
+		var ghost = alexis;
+		for (i in character)
+		{
+			if (i.curCharacter == 'ghost')
+			{
+				ghost = true;
+				break;
+			}
+		}
 
+		if (!paused)
+		{
+			if (ghost)
+				FlxG.sound.play(Paths.soundRandom('Electric_miss', 1, 5), FlxG.random.float(0.5, 0.6));
+			else
+				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+		}
 		
 		if (includeAnimation)
 		{
 			for (i in character)
+			{
+				if (i.forceNoMiss) //just made a super quick way to force it to not play miss animations if you do miss (used in pasta night)
 				{
-					if (i.forceNoMiss) //just made a super quick way to force it to not play miss animations if you do miss (used in pasta night)
-						{
-							decreaseCombo(popMiss);
-							return;
-						}
+					decreaseCombo(popMiss);
+					return;
 				}
+			}
 
 			var stringDirection:String = UIStaticArrow.getArrowFromNumber(direction);
-
-			if (!paused) {
-				if (alexis)
-					FlxG.sound.play(Paths.soundRandom('Electric_miss', 1, 5), FlxG.random.float(0.5, 0.6));
-				else
-					FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-	
-			}
 
 			for (i in character)
 				i.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
@@ -3862,7 +3877,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.list.add(songMusic);
 			FlxG.sound.list.add(vocals);
 		} else
-			Conductor.songPosition = 0;
+			Conductor.songPosition = -Init.trueSettings.get("Offset");
 			
 
 		switch (SONG.song.toLowerCase())
@@ -4378,7 +4393,7 @@ class PlayState extends MusicBeatState
 	public function startCountdown():Void
 	{
 		inCutscene = false;
-		Conductor.songPosition = -(Conductor.crochet * 5);
+		Conductor.songPosition = -(Conductor.crochet * 5) + Init.trueSettings.get("Offset");
 		swagCounter = 0;
 
 		camHUD.visible = true;

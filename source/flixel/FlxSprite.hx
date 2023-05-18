@@ -309,7 +309,6 @@ class FlxSprite extends FlxObject
 
 		animation = FlxDestroyUtil.destroy(animation);
 
-		trace("destroyed");
 		offset = FlxDestroyUtil.put(offset);
 		origin = FlxDestroyUtil.put(origin);
 		scale = FlxDestroyUtil.put(scale);

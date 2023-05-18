@@ -310,10 +310,14 @@ class Init extends FlxState
 		],
 
 		'Offset' => [
-			Custom, 
+			NumberSelector, 
 			0, 
-			"offset"
+			'How much to offset the song by in gameplay.', 
+			1, 
+			-1000, 
+			1000
 		],
+		
 		'Filter' => [
 			StringSelector,
 			'none',
@@ -504,16 +508,17 @@ class Init extends FlxState
 	public static var trueSettings:Map<String, Dynamic> = [];
 	public static var settingsDescriptions:Map<String, String> = [];
 
+	public static var defaultKeys:Map<String, Dynamic> = [];
 	public static var gameControls:Map<String, Dynamic> = [
 		'UP' => [[FlxKey.UP, W], 3],
 		'DOWN' => [[FlxKey.DOWN, S], 1],
-		'SPACE' => [[FlxKey.SPACE, null], 2],
+		'SPACE' => [[FlxKey.SPACE, NONE], 2],
 		'LEFT' => [[FlxKey.LEFT, A], 0],
 		'RIGHT' => [[FlxKey.RIGHT, D], 4],
 		'ACCEPT' => [[FlxKey.SPACE, Z, FlxKey.ENTER], 5],
 		'BACK' => [[FlxKey.BACKSPACE, X, FlxKey.ESCAPE], 6],
 		'PAUSE' => [[FlxKey.ENTER, P], 7],
-		'RESET' => [[R, null], 14],
+		'RESET' => [[R, NONE], 14],
 		'UI_UP' => [[FlxKey.UP, W], 9],
 		'UI_DOWN' => [[FlxKey.DOWN, S], 10],
 		'UI_LEFT' => [[FlxKey.LEFT, A], 11],
@@ -576,7 +581,15 @@ class Init extends FlxState
 		}
 		*/
 
+		// ^^ is this the leak detector lol
+
+
+		for (i => v in gameControls){
+			defaultKeys.set(i, v.copy());
+		}
+
 		FlxG.save.bind('lullabyv2', 'hypno');
+		//FlxG.save.bind('lullabyfr', 'hypno');
 		Highscore.load();
 
 		loadSettings();
