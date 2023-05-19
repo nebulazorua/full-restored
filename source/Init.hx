@@ -503,6 +503,12 @@ class Init extends FlxState
 			100
 		],
 
+		"Fully Accurate Restore" => [
+			Checkmark,
+			false,
+			"Disables any changes that wouldn't've been in the original Lullaby V2.\nThis does NOT include custom Hell Mode mechanics."
+		]
+
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];

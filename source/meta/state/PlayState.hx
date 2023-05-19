@@ -2036,7 +2036,7 @@ class PlayState extends MusicBeatState
 			
 			// pause the game if the game is allowed to pause and enter is pressed
 			if(!inCutscene){
-				if (FlxG.keys.justPressed.ENTER && startedCountdown && (accuracySound == null || (accuracySound != null && !accuracySound.playing)) && canPause && !deadstone)
+				if ((SONG.song.toLowerCase() != 'sansno' && FlxG.keys.justPressed.ENTER) && startedCountdown && (accuracySound == null || (accuracySound != null && !accuracySound.playing)) && canPause && !deadstone)
 				{
 					// update drawing stuffs
 					paused = true;
@@ -2051,23 +2051,25 @@ class PlayState extends MusicBeatState
 				}
 
 				// make sure you're not cheating lol
-				if (!isStoryMode || Main.hypnoDebug) {
-					if ((FlxG.keys.justPressed.SEVEN) && (!startingSong))
-					{
-						resetMusic();
-						Main.switchState(this, new OriginalChartingState());
-					}
+				if(SONG.song.toLowerCase() !='sansno'){
+					if (!isStoryMode || Main.hypnoDebug) {
+						if ((FlxG.keys.justPressed.SEVEN) && (!startingSong))
+						{
+							resetMusic();
+							Main.switchState(this, new OriginalChartingState());
+						}
 
-					if (Main.hypnoDebug && (FlxG.keys.justPressed.EIGHT) && (!startingSong))
-					{
-						resetMusic();
-						Main.switchState(this, new CharacterOffsetState());
-					}
+						if (Main.hypnoDebug && (FlxG.keys.justPressed.EIGHT) && (!startingSong))
+						{
+							resetMusic();
+							Main.switchState(this, new CharacterOffsetState());
+						}
 
-					if ((FlxG.keys.justPressed.SIX))
-						strumLines.members[playerLane].autoplay = !strumLines.members[playerLane].autoplay;
+						if ((FlxG.keys.justPressed.SIX))
+							strumLines.members[playerLane].autoplay = !strumLines.members[playerLane].autoplay;
+					}
 				}
-			}
+				}
 
 			if (dadOpponent != null)
 			{
@@ -2282,14 +2284,15 @@ class PlayState extends MusicBeatState
 								char = gfStand;
 								characterZoom = 0;
 							}
-							else 
+							else if(char!=null) 
 								characterZoom = FlxMath.lerp(characterZoom, char.characterData.zoomOffset, elapsed * 2);
+							if (char != null) {
+								var getCenterX = char.getMidpoint().x - 100;
+								var getCenterY = char.getMidpoint().y - 100;
 
-							var getCenterX = char.getMidpoint().x - 100;
-							var getCenterY = char.getMidpoint().y - 100;
-
-							camFollow.setPosition(getCenterX + camDisplaceX - char.characterData.camOffsetX,
-								getCenterY + camDisplaceY + char.characterData.camOffsetY);							
+								camFollow.setPosition(getCenterX + camDisplaceX - char.characterData.camOffsetX,
+									getCenterY + camDisplaceY + char.characterData.camOffsetY);		
+							}					
 						}
 					}
 					else
@@ -3785,6 +3788,10 @@ class PlayState extends MusicBeatState
 
 	function doMoneyBag():Void
 		{
+			if(songLoops){
+				generateSong(SONG.song);
+				return;
+			}
 			inCutscene = true;
 			canDie = false;
 
@@ -3878,6 +3885,8 @@ class PlayState extends MusicBeatState
 			FlxG.sound.list.add(vocals);
 		} else
 			Conductor.songPosition = -Init.trueSettings.get("Offset");
+
+		songLoops = SONG.song.toLowerCase() == 'sansno';
 			
 
 		switch (SONG.song.toLowerCase())

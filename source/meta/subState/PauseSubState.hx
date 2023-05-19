@@ -20,12 +20,13 @@ import meta.state.*;
 import meta.state.menus.*;
 import sys.thread.Mutex;
 import sys.thread.Thread;
+import meta.state.menus.OptionsMenuState;
 
 class PauseSubState extends MusicBeatSubState
 {
 	var grpText:Array<FlxText> = [];
 
-	var menuItems:Array<String> = ['RESUME', 'RESTART', 'OPTIONS', 'EXIT'];
+	var menuItems:Array<String> = ['RESUME', 'RESTART', 'EXIT'];
 	var curSelected:Int = 0;
 
 	var pauseMusic:FlxSound;
@@ -204,6 +205,8 @@ class PauseSubState extends MusicBeatSubState
 						case 'resume':
 							lerpVal = ogLerpVal;
 							closing = true;
+						case 'options':
+							openSubState(new OptionsMenuState());
 						case 'restart':
 							Main.switchState(this, new PlayState());
 						case 'exit':

@@ -192,6 +192,9 @@ class OptionsMenuState extends MusicBeatSubState
 				["Framerate Cap", confirmOption, generateExtra, updateOption],
 				["FPS Counter", confirmOption, generateExtra, updateOption],
 				["Memory Counter", confirmOption, generateExtra, updateOption],
+
+				["Full Restored"],
+				["Fully Accurate Restore", confirmOption, generateExtra, updateOption]
 			],
 			"Appearance" => [
 				["Judgements"],
@@ -615,10 +618,14 @@ class OptionsMenuState extends MusicBeatSubState
 
 			if (curSelected < 0)
 				curSelected = currentScreen.length - 1;*/
+			var last = curSelected;
 			if (pressDown)
 				changeSelection(1);
 			if (pressUp)
 				changeSelection(-1);
+
+			if(curSelected != last)
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 			
 			if (confirm){

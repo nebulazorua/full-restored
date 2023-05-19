@@ -77,7 +77,8 @@ function onCreate() {
 }
 
 function onUpdate(elapsed) {
-	if(girlTits.visible && !clickedGirl){
+	// old missingno unlock
+/* 	if(girlTits.visible && !clickedGirl){
 		if (FlxG.mouse.overlaps(girlTitsHitbox))
 		{
 			if (FlxG.mouse.justPressed)
@@ -134,7 +135,7 @@ function onUpdate(elapsed) {
 			missingCart.velocity.x = 0;
 			missingCart.acceleration.x = 0;
 		}
-	}
+	} */
 }
 
 
@@ -159,8 +160,8 @@ function onCreatePost() {
 
 	legacyCutscene.cameras = [PlayState.dialogueHUD];
 
-	FlxG.mouse.visible = true;
-	FlxG.mouse.useSystemCursor = true;
+	//FlxG.mouse.visible = true;
+	//FlxG.mouse.useSystemCursor = true;
 }
 
 function onEvent(event) {
@@ -191,8 +192,8 @@ function onEvent(event) {
 
 			PlayState.boyfriend.visible = false;
 			PlayState.dadOpponent.visible = false;
-			FlxG.mouse.visible = false;
 			girlTits.visible = false;
+			FlxG.mouse.visible = false;
 			legacyCutscene.visible = true;
 			legacyCutscene.animation.play('speech');
 			legacyCutscene.animation.finishCallback = function(name:String) 
@@ -211,7 +212,7 @@ function onEvent(event) {
 						PlayState.camHUD.visible = true;
 						PlayState.boyfriend.visible = true;
 						PlayState.dadOpponent.visible = true;
-						girlTits.visible = false;
+						girlTits.visible = true;
 
 						PlayState.strumHUD[1].alpha = 1.0;
 					});

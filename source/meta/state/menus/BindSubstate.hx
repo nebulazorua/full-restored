@@ -215,15 +215,18 @@ class BindSubstate extends MusicBeatSubState{
 		super.update(elapsed);
 		overlayCamera.visible = rebinding;
 		if(!rebinding){
-			if(FlxG.keys.justPressed.LEFT)
+			var lastBind = bindID;
+			if(controls.UI_LEFT_P)
 				bindID = bindID == 1 ? 0 : 1;
-			if (FlxG.keys.justPressed.RIGHT)
+			if (controls.UI_RIGHT_P)
 				bindID = bindID == 0 ? 1 : 0;
 
-			if (FlxG.keys.justPressed.DOWN)
+			var last = curSelected;
+			if (controls.UI_DOWN_P)
 				curSelected++;
-			if (FlxG.keys.justPressed.UP)
+			if (controls.UI_UP_P)
 				curSelected--;
+			
 
 			if(controls.BACK){
 				close();
@@ -234,10 +237,13 @@ class BindSubstate extends MusicBeatSubState{
 			if (curSelected > bindTexts.length-1)curSelected=0;
 			if (curSelected < 0)
 				curSelected = bindTexts.length - 1;
+			
+			if (last != curSelected || lastBind != bindID)
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 			selector.x = bindTexts[curSelected][bindID].x - 10;
 			selector.y = bindTexts[curSelected][bindID].y + 4;
-			if (FlxG.keys.justPressed.ENTER)enterRebind();
+			if (controls.ACCEPT)enterRebind();
 		}	
 		else
 		{

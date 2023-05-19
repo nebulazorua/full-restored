@@ -1,5 +1,6 @@
 package meta.state.menus;
 
+import overworld.OverworldStage;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -64,6 +65,23 @@ class MainMenuState extends MusicBeatState
 		'options'
 	];
 
+	// missingno
+	var cinnabarPattern:Array<String> = [
+		'down',
+		'down',
+		'down',
+		'down',
+		'up',
+		'up',
+		'up',
+		'up'
+	];
+	var blackScreen:FlxSprite;
+	var startedCinnabar:Bool = false;
+	var didCinnabar:Bool = false;
+	var cinnabarSuccess:Int = 0;
+	var cinnabarStep:Int = 0;
+
 	public var lockMap:Map<String, LockSprite> = [];
 
 	public var textGroup:FlxTypedGroup<Alphabet>;
@@ -71,6 +89,8 @@ class MainMenuState extends MusicBeatState
 
 	override public function create() {
 		super.create();
+		didCinnabar = FlxG.save.data.cartridgesOwned.contains("GlitchWeek");
+		
 		persistentUpdate=true;
 		persistentDraw=true;
 
@@ -129,6 +149,11 @@ class MainMenuState extends MusicBeatState
 		}
 		add(textGroup);
 		add(lockGroup);
+
+		blackScreen = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
+		blackScreen.setGraphicSize(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2));
+		blackScreen.visible = false;
+		add(blackScreen);
 	}
 
 	public var curSelection:Int = 0;
@@ -194,6 +219,76 @@ class MainMenuState extends MusicBeatState
 				lastSelection = curSelection;
 			}
 
+			if(!didCinnabar){
+				if (curSelection == 0 && !startedCinnabar)startedCinnabar = true;
+
+				if(startedCinnabar){
+					var currentStep = cinnabarPattern[cinnabarStep];
+					if (cinnabarStep >= cinnabarPattern.length){
+						cinnabarStep = 0;
+						cinnabarSuccess++;
+					}
+					if (cinnabarSuccess>=3){
+						canSelect = false;
+						FlxG.sound.play(Paths.sound("CORRECT"));
+						blackScreen.visible = true;
+						didCinnabar = true;
+						new FlxTimer().start(1, function(tmr:FlxTimer){
+							FlxG.sound.music.fadeOut(0.25, 0, function(tween:FlxTween)
+							{
+								FlxG.sound.play(Paths.sound('GameboyStartup'), 0.25, false, null, true, function()
+								{
+									PlayState.storyDifficulty = 2;
+									var difficulty:String = '-' + CoolUtil.difficultyFromNumber(PlayState.storyDifficulty).toLowerCase();
+									difficulty = difficulty.replace('-normal', '');
+
+									// FlxTransitionableState.skipNextTransIn = false;
+									// FlxTransitionableState.skipNextTransOut = false;
+
+									if (!FlxG.save.data.cartridgesOwned.contains("GlitchWeek"))
+									{
+										FlxG.save.data.cartridgesOwned.push("GlitchWeek");
+										FlxG.save.flush();
+									}
+									var old:Bool = false;
+									PlayState.isStoryMode = true;
+									PlayState.storyPlaylist = Main.gameWeeks[2].copy();
+									PlayState.storyWeek = 2;
+									PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0], old);
+									Main.switchState(this, new OverworldStage());
+								});
+								//
+								new FlxTimer().start(0.25, function(timer:FlxTimer)
+								{
+									FlxG.camera.fade(FlxColor.WHITE, 0.25, false);
+								});
+							});
+						});
+						return;
+					}
+					switch (currentStep){
+						case 'up':
+							if(up)
+								cinnabarStep++;
+							else if(down){
+								cinnabarStep = 0;
+								startedCinnabar = false;
+								cinnabarSuccess = 0;
+							}
+						case 'down':
+							if (down)
+								cinnabarStep++;
+							else if (up)
+							{
+								cinnabarStep = 0;
+								startedCinnabar = false;
+								cinnabarSuccess = 0;
+							}
+					}
+				}
+			}
+			
+
 			if (accept) {
 				if ((FlxG.save.data.mainMenuOptionsUnlocked.contains(optionList[curSelection])))
 					{
@@ -230,7 +325,7 @@ class MainMenuState extends MusicBeatState
 		if (Main.hypnoDebug && FlxG.keys.justPressed.SEVEN) //DEBUG UNLOCKS ALL PROGRESSION
 			{
 				FlxG.save.data.mainMenuOptionsUnlocked = ['story', 'freeplay', 'credits', 'pokedex', 'options'];
-			FlxG.save.data.cartridgesOwned = ['HypnoWeek', 'LostSilverWeek', 'GlitchWeek'];
+				FlxG.save.data.cartridgesOwned = ['HypnoWeek', 'LostSilverWeek', 'GlitchWeek'];
 				FlxG.save.data.unlockedSongs = ['safety-lullaby', 'left-unchecked', 'lost-cause', 'frostbite', 'insomnia', 'monochrome', 'missingno', 'brimstone', 'amusia', 'dissension', 'purin', 'death-toll', 'isotope', 'bygone-purpose', 'pasta-night', 'shinto', 'shitno', 'missingcraft','through-the-fire-and-flames', 'sansno', 'rednecks'];
 			}
 

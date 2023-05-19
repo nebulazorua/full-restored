@@ -6,10 +6,10 @@ function returnDelay()
 
 function eventFunction(params) 
 {
-	/*if(PlayState.gameplayMode!='HELL_MODE'){
+	if(PlayState.gameplayMode!='HELL_MODE'){
 		dispose();
 		return;
-	}*/
+	}
 	var string:String = '';
 	if (params[1] != null || params[1] != '')
 		string = params[1];
