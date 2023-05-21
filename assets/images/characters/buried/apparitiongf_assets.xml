@@ -68,6 +68,4 @@
 	<SubTexture name="BAGF_Up0006" x="156" y="420" width="150" height="136"/>
 	<SubTexture name="BAGF_Up0007" x="156" y="420" width="150" height="136"/>
 	<SubTexture name="BAGF_Up0008" x="156" y="420" width="150" height="136"/>
-	<SubTexture name="the_lols0000" x="309" y="420" width="153" height="117"/>
-	<SubTexture name="the_lols0001" x="465" y="420" width="153" height="117"/>
 </TextureAtlas>
