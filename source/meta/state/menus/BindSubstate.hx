@@ -181,6 +181,7 @@ class BindSubstate extends MusicBeatSubState{
 		add(popupText);
 		add(unbindText);
 
+		acceptDB = controls.ACCEPT;
     }
 
 	function enterRebind(){
@@ -197,6 +198,7 @@ class BindSubstate extends MusicBeatSubState{
 		unbindText.visible = forcedBind.contains(internal);
 	}
 	
+	var acceptDB:Bool = false;
     override function update(elapsed:Float){
 		if (Math.abs(centralTextbox.boxWidth - expanseHorizontal) < 0.05)
 			centralTextbox.boxWidth = expanseHorizontal;
@@ -212,8 +214,9 @@ class BindSubstate extends MusicBeatSubState{
 		scrollableCamera.height = Std.int(centralTextbox.height - (centralTextbox.boxInterval * centralTextbox.scale.y));
 		scrollableCamera.x = centralTextbox.x - (scrollableCamera.width / 2);
 		scrollableCamera.y = centralTextbox.y - (scrollableCamera.height / 2);
-		super.update(elapsed);
 		overlayCamera.visible = rebinding;
+
+		super.update(elapsed);
 		if(!rebinding){
 			var lastBind = bindID;
 			if(controls.UI_LEFT_P)
@@ -243,7 +246,8 @@ class BindSubstate extends MusicBeatSubState{
 
 			selector.x = bindTexts[curSelected][bindID].x - 10;
 			selector.y = bindTexts[curSelected][bindID].y + 4;
-			if (controls.ACCEPT)enterRebind();
+			if (controls.ACCEPT && !acceptDB)enterRebind();
+			
 		}	
 		else
 		{
@@ -289,6 +293,7 @@ class BindSubstate extends MusicBeatSubState{
 
 			}
 		}
+		acceptDB = controls.ACCEPT;
 	}
 
 	override public function close()

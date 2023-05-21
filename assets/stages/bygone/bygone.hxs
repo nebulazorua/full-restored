@@ -133,7 +133,7 @@ function onCreate() {
 }
 
 function onCreatePost() {
-	if(PlayState.gameplayMode == 'HELL_MODE'){
+	if(PlayState.gameplayMode == 'HELL_MODE' || PlayState.gameplayMode == 'FUCK_YOU'){
 		PlayState.instance.tranceActive = true;
 		PlayState.instance.tranceNotActiveYet = true;
 	}
@@ -155,10 +155,10 @@ function onCreatePost() {
 function onEvent(eventName) {
 	switch (eventName) {
 		case 'HUD Fade Mid Song':
-			if(PlayState.gameplayMode == 'HELL_MODE')
+			if(PlayState.gameplayMode == 'HELL_MODE'|| PlayState.gameplayMode == 'FUCK_YOU')
 				PlayState.instance.tranceNotActiveYet = !PlayState.instance.tranceNotActiveYet;
 		case 'HUD Fade':
-			if(PlayState.gameplayMode == 'HELL_MODE'){
+			if(PlayState.gameplayMode == 'HELL_MODE'|| PlayState.gameplayMode == 'FUCK_YOU'){
 				new FlxTimer().start(1, function(tmr:FlxTimer){
 					PlayState.instance.tranceNotActiveYet = false;
 				});

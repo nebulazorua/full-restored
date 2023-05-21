@@ -59,7 +59,7 @@ function onCreatePost() {
     gameboyFilter = new FlxGraphicsShader("", Paths.shader('brimstone/brimstoneCamEffects'));
     var filterFilter:ShaderFilter = new ShaderFilter(gameboyFilter);
     
-    if(PlayState.gameplayMode == 'HELL_MODE'){
+    if(PlayState.gameplayMode == 'HELL_MODE' || PlayState.gameplayMode == 'FUCK_YOU'){
         PlayState.instance.tranceActive = true;
         PlayState.instance.tranceNotActiveYet = true;	
         PlayState.instance.psyshockCooldown = 9999999; // so it never gets hit
@@ -225,7 +225,7 @@ function onEvent(eventName) {
             apparitionX = whiteHand.x - 15;
             apparitionY = handY - 48;
             whiteHand.playAnim('transform');
-            if(PlayState.gameplayMode == 'HELL_MODE'){
+            if(PlayState.gameplayMode == 'HELL_MODE' || PlayState.gameplayMode == 'FUCK_YOU'){
                 var tw = FlxTween.tween(PlayState.instance.pendulum, {alpha: 1}, 3);
                 new FlxTimer().start(4, function(tmr:FlxTimer)
                 {		
@@ -336,7 +336,7 @@ function onEvent(eventName) {
                     PlayState.boyfriend.playAnim('idle');
             };
         case 'Missingno Glitch':
-            if(PlayState.gameplayMode == 'HELL_MODE'){
+            if(PlayState.gameplayMode == 'HELL_MODE' || PlayState.gameplayMode == 'FUCK_YOU'){
                 glitch.data.prob.value[0] += 0.06;
                 if(glitch.data.prob.value[0] >= 0.3){
                     changeGlitches = true;
@@ -419,7 +419,7 @@ function mukSplatter() {
 
     //
     var mukSplatSprite:FlxSprite = new FlxSprite();
-    if(PlayState.gameplayMode == 'HELL_MODE')
+    if(PlayState.gameplayMode == 'HELL_MODE'|| PlayState.gameplayMode == 'FUCK_YOU')
         mukSplatSprite.frames = Paths.getSparrowAtlas('characters/buried/muksludge2');
     else
         mukSplatSprite.frames = Paths.getSparrowAtlas('characters/buried/muksludge');
@@ -448,7 +448,7 @@ function mukSplatter() {
 
 var daBeaty:Int = 1;
 function onBeat(beat){
-    if(PlayState.gameplayMode == 'HELL_MODE' && changeGlitches){
+    if((PlayState.gameplayMode == 'HELL_MODE' || PlayState.gameplayMode == 'FUCK_YOU') && changeGlitches){
         daBeaty++;
         if(daBeaty%4==0)
             glitch.data.time.value[0] += Conductor.crochet / 1000;
@@ -457,7 +457,7 @@ function onBeat(beat){
 }
 function onStep(beat)
     {
-        if(PlayState.gameplayMode == 'HELL_MODE'){
+        if((PlayState.gameplayMode == 'HELL_MODE'|| PlayState.gameplayMode == 'FUCK_YOU')){
             if(fadingGlitch){
                 glitch.data.prob.value[0] -= 0.025;
                 if(glitch.data.prob.value[0]<=0){
@@ -492,6 +492,8 @@ function onStep(beat)
                 });
                 if(PlayState.gameplayMode=='HELL_MODE')
                     pukeCooldown = 40;
+                else if(PlayState.gameplayMode=='FUCK_YOU')
+                    pukeCooldown = 20;
                 else
                     pukeCooldown = 80;
             }

@@ -7,7 +7,7 @@ function returnDelay()
 
 function eventFunction(params) {
     var length:Float = Std.parseFloat(params[1]);
-    if(PlayState.gameplayMode == 'HELL_MODE')
+    if(PlayState.gameplayMode == 'HELL_MODE' || PlayState.gameplayMode == 'FUCK_YOU')
         length *= 1.5; // appears for 3x as long
   
     var portrait:String = 'Gold';

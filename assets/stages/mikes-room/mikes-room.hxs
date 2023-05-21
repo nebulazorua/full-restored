@@ -270,11 +270,27 @@ function onUpdate(elapsed)
 			{
 				if (PlayState.gameplayMode == 'HELL_MODE')
 					{
-						if (PlayState.health >= 0.050) PlayState.health -= 0.0035 * ((elapsed) * 120);
+						if (PlayState.health > 0.050) {
+							PlayState.health -= 0.0035 * ((elapsed) * 120);
+							if(PlayState.health < 0.050)
+								PlayState.health = 0.050;
+						}
+					}
+				else if (PlayState.gameplayMode == 'FUCK_YOU')
+					{
+						if (PlayState.health > 0.001) {
+							PlayState.health -= 0.0075 * ((elapsed) * 120);
+							if(PlayState.health < 0.001)
+								PlayState.health = 0.001;
+						}
 					}
 				else
 					{
-						if (PlayState.health >= 0.395) PlayState.health -= 0.0020 * ((elapsed) * 120);
+						if (PlayState.health > 0.395) {
+							PlayState.health -= 0.0020 * ((elapsed) * 120);
+							if(PlayState.health < 0.395)
+								PlayState.health = 0.395;
+						}
 					}
 			}
 		

@@ -173,6 +173,8 @@ function onBeat(beat) {
 					PlayState.instance.coldness += PlayState.instance.coldnessRate * (Init.trueSettings.get("Freezing Rate Percent")/100);
 				else if(PlayState.gameplayMode == 'HELL_MODE')
 					PlayState.instance.coldness += PlayState.instance.coldnessRate * 1.5;
+				else if(PlayState.gameplayMode == 'FUCK_YOU')
+					PlayState.instance.coldness += PlayState.instance.coldnessRate * 1.35; // a little bit less, to adjust for the 2 less typhlosions. should still be harder than hell mode tho	
 				else
 					PlayState.instance.coldness += PlayState.instance.coldnessRate;
 			}
@@ -192,16 +194,22 @@ function onBeat(beat) {
 			
 
 			setPainStuff();
-			doPainSplit(0.5);
+			if(PlayState.gameplayMode == 'FUCK_YOU')
+				doPainSplit(0.75); // does this make sense? not really, but who cares. crueler pain splits on fuck you!!!
+			else
+				doPainSplit(0.5);
 		}
-		trace(painSplitChance, painSplitCooldown);
 
 	}
 
 function setPainStuff(){
-	if(PlayState.gameplayMode == 'HELL_MODE'){
-		painSplitChance = 100; // on hell mode he will always pain split when given a chance
-		painSplitCooldown = 80; // however longer cooldown, this is just to make runs a bit more consistent
+	if(PlayState.gameplayMode == 'HELL_MODE' || PlayState.gameplayMode == 'FUCK_YOU'){
+		painSplitChance = 100; // on hell mode and above he will always pain split when given a chance
+		// however longer cooldown, this is just to make runs a bit more consistent
+		if(PlayState.gameplayMode == 'FUCK_YOU')
+			painSplitCooldown = 100; 
+		else if(PlayState.gameplayMode == 'HELL_MODE')	
+			painSplitCooldown = 80; 
 	}else{
 		painSplitCooldown = 30;
 		painSplitChance = 0.5;
@@ -375,7 +383,7 @@ function doPainSplit(amount:Float)
 		trace('yum');
 		new FlxTimer().start(0.46, function(tmr:FlxTimer)
 			{
-				PlayState.health -= 0.2 + (PlayState.health / 2.856); //feel free to change this
+				PlayState.health = PlayState.health * (1-amount);
 				PlayState.boyfriend.playAnim('singDOWNmiss');
 				FlxG.sound.play(Paths.sound('Frostbite_bite'));
 			});

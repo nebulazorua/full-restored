@@ -6,7 +6,7 @@ function returnDelay()
 
 function eventFunction(params) 
 {
-	if(PlayState.gameplayMode!='HELL_MODE'){
+	if(PlayState.gameplayMode!='HELL_MODE' && PlayState.gameplayMode!='FUCK_YOU'){
 		dispose();
 		return;
 	}

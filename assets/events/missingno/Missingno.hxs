@@ -15,7 +15,9 @@ function eventFunction(params) {
         }
 
         var boyfriendStrums:Strumline = PlayState.instance.boyfriendStrums;
-        if(PlayState.gameplayMode == 'HELL_MODE'){
+
+        // TODO: unique fuck you 
+        if(PlayState.gameplayMode == 'HELL_MODE' || PlayState.gameplayMode == 'FUCK_YOU'){
             // maybe move the window? probably not idk!!
             boyfriendStrums.downscroll = false;
 

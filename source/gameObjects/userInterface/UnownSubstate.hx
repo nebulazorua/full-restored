@@ -105,16 +105,14 @@ class UnownSubstate extends MusicBeatSubState
 		if (word != '')
 			selectedWord = word;
 
-		if (selectedWord.toLowerCase()=='no more' && PlayState.gameplayMode == HELL_MODE)
-			selectedWord = "NO FUCKING WAY";
-		
-		//i forgor if there's a function to do this
+		if (selectedWord.toLowerCase()=='no more')
+			if (PlayState.gameplayMode == HELL_MODE)
+				selectedWord = "NO FUCKING WAY";
+			else if (PlayState.gameplayMode == FUCK_YOU)
+				selectedWord = "MAN REALLY SAID NO MORE THEN KEPT GOING?";
+
 		selectedWord = selectedWord.toUpperCase();
-		var splitWord = selectedWord.split(' ');
-		
-		for (i in splitWord)
-			realWord += i;
-		trace(realWord);
+		realWord = selectedWord.replace(" ", "");
 		
 		lines = new FlxTypedGroup<FlxSprite>();
 		add(lines);

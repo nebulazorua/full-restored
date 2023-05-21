@@ -8,6 +8,8 @@ function eventFunction(params) {
 	var newMin:Float = Std.parseFloat(params[0]);
 	if(PlayState.gameplayMode == 'HELL_MODE')
 		newMin /= 0.75;
+	else if(PlayState.gameplayMode == 'FUCK_YOU')
+		newMin /= 0.5;
 
 	PlayState.instance.minHealth = newMin;
 	var celebi:FlxSprite = new FlxSprite();
@@ -30,6 +32,8 @@ function eventFunction(params) {
 		var noteCountCelebi:Int = 3;
 		if (PlayState.gameplayMode == 'HELL_MODE')
 			noteCountCelebi = 6;
+		else if (PlayState.gameplayMode == 'FUCK_YOU')
+			noteCountCelebi = 12;	
 		trace('celeber 2');
 		for (i in 0...noteCountCelebi)
 		{

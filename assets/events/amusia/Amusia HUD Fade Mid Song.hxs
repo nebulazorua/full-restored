@@ -5,7 +5,7 @@ function returnDescription()
 // kade and I were too lazy to like, fix hud fade so he made a new one and I have yet to change it as of 7/13/2022
 
 function eventFunction(params) {
-	if(PlayState.gameplayMode == 'HELL_MODE'){
+	if(PlayState.gameplayMode == 'HELL_MODE' || PlayState.gameplayMode == 'FUCK_YOU'){
 		dispose();
 		return;
 	}

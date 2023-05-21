@@ -93,6 +93,7 @@ class PlayState extends MusicBeatState
 	public static var SONG:SwagSong;
 	@:isVar
 	public var songSpeed(get, set):Float = 0;
+	public var songSpeedMult:Float = 1;
 	public var songSpeedTween:FlxTween;
 	public static var laneSpeed:Array<Float> = [0, 0, 0, 0];
 	public static var isStoryMode:Bool = false;
@@ -1057,6 +1058,8 @@ class PlayState extends MusicBeatState
 			accuracyThreshold = 90;
 			if (gameplayMode == HELL_MODE)
 				accuracyThreshold = 98;
+			else if (gameplayMode == FUCK_YOU)
+				accuracyThreshold = 99;
 			else if(gameplayMode==CUSTOM)
 				accuracyThreshold = Init.trueSettings.get("Accuracy Cap");
 
@@ -1081,7 +1084,7 @@ class PlayState extends MusicBeatState
 			boyfriendStrums.xPos = placement - (!Init.trueSettings.get('Centered Notefield') ? midPoint : 0);
 			boyfriendStrums.regenerateStrums();
 
-			if(gameplayMode==HELL_MODE){
+			if (gameplayMode == HELL_MODE || gameplayMode == FUCK_YOU){
 				earRinging = new FlxSound().loadEmbedded(Paths.sound('ear ringing'), true, false);
 				FlxG.sound.list.add(earRinging);
 			}
@@ -1093,9 +1096,9 @@ class PlayState extends MusicBeatState
 				case CUSTOM:
 					maxTyphlosion = Init.trueSettings.get("Typhlosion Uses");
 				case FUCK_YOU:
-					maxTyphlosion = Math.floor(maxTyphlosion * 0.4);
+					maxTyphlosion = 6;
 				case HELL_MODE:
-					maxTyphlosion = Math.floor(maxTyphlosion * 0.8);
+					maxTyphlosion = 8;
 				default:
 					// leave it as 10
 			}
@@ -1368,7 +1371,7 @@ class PlayState extends MusicBeatState
 			unownState.win = wonUnown;
 			unownState.lose = die;
 			unownState.cameras = [dialogueHUD];
-			if(gameplayMode == HELL_MODE)
+			if (gameplayMode == HELL_MODE || gameplayMode == FUCK_YOU)
 				FlxG.autoPause=false;
 
 			// FlxG.autoPause = false;
@@ -1379,7 +1382,7 @@ class PlayState extends MusicBeatState
 	public function wonUnown():Void {
 		canPause = true;
 		unowning = false;
-		if (gameplayMode == HELL_MODE)
+		if (gameplayMode == HELL_MODE || gameplayMode == FUCK_YOU)
 			FlxG.autoPause = Init.trueSettings.get("Unfocus Pause");
 	}
 
@@ -1441,6 +1444,8 @@ class PlayState extends MusicBeatState
 
 		if (real)
 			switch(gameplayMode){
+				case FUCK_YOU:
+					trance += 0.75;
 				case HELL_MODE:
 					trance += 0.5;
 				case CUSTOM:
@@ -1802,16 +1807,10 @@ class PlayState extends MusicBeatState
 	var hpDrain:Float = 0;
 	var drainTimer:Float = 0;
 
-	var fuckYouShubs:Bool = false; // used to override healthbar behaviour
+	var overrideBadHPBar:Bool = false; // used to override healthbar behaviour
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		var i:Int = allUIs.length - 1;
-		while(i > 0){
-			i--;
-			if (allUIs[i].flashSprite == null)
-				allUIs.splice(i, 1);
-		}
 
 		for (i in strumLines.members[playerLane].character)
 		{
@@ -1918,10 +1917,13 @@ class PlayState extends MusicBeatState
 		if (health > 2)
 			health = 2;
 
-		if (!buriedNotes && SONG.song.toLowerCase() != 'pasta-night' && !fuckYouShubs)
+		if (!buriedNotes && SONG.song.toLowerCase() != 'pasta-night' && !overrideBadHPBar)
 		{
 			// pain, this is like the 7th attempt
 			// shubs you fucking suck
+			// ^^ like 4 months later yeah i still hate this code LMAO WHY DID YOU WRITE IT LIKE THIS???
+			// I KNOW YOU'RE A GOOD PROGRAMMER AND I KNOW THIS CODE WAS YOU BECAUSE I CHECKED THE COMMITS AND IT WAS LIKE THIS IN THE INITIAL COMMIT
+
 			var healthBar = uiHUD.healthBar;
 			healthBar.percent = (health * 50);
 			if (barFlipped)
@@ -2086,7 +2088,7 @@ class PlayState extends MusicBeatState
 				vocals.volume = soundVolume;
 			songMusic.volume = soundVolume;
 
-			if (gameplayMode == HELL_MODE && SONG.song.toLowerCase() == 'death-toll')
+			if ((gameplayMode == HELL_MODE || gameplayMode == FUCK_YOU) && SONG.song.toLowerCase() == 'death-toll')
 			{
 				if (earBleed > 0)
 				{
@@ -2825,6 +2827,7 @@ class PlayState extends MusicBeatState
 					if (daNote.customScrollspeed)
 						roundedSpeed = FlxMath.roundDecimal(daNote.noteSpeed, 2);
 
+					roundedSpeed *= songSpeedMult;
 					var receptorPosY:Float = strumline.receptors.members[Math.floor(daNote.noteData)].y + Note.swagWidth / 6;
 					var psuedoY:Float = ((
 						// shubs be like ternary (this is just so downscroll also works as a default)
@@ -3101,11 +3104,9 @@ class PlayState extends MusicBeatState
 
 		var diminshReturns = gameplayMode != CUSTOM || customCurve.toLowerCase()!='Off';
 		var warmthMult = gameplayMode != CUSTOM ? 1 : Init.trueSettings.get("Typhlosion Warmth Percent") / 100;
-		// TODO: let custom set the curve type between normal and hell
-	
 
 		switch (curveType){
-			case HELL_MODE:
+			case HELL_MODE | FUCK_YOU:
 				var sc = 0.64; // the magic number...
 				// made from just fucking around on desmos til i found a curve i liked
 				// this takes you from 0.4 to 0, it starts off strong but quickly drops off
@@ -3186,7 +3187,7 @@ class PlayState extends MusicBeatState
 				trace('gengar note hit');
 				FlxG.sound.play(Paths.sound('GengarNoteSFX'));
 				if (flashingEnabled) dialogueHUD.flash(0x528E16FF, 0.5);
-				gengarNoteInvis += gameplayMode==HELL_MODE?0.3:0.15;
+				gengarNoteInvis += gameplayMode==FUCK_YOU?0.7:(gameplayMode==HELL_MODE?0.3:0.15);
 				if (gengarNoteInvis > 0.7) gengarNoteInvis = 0.7;		
 			}
 
@@ -3264,14 +3265,19 @@ class PlayState extends MusicBeatState
 		if (bronzongMechanic && direction == 4)
 		{
 			trace('BELL NOTE MISSED');
-			health -= (gameplayMode == HELL_MODE)?0.5:0.25;
-			if((gameplayMode == HELL_MODE)){
+			var take = 0.25;
+			if (gameplayMode == HELL_MODE)
+				take = 0.5;
+			else if (gameplayMode == FUCK_YOU)
+				take = 1;
+			health -= take;
+			if((gameplayMode == HELL_MODE || gameplayMode == FUCK_YOU)){
 				earRinging.play();
-				earBleed = 15; // 5 seconds of drain after hitting it
+				earBleed = (gameplayMode == FUCK_YOU)?20:15;
 				if(hpDrain==0)
 					hpDrain++;
 				else
-					hpDrain+=0.5; // add to the drain
+					hpDrain+=0.5;
 			}
 
 			blurAmount = 1.0;
@@ -3294,6 +3300,14 @@ class PlayState extends MusicBeatState
 			else
 				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 		}
+
+		if(tranceActive && !tranceNotActiveYet && gameplayMode==FUCK_YOU)
+			trance += 0.15; // TRANCE PUNISHMENT IF YOU MISS
+			// SO YOU CANT JUST MISS SOME NOTES AND FOCUS ON THE PENDULUM
+		
+		if(useFrostbiteMechanic && coldness < 0.85 && gameplayMode == FUCK_YOU)
+			coldness += 0.035; // COLD PUNISHMENT IF YOU MISS
+		
 		
 		if (includeAnimation)
 		{
@@ -3740,7 +3754,16 @@ class PlayState extends MusicBeatState
 		// health += 0.012;
 		var healthBase:Float = 0.06;
 		var val = (healthBase * (ratingMultiplier / 100));
-		if(val<0 && gameplayMode == HELL_MODE)val*=3;// more miss damage
+		if(val<0){
+			switch (gameplayMode){
+				case HELL_MODE:
+					val *= 2;
+				case FUCK_YOU:
+					val *= 4;
+				default:
+					val *= 1;
+			}
+		}
 		health += val;
 	}
 
@@ -3892,7 +3915,7 @@ class PlayState extends MusicBeatState
 		switch (SONG.song.toLowerCase())
 		{
 			case 'death-toll':
-				if (gameplayMode == HELL_MODE)
+				if (gameplayMode == HELL_MODE || gameplayMode == FUCK_YOU)
 				{
 					AL.filteri(sndFilter, AL.FILTER_TYPE, AL.FILTER_LOWPASS);
 					AL.filterf(sndFilter, AL.LOWPASS_GAIN, 1);

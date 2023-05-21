@@ -190,7 +190,7 @@ function onCreatePost() {
     add(staticOverlay);
     trace(staticSprite, staticOverlay);
 
-    if(PlayState.gameplayMode == 'HELL_MODE'){
+    if(PlayState.gameplayMode == 'HELL_MODE'|| PlayState.gameplayMode == 'FUCK_YOU'){
         PlayState.instance.boyfriendStrums.singingCharacters = [dadOpponent];
         PlayState.instance.dadStrums.singingCharacters = [boyfriend];
         PlayState.instance.boyfriendStrums.character = [dadOpponent];
@@ -375,8 +375,8 @@ function onUpdate(elapsed) {
 
     }
 
-    if(PlayState.gameplayMode == 'HELL_MODE'){
-        PlayState.instance.fuckYouShubs = true; // overriding the hp bar logic
+    if(PlayState.gameplayMode == 'HELL_MODE'|| PlayState.gameplayMode == 'FUCK_YOU'){
+        PlayState.instance.overrideBadHPBar = true; // overriding the hp bar logic
         // more like ILLOGIC because IT BARELY FUNCTIONS
         
         var iconOffset = 26;
@@ -400,7 +400,7 @@ function onUpdate(elapsed) {
             - ((PlayState.instance.barFlipped ? iconOffset : iconP2.width - iconOffset))
             - iconP2.offsetX;
 
-        // /*
+        //
         if (!iconP2.animatedIcon) {
             if (iconP2.char == 'wigglytuff') {
                 iconP2.animation.curAnim.curFrame = PlayState.dadOpponent.wigglyState;
@@ -415,7 +415,7 @@ function onUpdate(elapsed) {
 
     if (amusiaQuestioningPresent)
     {
-        if(PlayState.gameplayMode == 'HELL_MODE'){
+        if(PlayState.gameplayMode == 'HELL_MODE'|| PlayState.gameplayMode == 'FUCK_YOU'){
             hellAutoSelectTimer += elapsed;
             if(hellAutoSelectTimer >= 3){
                 hellAutoSelectTimer -= 3;
@@ -519,7 +519,7 @@ function onEvent(eventName) {
                 hoverNotes = true;
 
                 if (!Init.trueSettings.get('Centered Notefield')) {
-                    if(PlayState.gameplayMode == 'HELL_MODE'){
+                    if(PlayState.gameplayMode == 'HELL_MODE'|| PlayState.gameplayMode == 'FUCK_YOU'){
                         flipStrum((FlxG.width / 4), PlayState.instance.boyfriendStrums);
                         flipStrum(-(FlxG.width / 4), PlayState.instance.dadStrums);
                     }else{

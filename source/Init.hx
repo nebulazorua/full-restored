@@ -399,7 +399,7 @@ class Init extends FlxState
 			StringSelector,
 			'normal',
 			'Presets for the mechanics settings. "custom" lets you set them yourself.',
-			['Off', 'Normal', 'Hell', 'Custom'] // TODO: add fuck you
+			['Off', 'Normal', 'Hell', 'Fuck You','Custom']
 		],
 		'Pendulum Enabled' => [
 			Checkmark,

@@ -55,7 +55,7 @@ function onCreatePost() {
 	pokeball.setGraphicSize(Std.int(pokeball.width * 5));
 	add(pokeball);
 
-	if(PlayState.gameplayMode == 'HELL_MODE'){
+	if(PlayState.gameplayMode == 'HELL_MODE' || PlayState.gameplayMode == 'FUCK_YOU'){
 		PlayState.instance.tranceActive = true;
 		PlayState.instance.accuracyMod = true;
 	}

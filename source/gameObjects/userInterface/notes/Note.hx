@@ -87,6 +87,13 @@ class Note extends FNFSprite
 					else
 						hitbox *= 0.5;
 				}
+				else if (PlayState.gameplayMode == FUCK_YOU)
+				{
+					if (isSustainNote)
+						hitbox *= 0.5;
+					else
+						hitbox *= 0.35;
+				}
 			default:
 		}
 
