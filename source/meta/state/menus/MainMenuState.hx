@@ -91,7 +91,7 @@ class MainMenuState extends MusicBeatState
 		super.create();
 		didCinnabar = FlxG.save.data.cartridgesOwned.contains("GlitchWeek");
 		
-		persistentUpdate=true;
+		persistentUpdate=false;
 		persistentDraw=true;
 
 		ForeverTools.resetMenuMusic();
@@ -354,10 +354,13 @@ class MainMenuState extends MusicBeatState
 		}
 
 		// unlock decision stuffs lmao
-		if (FlxG.save.data.queuedUnlocks != null && FlxG.save.data.queuedUnlocks.length > 0) {
-			var curUnlock:String = FlxG.save.data.queuedUnlocks[0];
-			if (curUnlock != null) 
-				openSubState(new UnlockSubstate(curUnlock));
+		if(subState == null){
+			if (FlxG.save.data.queuedUnlocks != null && FlxG.save.data.queuedUnlocks.length > 0) {
+				var curUnlock:String = FlxG.save.data.queuedUnlocks[0];
+				if (curUnlock != null) 
+					openSubState(new UnlockSubstate(curUnlock));
+				
+			}
 		}
 		//
 	}

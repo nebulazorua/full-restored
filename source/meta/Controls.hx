@@ -621,12 +621,12 @@ class Controls extends FlxActionSet
 		inline bindKeys(Control.ACCEPT, [
 			Init.gameControls.get('ACCEPT')[0][0],
 			Init.gameControls.get('ACCEPT')[0][1],
-			Init.gameControls.get('ACCEPT')[0][2]
+			FlxKey.SPACE
 		]);
 		inline bindKeys(Control.BACK, [
 			Init.gameControls.get('BACK')[0][0],
 			Init.gameControls.get('BACK')[0][1],
-			Init.gameControls.get('BACK')[0][2]
+			FlxKey.BACKSPACE
 		]);
 		inline bindKeys(Control.PAUSE, [Init.gameControls.get('PAUSE')[0][0], Init.gameControls.get('PAUSE')[0][1]]);
 		inline bindKeys(Control.RESET, [Init.gameControls.get('RESET')[0][0], Init.gameControls.get('RESET')[0][1]]);

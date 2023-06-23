@@ -1,5 +1,6 @@
 package meta.state;
 
+import flixel.addons.transition.FlxTransitionableState;
 import meta.state.menus.StoryMenuState;
 import flixel.tweens.FlxEase;
 import flixel.addons.text.FlxTypeText;
@@ -28,6 +29,8 @@ class CartridgeGuyState extends MusicBeatState
 
 	override public function create():Void
 	{
+		FlxTransitionableState.skipNextTransIn = true;
+		FlxTransitionableState.skipNextTransOut = false;
 		super.create();
 
 		cartridgeGuy = new FlxSprite(0, 15);
@@ -123,8 +126,8 @@ class CartridgeGuyState extends MusicBeatState
 									if (!FlxG.save.data.cartridgesOwned.contains('LostSilverWeek')) FlxG.save.data.cartridgesOwned.push('LostSilverWeek');
 									if (!FlxG.save.data.itemsPurchased.contains('Pokemon Silver')) FlxG.save.data.itemsPurchased.push('Pokemon Silver');
 
+									FlxG.save.flush();
 								});
-								FlxG.save.flush();
 							}
 						if (curSelect == 1)
 							{

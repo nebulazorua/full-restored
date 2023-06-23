@@ -26,7 +26,7 @@ class UnlockSubstate extends MusicBeatSubState {
 
 	public var unlocks:Array<String> = [];
 	public var onComplete:Void->Void;
-	public var youCanSpamConfirmNow:Bool = true;
+	public var youCanSpamConfirmNow:Bool = false;
 
 	var newLock:LockSprite;
 	var textbox:Textbox;
@@ -91,6 +91,7 @@ class UnlockSubstate extends MusicBeatSubState {
 		FlxTween.tween(textbox, {alpha: 1, boxWidth: 24, boxHeight: 12}, 0.75, {ease: FlxEase.elasticOut, onComplete: function(tween:FlxTween){
 			unlockText = new Alphabet(0, 64, "YOU HAVE UNLOCKED", true, false, false);
 			add(unlockText);
+			youCanSpamConfirmNow = true;
 			unlockText.isMenuItem = false;
 			unlockText.screenCenter(X);
 			unlockText.forEach(function(alphaChar:AlphaCharacter){
