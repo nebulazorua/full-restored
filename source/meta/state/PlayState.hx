@@ -2047,7 +2047,7 @@ class PlayState extends MusicBeatState
 					paused = true;
 					persistentUpdate = false;
 					persistentDraw = true;
-
+					
 					if (tranceSound != null) tranceSound.pause();
 
 					// open pause substate
@@ -2070,6 +2070,37 @@ class PlayState extends MusicBeatState
 							Main.switchState(this, new CharacterOffsetState());
 						}
 
+	
+						if (FlxG.keys.justPressed.ONE)
+						{
+							songMusic.volume = 0;
+							vocals.volume = 0;
+							doSongEnd();
+						}
+
+						if (FlxG.keys.justPressed.TWO)
+						{
+							if (!usedTimeTravel && Conductor.songPosition + 10000 < songMusic.length)
+							{
+								usedTimeTravel = true;
+								songMusic.pause();
+								vocals.pause();
+								Conductor.songPosition += 10000;
+
+								canDie = false;
+
+								songMusic.time = Conductor.songPosition;
+								songMusic.play();
+								vocals.time = Conductor.songPosition;
+								vocals.play();
+								new FlxTimer().start(0.5, function(tmr:FlxTimer)
+								{
+									usedTimeTravel = false;
+								});
+							}
+						}
+						
+
 						if ((FlxG.keys.justPressed.SIX))
 							strumLines.members[playerLane].autoplay = !strumLines.members[playerLane].autoplay;
 					}
@@ -2085,11 +2116,14 @@ class PlayState extends MusicBeatState
 			}
 
 			///*
-			if (!canSpeak)
-				vocals.volume = 0;
-			else
-				vocals.volume = soundVolume;
-			songMusic.volume = soundVolume;
+			if(vocals!=null){
+				if (!canSpeak)
+					vocals.volume = 0;
+				else
+					vocals.volume = soundVolume;
+			}
+			if(songMusic!=null)
+				songMusic.volume = soundVolume;
 
 			if ((gameplayMode == HELL_MODE || gameplayMode == FUCK_YOU) && SONG.song.toLowerCase() == 'death-toll')
 			{
@@ -2354,37 +2388,6 @@ class PlayState extends MusicBeatState
 				health = minHealth;
 			if (health <= minHealth && startedCountdown)
 				die();
-
-			/*if (Main.hypnoDebug)
-				{
-					if (FlxG.keys.justPressed.ONE) 
-						{
-							songMusic.volume = 0;
-							vocals.volume = 0;
-							doMoneyBag();
-						}
-			
-					if (FlxG.keys.justPressed.TWO) {
-						if (!usedTimeTravel && Conductor.songPosition + 10000 < songMusic.length)
-						{
-							usedTimeTravel = true;
-							songMusic.pause();
-							vocals.pause();
-							Conductor.songPosition += 10000;
-		
-							canDie = false;
-		
-							songMusic.time = Conductor.songPosition;
-							songMusic.play();
-							vocals.time = Conductor.songPosition;
-							vocals.play();
-							new FlxTimer().start(0.5, function(tmr:FlxTimer)
-							{
-								usedTimeTravel = false;
-							});
-						}
-					}
-				}*/
 
 			// copy paste im lazy
 			var pendulumOffset:Array<Int> = [];
@@ -3770,6 +3773,7 @@ class PlayState extends MusicBeatState
 		health += val;
 	}
 
+	var endSongTimer:FlxTimer;
 	function startSong():Void
 	{
 		startingSong = false;
@@ -3791,7 +3795,14 @@ class PlayState extends MusicBeatState
 		{
 			songMusic.play();
 			#if !html5
-			songMusic.onComplete = doSongEnd;
+			songMusic.onComplete = function(){
+				if(Init.trueSettings.get("Offset") != 0){
+					endSongTimer = new FlxTimer().start(Init.trueSettings.get("Offset") / 1000).start(function(tmr:FlxTimer){
+						doSongEnd();
+					});
+				}else
+					doSongEnd();
+			};
 			vocals.play();
 
 			resyncVocals();
@@ -4139,6 +4150,8 @@ class PlayState extends MusicBeatState
 				if (!tween.finished)
 					tween.active = false;
 			});
+			if (endSongTimer != null && !endSongTimer.finished)
+				endSongTimer.active = false;
 		}
 
 		// trace('open substate');
@@ -4165,10 +4178,14 @@ class PlayState extends MusicBeatState
 				if (!tween.finished)
 					tween.active = true;
 			}); 
+			if (endSongTimer != null && !endSongTimer.finished)
+				endSongTimer.active = true;
+			
 			if (songMusic != null && !startingSong) {
 				if (startTimer == null || startTimer.active)
 					resyncVocals();			
 			}
+			
 			paused = false;
 			///*
 			updateRPC(false);
@@ -4238,6 +4255,8 @@ class PlayState extends MusicBeatState
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
 
+			FlxTransitionableState.skipNextTransIn = false;
+			FlxTransitionableState.skipNextTransOut = false;
 			if (SONG.validScore)
 				Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 			FlxG.save.flush();
