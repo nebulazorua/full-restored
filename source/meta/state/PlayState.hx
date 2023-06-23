@@ -884,6 +884,9 @@ class PlayState extends MusicBeatState
 		// generate the song
 		generateSong(SONG.song);
 
+
+		canDie = SONG.song.toLowerCase() != 'sansno';
+
 		// parse shit for the unowns
 		UnownSubstate.init();
 
