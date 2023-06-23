@@ -121,21 +121,19 @@ class UnownSubstate extends MusicBeatSubState
 		add(unowns);
 		
 		var realThing:Int = 0;
+		var scale:Float = 1;
+		var width:Float = 100 * (selectedWord.length-1);
+		if(width > FlxG.width)
+			scale *= FlxG.width / width;
+		width *= scale;
+
 		for (i in 0...selectedWord.length) {
 			if (!selectedWord.isSpace(i)) 
 			{
 				var unown:FlxSprite = new FlxSprite(0, 90);
-				//unown.x += 350 - (35 * selectedWord.length);
-				//var thing = 1 - (0.05 * selectedWord.length); 
-				if (260 - (15 * selectedWord.length) <= 0)
-					unown.x += 40 * i;
-				else
-					unown.x += (260 - (15 * selectedWord.length)) * i;
-				var realScale = 1 - (0.05 * selectedWord.length); 
-				if (realScale < 0.2)
-					realScale = 0.2;
-				unown.scale.set(realScale, realScale);
-				unown.updateHitbox();
+				var xPos = i * 100;
+				unown.x = xPos;
+				unown.scale.set(0.5, 0.5);
 				unown.frames = Paths.getSparrowAtlas('UI/base/Unown_Alphabet');
 				unown.animation.addByPrefix('idle', selectedWord.charAt(i), 24, true);
 				unown.animation.play('idle');
@@ -143,7 +141,6 @@ class UnownSubstate extends MusicBeatSubState
 
 				var line:FlxSprite = new FlxSprite(unown.x, unown.y).loadGraphic(Paths.image('UI/base/line'));
 				line.y += 500;
-				line.scale.set(unown.scale.x, unown.scale.y);
 				line.updateHitbox();
 				line.ID = realThing;
 				lines.add(line);
@@ -151,7 +148,21 @@ class UnownSubstate extends MusicBeatSubState
 			}
 		}
 
+		for (i in 0...unowns.members.length){
+			var u:FlxSprite = unowns.members[i];
+			var l:FlxSprite = lines.members[i];
+
+			u.scale.scale(scale);
+			u.updateHitbox();
+			u.x *= scale;
+			//u.x += (FlxG.width - width)/2;
+			l.x = u.x;
+			l.scale.copyFrom(u.scale);
+			l.updateHitbox();
+		}
+
 		unowns.screenCenter(X);
+		unowns.y += 100;
 		for (i in 0...lines.length) {
 			lines.members[i].x = unowns.members[i].x;
 		}
